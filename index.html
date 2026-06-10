@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J.L. Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#101820;--navy2:#1f2d3d;--gold:#b9975b;
+  --line:#e0e0e0;--line2:#eee;
+  --text:#101820;--text2:#666;--text3:#999;--text4:#aaa;--text5:#bbb;
+  --pos:#1a7a4c;--neg:#b03030;--bg:#fff;--surface:#fafafa;
+  --font:"Helvetica Neue",Arial,sans-serif;
+}
+html{background:#f0f0ec;font-family:var(--font);color:var(--text);min-height:100vh}
+body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d4;border-right:1px solid #d4d4d4;min-height:100vh}
+.topbar{background:var(--navy);height:4px}
+.hdr{background:#fff;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.logo{font-size:17px;font-weight:400;color:var(--navy);letter-spacing:0.02em}
+.logo span{font-weight:700}
+.logo-mark{display:inline-block;width:22px;height:22px;background:var(--navy);color:#fff;text-align:center;line-height:22px;font-size:11px;font-weight:700;margin-right:8px;vertical-align:middle}
+.hdr-right{display:flex;align-items:center;gap:12px}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#fff}
+.uname{font-size:12px;color:var(--text2);letter-spacing:0.02em}
+.nav{background:var(--navy);padding:0 28px;display:flex;gap:0;overflow-x:auto}
+.nav::-webkit-scrollbar{display:none}
+.ni{padding:13px 18px;font-size:12px;letter-spacing:0.04em;color:#9aa5b1;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all 0.15s;background:none;border-left:none;border-right:none;border-top:none;font-family:var(--font)}
+.ni.active{color:#fff;border-bottom-color:var(--gold)}
+.ni:hover:not(.active){color:#fff}
+.body{padding:28px}
+.page{display:none}.page.active{display:block}
+.greet{font-size:20px;font-weight:400;color:var(--navy);margin-bottom:3px}
+.greet-sub{font-size:12px;color:var(--text3);margin-bottom:26px;letter-spacing:0.02em}
+.hero-card{border:1px solid var(--line);border-top:3px solid var(--gold);padding:24px 26px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-end;background:var(--surface)}
+.hero-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.hero-bal{font-size:42px;font-weight:300;color:var(--navy);letter-spacing:-1px}
+.hero-acct{font-size:11px;color:var(--text4);margin-top:6px;letter-spacing:0.04em}
+.hero-right{text-align:right}
+.hero-period{font-size:11px;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin-bottom:4px}
+.hero-updated{font-size:11px;color:var(--text4);letter-spacing:0.03em}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);margin-bottom:24px}
+.stat{padding:18px 22px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.stat-val{font-size:24px;font-weight:300;color:var(--navy);letter-spacing:-0.5px}
+.stat-val.pos{color:#1a9e52}.stat-val.income{color:var(--navy)!important}
+.stat-val.neg{color:var(--neg)}
+.break-wrap{border:1px solid var(--line);padding:22px 24px;margin-bottom:24px}
+.break-row{display:flex;align-items:center;margin-bottom:12px}
+.break-row:last-child{margin-bottom:0}
+.break-name{font-size:12px;color:var(--navy);width:150px;flex-shrink:0}
+.break-track{flex:1;height:14px;background:#f4f4f4;margin:0 14px}
+.break-fill{height:14px;background:var(--navy)}
+.break-amt{font-size:12px;color:var(--navy);width:80px;text-align:right;flex-shrink:0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+.panel-head{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--navy)}
+.bud-item{margin-bottom:15px}
+.bud-item:last-child{margin-bottom:0}
+.bud-top{display:flex;justify-content:space-between;margin-bottom:6px}
+.bud-name{font-size:12px;color:var(--navy)}
+.bud-vals{font-size:11px;color:var(--text3)}
+.bud-track{height:3px;background:var(--line2)}
+.bud-fill{height:3px;background:var(--gold)}
+.met-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line)}
+.met{padding:14px 18px;border-right:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+.met:nth-child(even){border-right:none}
+.met:nth-last-child(-n+2){border-bottom:none}
+.met-label{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text4);margin-bottom:6px}
+.met-val{font-size:18px;font-weight:300;color:var(--navy)}
+.met-sub{font-size:10px;color:var(--text5);margin-top:3px}
+.sav-card{border:1px solid var(--line);border-top:3px solid var(--gold);padding:22px 24px}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;padding:10px 12px;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);border-bottom:2px solid var(--navy);font-weight:500}
+.tbl td{padding:11px 12px;font-size:13px;border-bottom:1px solid var(--line2);color:var(--navy)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--surface)}
+.amt-inc{color:#1a9e52 !important;text-align:right;white-space:nowrap;font-weight:500}
+.amt-exp{color:#cc2222 !important;text-align:right;white-space:nowrap;font-weight:500}
+.tx-cat{font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:var(--text3)}
+.tx-date{font-size:12px;color:var(--text3);white-space:nowrap}
+.tx-desc{max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.month-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--line);overflow-x:auto}
+.month-tabs::-webkit-scrollbar{display:none}
+.mt{padding:9px 16px;font-size:11px;letter-spacing:0.05em;color:var(--text3);cursor:pointer;white-space:nowrap;border-right:1px solid var(--line);background:none;border-top:none;border-bottom:none;border-left:none;font-family:var(--font)}
+.mt.active{background:var(--navy);color:#fff}
+.mt:last-child{border-right:none}
+.totals-bar{display:flex;gap:0;border:1px solid var(--line);margin-bottom:20px}
+.tb-item{padding:14px 18px;border-right:1px solid var(--line);flex:1}
+.tb-item:last-child{border-right:none}
+.tb-label{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text4);margin-bottom:5px}
+.tb-val{font-size:17px;font-weight:300;color:var(--navy)}
+.sub-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--line);margin-bottom:20px}
+.sub-item{padding:16px 20px;border-right:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+.sub-item:nth-child(even){border-right:none}
+.sub-name{font-size:14px;font-weight:500;color:var(--navy);margin-bottom:3px}
+.sub-cycle{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text4);margin-bottom:8px}
+.sub-amt{font-size:20px;font-weight:300;color:var(--navy)}
+.sub-total{background:var(--navy);padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+.sub-total-label{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#9aa5b1}
+.sub-total-val{font-size:20px;font-weight:300;color:#fff}
+.import-box{border:1px solid var(--line);padding:22px 24px;margin-bottom:16px}
+.import-label{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);margin-bottom:8px;font-weight:500}
+.import-tip{font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:14px}
+.import-ta{width:100%;min-height:140px;border:1px solid var(--line);padding:12px;font-size:12px;font-family:"Courier New",monospace;resize:vertical;outline:none;line-height:1.6;color:var(--navy)}
+.import-ta:focus{border-color:var(--gold)}
+.btn{padding:10px 22px;border:1px solid var(--navy);background:var(--navy);color:#fff;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;font-family:var(--font)}
+.btn:hover{background:var(--navy2)}
+.btn-danger{border-color:var(--neg);color:var(--neg);background:#fff}
+.btn-danger:hover{background:#fdf0f0}
+.import-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.import-msg{font-size:12px;color:var(--pos);margin-top:10px;min-height:16px}
+.empty{text-align:center;color:var(--text3);font-size:13px;padding:40px 0}
+.sav-toggle-btn{width:36px;height:36px;border:1.5px solid var(--line);background:#fff;color:var(--navy);font-size:22px;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.sav-toggle-btn.active-add{background:var(--navy);color:#fff;border-color:var(--navy)}
+.sav-toggle-btn.active-sub{background:var(--neg);color:#fff;border-color:var(--neg)}
+#lock{position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:9999}
+.lock-mark{width:48px;height:48px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;margin:0 auto 20px}
+.lock-title{font-size:16px;color:var(--navy);margin-bottom:6px}
+.lock-sub{font-size:11px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:24px}
+.lock-input{display:block;width:260px;padding:11px 16px;border:1px solid var(--line);font-size:14px;outline:none;margin:0 auto 12px;text-align:center;font-family:var(--font)}
+.lock-input:focus{border-color:var(--gold)}
+.lock-err{font-size:12px;color:var(--neg);margin-top:12px;min-height:18px}
+@media(max-width:720px){
+  .two-col{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:1fr}
+  .stat{border-right:none;border-bottom:1px solid var(--line)}
+  .stat:last-child{border-bottom:none}
+  .sub-grid{grid-template-columns:1fr}
+  .sub-item{border-right:none}
+  .break-name{width:110px;font-size:11px}
+  .break-amt{width:70px;font-size:11px}
+  .tbl th:nth-child(3),.tbl td:nth-child(3){display:none}
+}
+</style>
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+</head>
+<body>
+<div id="lock">
+  <div style="text-align:center">
+    <div class="lock-mark">JL</div>
+    <div class="lock-title">J.L. Finance</div>
+    <div class="lock-sub">Enter password to continue</div>
+    <input type="password" class="lock-input" id="pw-input" placeholder="Password">
+    <button class="btn" onclick="checkPw()" style="padding:11px 36px">Unlock</button>
+    <div class="lock-err" id="pw-error"></div>
+  </div>
+</div>
+<div class="topbar"></div>
+<div class="hdr">
+  <div class="logo"><span class="logo-mark">JL</span><span>J.L.</span> Finance</div>
+  <div class="hdr-right">
+    <span class="uname">Jorge Lopez</span>
+    <div class="avatar">JL</div>
+  </div>
+</div>
+<div class="nav">
+  <button class="ni active" onclick="showPage('overview',this)">Overview</button>
+  <button class="ni" onclick="showPage('transactions',this)">Transactions</button>
+  <button class="ni" onclick="showPage('budget',this)">Budget</button>
+  <button class="ni" onclick="showPage('subscriptions',this)">Subscriptions</button>
+  <button class="ni" onclick="showPage('savings',this)">Savings</button>
+  <button class="ni" onclick="showPage('import',this)">Connect</button>
+</div>
+<div class="body">
+  <div id="page-overview" class="page active"></div>
+  <div id="page-transactions" class="page"></div>
+  <div id="page-budget" class="page"></div>
+  <div id="page-subscriptions" class="page"></div>
+  <div id="page-savings" class="page">
+    <div class="sav-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--line2)">
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px">Total Savings</div>
+          <div style="font-size:11px;color:var(--text4)" id="mct-label">MCT (20%) &middot; loading...</div>
+        </div>
+        <div style="font-size:38px;font-weight:300;color:var(--navy);letter-spacing:-1px" id="sav-total-display">$0.00</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button id="btn-sub" class="sav-toggle-btn" onclick="setSavMode('-')">-</button>
+        <button id="btn-add" class="sav-toggle-btn" onclick="setSavMode('+')">+</button>
+        <input type="number" id="sav-amt" min="0" step="0.01" placeholder="Enter amount"
+          style="flex:1;padding:9px 12px;border:1px solid var(--line);font-size:14px;outline:none;font-family:var(--font);color:var(--navy);max-width:200px">
+        <button class="btn" onclick="applySavEntry()" style="padding:9px 22px">Apply</button>
+      </div>
+    </div>
+    <div id="sav-history"></div>
+  </div>
+  <div id="page-import" class="page">
+    <div class="import-box">
+      <div class="import-label">Bank connection</div>
+      <p class="import-tip">Connect your Wells Fargo account to automatically sync your transactions and live balance. Your credentials never touch this app — authentication happens directly with Wells Fargo via Plaid.</p>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:4px">
+        <button class="btn" id="plaid-connect-btn" onclick="openPlaidLink()" style="padding:11px 28px">Connect Wells Fargo</button>
+        <button class="btn" id="plaid-sync-btn" onclick="syncPlaid()" style="display:none;padding:11px 24px">Sync now</button>
+        <button class="btn btn-danger" id="plaid-disconnect-btn" onclick="disconnectPlaid()" style="display:none;padding:11px 18px">Disconnect</button>
+      </div>
+      <div id="plaid-status" style="margin-top:14px;font-size:12px;color:var(--text3)"></div>
+    </div>
+
+    <div id="plaid-last-sync" style="display:none" class="import-box">
+      <div class="import-label">Last sync</div>
+      <div id="plaid-sync-details" style="font-size:13px;color:var(--navy)"></div>
+    </div>
+
+    <div class="import-box" style="margin-top:0;border-top:none">
+      <div class="import-label" style="margin-bottom:8px">Clear data</div>
+      <button class="btn btn-danger" onclick="clearAll()">Clear all transaction data</button>
+    </div>
+  </div>
+</div>
+<script>
+const PW_HASH = '578202bb2f950725df16e4bf6ae68f691e983f03e7e87469975ea782517e36ae';
+const SEED_TX = [{"date": "2026-04-16", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 5.39, "desc": "AASKYVIEW8CAF CAFE FORT WORTH", "source": "seed"}, {"date": "2026-04-16", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 14.33, "desc": "AASKYVIEW8CAF CAFE FORT WORTH", "source": "seed"}, {"date": "2026-04-16", "type": "Expense", "cat": "Misc / Other", "amt": 19.49, "desc": "AMAZING WRAP DALLAS TX", "source": "seed"}, {"date": "2026-04-16", "type": "Expense", "cat": "Gas", "amt": 40.0, "desc": "QT 975 OUTSIDE DALLAS TX", "source": "seed"}, {"date": "2026-04-17", "type": "Income", "cat": "Paycheck", "amt": 782.65, "desc": "AMERICANAIRLINES PAYROLL", "source": "seed"}, {"date": "2026-04-20", "type": "Expense", "cat": "Gas", "amt": 7.97, "desc": "QT 975 DALLAS TX", "source": "seed"}, {"date": "2026-04-20", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 2.98, "desc": "AASKYVIEW8CAF CAFE", "source": "seed"}, {"date": "2026-04-20", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 10.98, "desc": "AASKYVIEW8CAF CAFE", "source": "seed"}, {"date": "2026-04-20", "type": "Expense", "cat": "Gas", "amt": 3.78, "desc": "QT 971 DALLAS TX", "source": "seed"}, {"date": "2026-04-20", "type": "Expense", "cat": "Dining Out", "amt": 84.94, "desc": "PLUCKERS WING ARLINGTON TX", "source": "seed"}, {"date": "2026-04-20", "type": "Expense", "cat": "Misc / Other", "amt": 9.24, "desc": "PMUSA DALLAS TX", "source": "seed"}, {"date": "2026-04-20", "type": "Expense", "cat": "Gas", "amt": 30.06, "desc": "7-ELEVEN DALLAS TX", "source": "seed"}, {"date": "2026-04-21", "type": "Expense", "cat": "Dining Out", "amt": 12.99, "desc": "PANDA EXPRESS #337", "source": "seed"}, {"date": "2026-04-22", "type": "Expense", "cat": "Subscriptions", "amt": 9.99, "desc": "APPLE.COM/BILL RECURRING", "source": "seed"}, {"date": "2026-04-22", "type": "Expense", "cat": "Dining Out", "amt": 9.81, "desc": "CHIPOTLE 3322 DALLAS TX", "source": "seed"}, {"date": "2026-04-23", "type": "Income", "cat": "Paycheck", "amt": 433.67, "desc": "PANE NOSTRO RIST PAYROLL", "source": "seed"}, {"date": "2026-04-23", "type": "Expense", "cat": "Subscriptions", "amt": 4.32, "desc": "APPLE.COM/BILL RECURRING", "source": "seed"}, {"date": "2026-04-23", "type": "Expense", "cat": "Gas", "amt": 54.2, "desc": "QT 975 OUTSIDE DALLAS TX", "source": "seed"}, {"date": "2026-04-23", "type": "Expense", "cat": "Zelle Sent", "amt": 10.0, "desc": "ZELLE TO STEEL REAL", "source": "seed"}, {"date": "2026-04-24", "type": "Expense", "cat": "Dining Out", "amt": 8.08, "desc": "SMOOTHIE KING DALLAS TX", "source": "seed"}, {"date": "2026-04-24", "type": "Expense", "cat": "Dining Out", "amt": 15.8, "desc": "PANDA EXPRESS #337", "source": "seed"}, {"date": "2026-04-27", "type": "Income", "cat": "Zelle Received", "amt": 50.0, "desc": "ZELLE FROM MARIETH LIMA", "source": "seed"}, {"date": "2026-04-27", "type": "Expense", "cat": "Dining Out", "amt": 48.71, "desc": "DENNYS #7713 DALLAS TX", "source": "seed"}, {"date": "2026-04-28", "type": "Income", "cat": "Zelle Received", "amt": 100.0, "desc": "ZELLE FROM LUIS PERALES", "source": "seed"}, {"date": "2026-04-28", "type": "Expense", "cat": "Dining Out", "amt": 48.67, "desc": "CAFE BRAZIL DALLAS TX", "source": "seed"}, {"date": "2026-04-28", "type": "Expense", "cat": "Gas", "amt": 3.78, "desc": "QT 971 DALLAS TX", "source": "seed"}, {"date": "2026-04-28", "type": "Expense", "cat": "Dining Out", "amt": 16.94, "desc": "CHIPOTLE 3489 DALLAS TX", "source": "seed"}, {"date": "2026-04-29", "type": "Expense", "cat": "Dining Out", "amt": 15.16, "desc": "PANDA EXPRESS #118", "source": "seed"}, {"date": "2026-04-29", "type": "Expense", "cat": "Transportation", "amt": 28.95, "desc": "UBER TECHNOLOGIES", "source": "seed"}, {"date": "2026-04-30", "type": "Income", "cat": "Zelle Received", "amt": 50.0, "desc": "ZELLE FROM MARIETH LIMA", "source": "seed"}, {"date": "2026-04-30", "type": "Expense", "cat": "Gas", "amt": 50.02, "desc": "QT 975 OUTSIDE DALLAS TX", "source": "seed"}, {"date": "2026-04-30", "type": "Expense", "cat": "Cash Withdrawal", "amt": 203.0, "desc": "NON-WF ATM WITHDRAWAL", "source": "seed"}, {"date": "2026-04-30", "type": "Expense", "cat": "Cash Withdrawal", "amt": 3.0, "desc": "NON-WELLS FARGO ATM FEE", "source": "seed"}, {"date": "2026-04-30", "type": "Expense", "cat": "Misc / Other", "amt": 53.12, "desc": "WALGREENS STORE 2602", "source": "seed"}, {"date": "2026-05-01", "type": "Income", "cat": "Paycheck", "amt": 782.64, "desc": "AMERICANAIRLINES PAYROLL", "source": "seed"}, {"date": "2026-05-01", "type": "Expense", "cat": "Zelle Sent", "amt": 34.0, "desc": "ZELLE TO GIOVANNI RAMIREZ", "source": "seed"}, {"date": "2026-05-04", "type": "Income", "cat": "Zelle Received", "amt": 500.0, "desc": "ZELLE FROM MEMBRENO MARITZA", "source": "seed"}, {"date": "2026-05-04", "type": "Expense", "cat": "Car Maintenance/Mods", "amt": 827.0, "desc": "ZELLE TO LOPEZ JEOVANY - Car", "source": "seed"}, {"date": "2026-05-04", "type": "Expense", "cat": "Gas", "amt": 27.0, "desc": "BUC-EES #0048 ENNIS TX", "source": "seed"}, {"date": "2026-05-04", "type": "Expense", "cat": "Gas", "amt": 48.49, "desc": "EXXON HONEY FARMS KATY TX", "source": "seed"}, {"date": "2026-05-04", "type": "Expense", "cat": "Gas", "amt": 55.49, "desc": "HONEY FARMS #83 KATY TX", "source": "seed"}, {"date": "2026-05-04", "type": "Expense", "cat": "Gas", "amt": 32.01, "desc": "BUC-EES #0048 ENNIS TX", "source": "seed"}, {"date": "2026-05-04", "type": "Expense", "cat": "Zelle Sent", "amt": 40.0, "desc": "ZELLE TO STEEL REAL", "source": "seed"}, {"date": "2026-05-04", "type": "Expense", "cat": "Cash Withdrawal", "amt": 400.0, "desc": "CASH WITHDRAWAL IN BRANCH - Car", "source": "seed"}, {"date": "2026-05-05", "type": "Expense", "cat": "Subscriptions", "amt": 20.56, "desc": "SPOTIFY RECURRING", "source": "seed"}, {"date": "2026-05-05", "type": "Expense", "cat": "Car Maintenance/Mods", "amt": 40.58, "desc": "AUTOZONE 1539 DALLAS TX", "source": "seed"}, {"date": "2026-05-05", "type": "Expense", "cat": "Cash Withdrawal", "amt": 100.0, "desc": "ATM WITHDRAWAL FORT WORTH", "source": "seed"}, {"date": "2026-05-05", "type": "Income", "cat": "Other Income", "amt": 40.58, "desc": "AUTOZONE PURCHASE RETURN", "source": "seed"}, {"date": "2026-05-06", "type": "Expense", "cat": "Dining Out", "amt": 16.35, "desc": "CHIPOTLE 3379 FORT WORTH", "source": "seed"}, {"date": "2026-05-07", "type": "Income", "cat": "Paycheck", "amt": 456.33, "desc": "PANE NOSTRO RIST PAYROLL", "source": "seed"}, {"date": "2026-05-07", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 3.34, "desc": "AMERICAN SKYVIEW 7 FORT WORTH", "source": "seed"}, {"date": "2026-05-08", "type": "Expense", "cat": "Misc / Other", "amt": 32.31, "desc": "TST AT AND T DISC DALLAS", "source": "seed"}, {"date": "2026-05-08", "type": "Expense", "cat": "Gas", "amt": 29.72, "desc": "SPEEDMAX #30 DALLAS TX", "source": "seed"}, {"date": "2026-05-08", "type": "Expense", "cat": "Dining Out", "amt": 27.28, "desc": "CHIPOTLE 3542 DESOTO TX", "source": "seed"}, {"date": "2026-05-08", "type": "Expense", "cat": "Gas", "amt": 14.18, "desc": "QT 975 OUTSIDE DALLAS TX", "source": "seed"}, {"date": "2026-05-08", "type": "Expense", "cat": "Groceries/Shopping", "amt": 6.95, "desc": "WAL-MART #5147 DALLAS TX", "source": "seed"}, {"date": "2026-05-11", "type": "Expense", "cat": "Car Maintenance/Mods", "amt": 45.98, "desc": "ADVANCE AUTO 7669 DALLAS TX", "source": "seed"}, {"date": "2026-05-11", "type": "Expense", "cat": "Dining Out", "amt": 9.72, "desc": "SF OVER TEXAS FOOD", "source": "seed"}, {"date": "2026-05-11", "type": "Expense", "cat": "Gas", "amt": 12.17, "desc": "7-ELEVEN 41275 TX", "source": "seed"}, {"date": "2026-05-11", "type": "Expense", "cat": "Subscriptions", "amt": 2.15, "desc": "APPLE.COM/BILL RECURRING", "source": "seed"}, {"date": "2026-05-11", "type": "Expense", "cat": "Gas", "amt": 7.48, "desc": "QT 975 DALLAS TX", "source": "seed"}, {"date": "2026-05-12", "type": "Expense", "cat": "Dining Out", "amt": 35.86, "desc": "CHILIS PINNACLE DALLAS TX", "source": "seed"}, {"date": "2026-05-13", "type": "Expense", "cat": "Gas", "amt": 3.89, "desc": "QT 975 DALLAS TX", "source": "seed"}, {"date": "2026-05-13", "type": "Expense", "cat": "Groceries/Shopping", "amt": 7.56, "desc": "CAMPUS BOOKSTORE DALLAS TX", "source": "seed"}, {"date": "2026-05-13", "type": "Expense", "cat": "Gas", "amt": 45.06, "desc": "7-ELEVEN 35412 DALLAS TX", "source": "seed"}, {"date": "2026-05-14", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 4.64, "desc": "AASKYVIEW8CAF CAFE", "source": "seed"}, {"date": "2026-05-14", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 3.34, "desc": "AMERICAN SKYVIEW 7", "source": "seed"}, {"date": "2026-05-14", "type": "Expense", "cat": "Dining Out", "amt": 18.99, "desc": "DUTCH BROS TX1404 EULESS TX", "source": "seed"}, {"date": "2026-05-14", "type": "Expense", "cat": "Subscriptions", "amt": 21.32, "desc": "CLAUDE.AI SUBSCRIPTN ANTHROPIC", "source": "seed"}, {"date": "2026-05-14", "type": "Expense", "cat": "Dining Out", "amt": 22.07, "desc": "TWISTED TROMPO DALLAS TX", "source": "seed"}, {"date": "2026-05-14", "type": "Expense", "cat": "Dining Out", "amt": 83.68, "desc": "CHILIS CEDAR HILL TX", "source": "seed"}, {"date": "2026-05-15", "type": "Income", "cat": "Paycheck", "amt": 782.65, "desc": "AMERICANAIRLINES PAYROLL", "source": "seed"}, {"date": "2026-05-15", "type": "Expense", "cat": "Subscriptions", "amt": 17.31, "desc": "ADOBE INC RECURRING", "source": "seed"}, {"date": "2026-05-18", "type": "Expense", "cat": "Groceries/Shopping", "amt": 12.38, "desc": "TARGET T-2907 DALLAS TX", "source": "seed"}, {"date": "2026-05-18", "type": "Expense", "cat": "Zelle Sent", "amt": 40.0, "desc": "ZELLE TO LOUVERS", "source": "seed"}, {"date": "2026-05-18", "type": "Expense", "cat": "Dining Out", "amt": 10.28, "desc": "PANE NOSTRO LLC DALLAS TX", "source": "seed"}, {"date": "2026-05-18", "type": "Expense", "cat": "Gas", "amt": 3.59, "desc": "QT 975 DALLAS TX", "source": "seed"}, {"date": "2026-05-18", "type": "Expense", "cat": "Gas", "amt": 20.08, "desc": "QT 975 OUTSIDE DALLAS TX", "source": "seed"}, {"date": "2026-05-18", "type": "Expense", "cat": "Dining Out", "amt": 30.5, "desc": "WAFFLE HOUSE 2194 DALLAS TX", "source": "seed"}, {"date": "2026-05-19", "type": "Expense", "cat": "Gas", "amt": 40.01, "desc": "BUC-EES #0039 DENTON TX", "source": "seed"}, {"date": "2026-05-20", "type": "Expense", "cat": "Gym/Fitness", "amt": 20.0, "desc": "ZELLE TO STEEL REAL - 2 Day Passes", "source": "seed"}, {"date": "2026-05-20", "type": "Expense", "cat": "Dining Out", "amt": 12.99, "desc": "PANDA EXPRESS #337 DALLAS TX", "source": "seed"}, {"date": "2026-05-20", "type": "Expense", "cat": "Subscriptions", "amt": 4.32, "desc": "APPLE.COM/BILL RECURRING", "source": "seed"}, {"date": "2026-05-21", "type": "Income", "cat": "Paycheck", "amt": 275.36, "desc": "PANE NOSTRO RIST PAYROLL", "source": "seed"}, {"date": "2026-05-21", "type": "Expense", "cat": "Gas", "amt": 46.63, "desc": "7-ELEVEN DALLAS TX", "source": "seed"}, {"date": "2026-05-21", "type": "Expense", "cat": "Groceries/Shopping", "amt": 8.11, "desc": "TARGET T-2907 DALLAS TX", "source": "seed"}, {"date": "2026-05-21", "type": "Expense", "cat": "Gas", "amt": 7.92, "desc": "QT 971 DALLAS TX", "source": "seed"}, {"date": "2026-05-21", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 2.54, "desc": "AMERICAN SKYVIEW 7 FORT WORTH", "source": "seed"}, {"date": "2026-05-22", "type": "Expense", "cat": "Dining Out", "amt": 19.81, "desc": "CHIPOTLE 3379 FORT WORTH TX", "source": "seed"}, {"date": "2026-05-22", "type": "Expense", "cat": "Subscriptions", "amt": 7.57, "desc": "APPLE.COM/BILL", "source": "seed"}, {"date": "2026-05-22", "type": "Expense", "cat": "Subscriptions", "amt": 9.99, "desc": "APPLE.COM/BILL RECURRING", "source": "seed"}, {"date": "2026-05-22", "type": "Expense", "cat": "Dining Out", "amt": 14.61, "desc": "DUTCH BROS TX1904 LANCASTER TX", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Groceries/Shopping", "amt": 9.4, "desc": "TARGET T-2907 DALLAS TX", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Groceries/Shopping", "amt": 96.33, "desc": "BEST BUY #205 IRVING TX", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Gas", "amt": 44.4, "desc": "7-ELEVEN DALLAS TX", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Gym/Fitness", "amt": 10.0, "desc": "ZELLE TO STEEL REAL - Day Pass", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Gas", "amt": 8.1, "desc": "LEDBETTER FOOD DALLAS TX", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Dining Out", "amt": 40.91, "desc": "IHOP 3010 DALLAS TX", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Dining Out", "amt": 5.74, "desc": "SONIC DRIVE IN DALLAS TX", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Dining Out", "amt": 24.71, "desc": "OCEAN KING BUFFET DUNCANVILLE TX", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Gas", "amt": 35.0, "desc": "7-ELEVEN 35412 DALLAS TX", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Dining Out", "amt": 14.26, "desc": "INSOMNIA COOKIES DALLAS TX", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Groceries/Shopping", "amt": 18.16, "desc": "WM SUPERCENTER GRAND PRAIRIE TX", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Gas", "amt": 9.49, "desc": "QT 971 DALLAS TX", "source": "seed"}, {"date": "2026-05-26", "type": "Expense", "cat": "Gas", "amt": 5.14, "desc": "7-ELEVEN 41275 DALLAS TX", "source": "seed"}, {"date": "2026-05-27", "type": "Expense", "cat": "Dining Out", "amt": 32.2, "desc": "IN-N-OUT LANCASTER TX", "source": "seed"}, {"date": "2026-05-29", "type": "Income", "cat": "Paycheck", "amt": 782.65, "desc": "AMERICANAIRLINES PAYROLL", "source": "seed"}, {"date": "2026-06-01", "type": "Expense", "cat": "Groceries/Shopping", "amt": 23.79, "desc": "WM SUPERCENTER #3014 DALLAS TX", "source": "seed"}, {"date": "2026-06-01", "type": "Expense", "cat": "Misc / Other", "amt": 48.71, "desc": "SQ PICASSAS OILS DALLAS TX", "source": "seed"}, {"date": "2026-06-01", "type": "Expense", "cat": "Misc / Other", "amt": 20.0, "desc": "AMIGOS JEWELRY DALLAS TX", "source": "seed"}, {"date": "2026-06-01", "type": "Expense", "cat": "Dining Out", "amt": 12.99, "desc": "PANDA EXPRESS #337 DALLAS TX", "source": "seed"}, {"date": "2026-06-01", "type": "Expense", "cat": "Gas", "amt": 3.78, "desc": "QT 971 DALLAS TX", "source": "seed"}, {"date": "2026-06-01", "type": "Expense", "cat": "Gas", "amt": 46.37, "desc": "QT 971 OUTSIDE DALLAS TX", "source": "seed"}, {"date": "2026-06-01", "type": "Expense", "cat": "Dining Out", "amt": 36.0, "desc": "WAFFLE HOUSE 2194 DALLAS TX", "source": "seed"}, {"date": "2026-06-01", "type": "Expense", "cat": "Dining Out", "amt": 6.72, "desc": "TIFFS TREATS DALLAS TX", "source": "seed"}, {"date": "2026-06-01", "type": "Expense", "cat": "Dining Out", "amt": 33.67, "desc": "CHIPOTLE 3602 DALLAS TX", "source": "seed"}, {"date": "2026-06-01", "type": "Expense", "cat": "Dining Out", "amt": 5.85, "desc": "THE SPELLED MILK DALLAS TX", "source": "seed"}, {"date": "2026-06-01", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 8.02, "desc": "AASKYVIEW5CAFE FORT WORTH TX", "source": "seed"}, {"date": "2026-06-01", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 7.71, "desc": "AASKYVIEW8CAF CAFE FORT WORTH", "source": "seed"}, {"date": "2026-06-01", "type": "Income", "cat": "Zelle Received", "amt": 25.0, "desc": "ZELLE FROM JEREMIAH MENDEZ", "source": "seed"}, {"date": "2026-06-02", "type": "Expense", "cat": "Dining Out", "amt": 26.39, "desc": "SMOOTHIE KING DALLAS TX", "source": "seed"}, {"date": "2026-06-03", "type": "Expense", "cat": "Gym/Fitness", "amt": 40.0, "desc": "ZELLE TO STEEL REAL - MEMBERSHIP", "source": "seed"}, {"date": "2026-06-03", "type": "Expense", "cat": "Gas", "amt": 43.67, "desc": "7-ELEVEN DALLAS TX", "source": "seed"}, {"date": "2026-06-03", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 3.34, "desc": "AMERICAN SKYVIEW 7 FORT WORTH", "source": "seed"}, {"date": "2026-06-03", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 8.02, "desc": "AASKYVIEW5CAFE FORT WORTH TX", "source": "seed"}, {"date": "2026-06-03", "type": "Expense", "cat": "Gas", "amt": 13.08, "desc": "QT 971 DALLAS TX", "source": "seed"}, {"date": "2026-06-04", "type": "Expense", "cat": "Dining Out", "amt": 54.94, "desc": "ODDFELLOWS2 DALLAS TX", "source": "seed"}, {"date": "2026-06-04", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 13.37, "desc": "AASKYVIEW8CAF CAFE FORT WORTH", "source": "seed"}, {"date": "2026-06-04", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 5.66, "desc": "AASKYVIEW8CAF CAFE FORT WORTH", "source": "seed"}, {"date": "2026-06-04", "type": "Income", "cat": "Scholarship", "amt": 1750.0, "desc": "MOBILE DEPOSIT - SCHOLARSHIP", "source": "seed"}, {"date": "2026-06-05", "type": "Expense", "cat": "Zelle Sent", "amt": 35.0, "desc": "ZELLE TO GIOVANNI RAMIREZ", "source": "seed"}, {"date": "2026-06-05", "type": "Expense", "cat": "Subscriptions", "amt": 20.56, "desc": "SPOTIFY RECURRING", "source": "seed"}, {"date": "2026-06-05", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 10.81, "desc": "AASKYVIEW8CAF CAFE FORT WORTH", "source": "seed"}, {"date": "2026-06-05", "type": "Expense", "cat": "Gas", "amt": 6.09, "desc": "7-ELEVEN 41275 DALLAS TX", "source": "seed"}, {"date": "2026-06-08", "type": "Expense", "cat": "Groceries/Shopping", "amt": 56.34, "desc": "KROGER #0213 DALLAS TX", "source": "seed"}, {"date": "2026-06-08", "type": "Expense", "cat": "Dining Out", "amt": 9.29, "desc": "JACK IN THE BOX DALLAS TX", "source": "seed"}, {"date": "2026-06-08", "type": "Expense", "cat": "Gym/Fitness", "amt": 54.11, "desc": "FIV LUXX SPO DALLAS TX", "source": "seed"}, {"date": "2026-06-08", "type": "Expense", "cat": "Gas", "amt": 10.81, "desc": "QT 975 INSIDE DALLAS TX", "source": "seed"}, {"date": "2026-06-08", "type": "Expense", "cat": "Dining Out", "amt": 6.0, "desc": "TIFFS TREATS DALLAS TX", "source": "seed"}, {"date": "2026-06-08", "type": "Expense", "cat": "Dining Out", "amt": 43.14, "desc": "CHIPOTLE 360 DALLAS TX", "source": "seed"}, {"date": "2026-06-08", "type": "Expense", "cat": "Gas", "amt": 6.58, "desc": "QT 971 INSIDE DALLAS TX", "source": "seed"}, {"date": "2026-06-08", "type": "Expense", "cat": "Gas", "amt": 46.99, "desc": "QT 971 OUTSIDE DALLAS TX", "source": "seed"}, {"date": "2026-06-08", "type": "Expense", "cat": "AA Cafe (Work)", "amt": 3.73, "desc": "AASKYVIEW8CAF FORT WORTH TX", "source": "seed"}, {"date": "2026-06-08", "type": "Expense", "cat": "Dining Out", "amt": 15.16, "desc": "PANDA EXPRESS FORT WORTH TX", "source": "seed"}];
+const BIWEEKLY = 782.65, MONTHLY = BIWEEKLY * 2.167;
+const NEEDS_TARGET = MONTHLY * 0.5, WANTS_TARGET = MONTHLY * 0.3, SAVINGS_TARGET = MONTHLY * 0.2;
+const POSTED_BALANCE = 3022.15;
+const POSTED_BALANCE_DATE = '2026-06-08';
+function calcCurrentBalance() {
+  // Compute net of seed transactions from the hardcoded SEED_TX array
+  var seedNet = SEED_TX.reduce(function(net, t) {
+    return net + (t.type === 'Income' ? t.amt : -t.amt);
+  }, 0);
+  // Pre-tracking base = posted balance minus what seed transactions already account for
+  var preBase = POSTED_BALANCE - seedNet;
+  // Add net of ALL current transactions (seed + imported)
+  var allNet = transactions.reduce(function(net, t) {
+    return net + (t.type === 'Income' ? t.amt : -t.amt);
+  }, 0);
+  return preBase + allNet;
+}
+const NEEDS_CATS = ['Gas','Groceries/Shopping','Car Maintenance/Mods','Gym/Fitness','Bills & Utilities'];
+const WANTS_CATS = ['Dining Out','Subscriptions','Cash Withdrawal','AA Cafe (Work)','Zelle Sent','Entertainment','Misc / Other','Transportation'];
+const SUB_MAP = {'Spotify':'SPOTIFY','Apple.com':'APPLE.COM','Claude.ai':'CLAUDE','Adobe':'ADOBE'};
+
+// Auth
+(function(){ if(sessionStorage.getItem('jlf_auth')==='1') document.getElementById('lock').style.display='none'; })();
+document.getElementById('pw-input').addEventListener('keydown', function(e){ if(e.key==='Enter') checkPw(); });
+function checkPw() {
+  const v = document.getElementById('pw-input').value;
+  crypto.subtle.digest('SHA-256', new TextEncoder().encode(v)).then(function(buf) {
+    const hash = Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+    if(hash === PW_HASH) {
+      sessionStorage.setItem('jlf_auth','1');
+      document.getElementById('lock').style.display='none';
+    } else {
+      document.getElementById('pw-error').textContent = 'Incorrect password.';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  });
+}
+
+// Storage
+function loadTx() { try { var s=localStorage.getItem('jlf_tx'); return s?JSON.parse(s):JSON.parse(JSON.stringify(SEED_TX)); } catch(e) { return JSON.parse(JSON.stringify(SEED_TX)); } }
+function saveTx(t) { try { localStorage.setItem('jlf_tx',JSON.stringify(t)); } catch(e) {} }
+function loadSaved() { try { var v=parseFloat(localStorage.getItem('jlf_saved')||'0'); return isNaN(v)?0:v; } catch(e) { return 0; } }
+function saveSavedAmt(v) { try { localStorage.setItem('jlf_saved',String(v)); } catch(e) {} }
+function loadSavLog() { try { var s=localStorage.getItem('jlf_savlog'); return s?JSON.parse(s):[]; } catch(e) { return []; } }
+function saveSavLog(l) { try { localStorage.setItem('jlf_savlog',JSON.stringify(l)); } catch(e) {} }
+
+var transactions = loadTx();
+var savingsLog = loadSavLog();
+var savedSoFar = savingsLog.length > 0 ? loadSaved() : 0; if(!savingsLog.length) saveSavedAmt(0);
+var savMode = '+';
+var txMonth = null;
+var historyMonth = null;
+var dragIdx = null;
+var txHistory = [];
+var txFuture = [];
+var MAX_HISTORY = 30;
+
+function snapshotTx() {
+  txHistory.push(JSON.stringify(transactions));
+  if(txHistory.length > MAX_HISTORY) txHistory.shift();
+  txFuture = [];
+}
+function undoTx() {
+  if(!txHistory.length) return;
+  txFuture.push(JSON.stringify(transactions));
+  transactions = JSON.parse(txHistory.pop());
+  saveTx(transactions);
+  renderTransactions();
+  renderOverview();
+}
+function redoTx() {
+  if(!txFuture.length) return;
+  txHistory.push(JSON.stringify(transactions));
+  transactions = JSON.parse(txFuture.pop());
+  saveTx(transactions);
+  renderTransactions();
+  renderOverview();
+}
+
+// Helpers
+function fmt(n) { return '$' + Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtS(n) { return (n<0?'-':'+') + fmt(n); }
+function getMonthStr(d) { return d.substring(0,7); }
+function currentMonth() {
+  var n = new Date();
+  return n.getFullYear() + '-' + String(n.getMonth()+1).padStart(2,'0');
+}
+function monthName(m) {
+  var p = m.split('-');
+  return new Date(parseInt(p[0]), parseInt(p[1])-1, 1).toLocaleString('default',{month:'long',year:'numeric'});
+}
+function monthShort(m) {
+  var p = m.split('-');
+  return new Date(parseInt(p[0]), parseInt(p[1])-1, 1).toLocaleString('default',{month:'short',year:'2-digit'});
+}
+function getMonths() {
+  var seen = {};
+  var months = [];
+  transactions.forEach(function(t) { var m=getMonthStr(t.date); if(!seen[m]){seen[m]=true;months.push(m);} });
+  return months.sort().reverse();
+}
+function filterMo(mo) { return transactions.filter(function(t){ return getMonthStr(t.date)===mo; }); }
+function getToday() {
+  var n=new Date();
+  return String(n.getMonth()+1).padStart(2,'0')+'/'+String(n.getDate()).padStart(2,'0')+'/'+n.getFullYear();
+}
+
+// Categorize
+function categorize(desc, isIncome) {
+  var d = desc.toUpperCase();
+  if(isIncome) {
+    if(d.includes('PAYROLL')||d.includes('AMERICANAIRLINES')) return 'Paycheck';
+    if(d.includes('ZELLE FROM')) return 'Zelle Received';
+    if(d.includes('DEPOSIT')||d.includes('SCHOLARSHIP')) return 'Scholarship';
+    return 'Other Income';
+  }
+  if(d.includes('STEEL REAL')) return 'Gym/Fitness';
+  if(d.includes('ZELLE TO')) return 'Zelle Sent';
+  if(/QT |QUIKTRIP/.test(d)||d.includes('BUC-EE')||d.includes('7-ELEVEN')||d.includes('LEDBETTER')||d.includes('EXXON')||d.includes('HONEY FARMS')||d.includes('SPEEDMAX')) return 'Gas';
+  if(d.includes('KROGER')||d.includes('WALMART')||d.includes('WAL-MART')||d.includes('WM SUPER')||d.includes('TARGET')||d.includes('BEST BUY')) return 'Groceries/Shopping';
+  if(d.includes('CHIPOTLE')||d.includes('PANDA')||d.includes('JACK IN')||d.includes('TIFF')||d.includes('WAFFLE HOUSE')||d.includes('IHOP')||d.includes('DENNY')||d.includes('PLUCKERS')||d.includes('SMOOTHIE')||d.includes('CHILI')||d.includes('DUTCH BROS')||d.includes('SONIC')||d.includes('INSOMNIA')||d.includes('OCEAN KING')||d.includes('SPELLED MILK')||d.includes('ODDFELLOW')||d.includes('TWISTED')||d.includes('IN-N-OUT')||d.includes('CAFE BRAZIL')) return 'Dining Out';
+  if(d.includes('SPOTIFY')||d.includes('APPLE.COM')||d.includes('CLAUDE')||d.includes('ADOBE')) return 'Subscriptions';
+  if(d.includes('LUXX')||d.includes('GYM')) return 'Gym/Fitness';
+  if(d.includes('SKYVIEW')||d.includes('AASKYVIEW')) return 'AA Cafe (Work)';
+  if(d.includes('ATM')||d.includes('WITHDRAWAL')||d.includes('CASH E')) return 'Cash Withdrawal';
+  if(d.includes('AUTOZONE')||d.includes('ADVANCE AUTO')) return 'Car Maintenance/Mods';
+  if(d.includes('UBER')) return 'Transportation';
+  return 'Misc / Other';
+}
+
+// VERCEL_URL — set this to your deployed Vercel URL after deployment
+const VERCEL_URL = 'https://finances-backend-1-kidi.vercel.app';
+
+// Balance (driven by Plaid live data, falls back to hardcoded)
+var postedBalance = POSTED_BALANCE;
+var postedBalanceDate = POSTED_BALANCE_DATE;
+(function(){
+  try { var s=localStorage.getItem('jlf_bal'); if(s){var o=JSON.parse(s);postedBalance=o.bal;postedBalanceDate=o.date;} } catch(e){}
+})();
+function saveBalance(bal,date){ try{localStorage.setItem('jlf_bal',JSON.stringify({bal:bal,date:date}));}catch(e){} }
+function calcCurrentBalance() {
+  var seedNet = SEED_TX.reduce(function(net,t){ return net+(t.type==='Income'?t.amt:-t.amt); },0);
+  var preBase = postedBalance - seedNet;
+  var allNet = transactions.reduce(function(net,t){ return net+(t.type==='Income'?t.amt:-t.amt); },0);
+  return preBase + allNet;
+}
+
+// Plaid integration
+var plaidAccessToken = null;
+(function(){ try { plaidAccessToken = localStorage.getItem('jlf_plaid_token') || null; } catch(e){} })();
+
+function savePlaidToken(t){ try{ localStorage.setItem('jlf_plaid_token', t); }catch(e){} }
+function clearPlaidToken(){ try{ localStorage.removeItem('jlf_plaid_token'); }catch(e){} }
+
+function setPlaidStatus(msg, isError) {
+  var el = document.getElementById('plaid-status');
+  if(el){ el.textContent = msg; el.style.color = isError ? 'var(--neg)' : 'var(--text3)'; }
+}
+
+function updatePlaidButtons() {
+  var connectBtn = document.getElementById('plaid-connect-btn');
+  var syncBtn = document.getElementById('plaid-sync-btn');
+  var disconnectBtn = document.getElementById('plaid-disconnect-btn');
+  if(!connectBtn) return;
+  if(plaidAccessToken) {
+    connectBtn.style.display = 'none';
+    syncBtn.style.display = '';
+    disconnectBtn.style.display = '';
+  } else {
+    connectBtn.style.display = '';
+    syncBtn.style.display = 'none';
+    disconnectBtn.style.display = 'none';
+  }
+}
+
+function openPlaidLink() {
+  setPlaidStatus('Initializing secure connection...', false);
+  fetch(VERCEL_URL + '/api/create_link_token', { method: 'POST', headers: {'Content-Type':'application/json'} })
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      if(data.error) { setPlaidStatus('Error: ' + data.error, true); return; }
+      var handler = Plaid.create({
+        token: data.link_token,
+        onSuccess: function(public_token, metadata) {
+          setPlaidStatus('Exchanging token...', false);
+          fetch(VERCEL_URL + '/api/exchange_token', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ public_token: public_token })
+          })
+          .then(function(r){ return r.json(); })
+          .then(function(d) {
+            if(d.error) { setPlaidStatus('Error: ' + d.error, true); return; }
+            plaidAccessToken = d.access_token;
+            savePlaidToken(plaidAccessToken);
+            updatePlaidButtons();
+            setPlaidStatus('Connected! Fetching transactions...', false);
+            syncPlaid();
+          })
+          .catch(function(e){ setPlaidStatus('Connection failed: ' + e.message, true); });
+        },
+        onExit: function(err) {
+          if(err) setPlaidStatus('Link exited: ' + (err.display_message || err.error_message || ''), true);
+          else setPlaidStatus('', false);
+        }
+      });
+      handler.open();
+    })
+    .catch(function(e){ setPlaidStatus('Could not reach server: ' + e.message + '. Check VERCEL_URL is set.', true); });
+}
+
+function syncPlaid() {
+  if(!plaidAccessToken) { setPlaidStatus('No account connected.', true); return; }
+  setPlaidStatus('Syncing...', false);
+  fetch(VERCEL_URL + '/api/fetch_transactions', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ access_token: plaidAccessToken })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    if(data.error) { setPlaidStatus('Sync error: ' + data.error, true); return; }
+
+    // Update live balance
+    if(data.balance !== null && data.balance !== undefined) {
+      var today = new Date().toISOString().split('T')[0];
+      postedBalance = data.balance;
+      postedBalanceDate = today;
+      saveBalance(data.balance, today);
+    }
+
+    // Map Plaid transactions → app format, skip duplicates
+    var added = 0;
+    var skipped = 0;
+    (data.transactions || []).forEach(function(pt) {
+      // Plaid: positive amount = expense, negative = income (credit)
+      var isIncome = pt.amount < 0;
+      var amt = Math.abs(pt.amount);
+      var desc = (pt.merchant_name || pt.name || '').toUpperCase();
+      var dateStr = pt.date; // already YYYY-MM-DD
+      // Skip pending
+      if(pt.pending) return;
+      // Deduplicate
+      var dup = transactions.some(function(t){
+        return t.date === dateStr && Math.abs(t.amt - amt) < 0.001 && t.desc.toUpperCase() === desc;
+      });
+      if(dup) { skipped++; return; }
+      transactions.push({
+        date: dateStr,
+        type: isIncome ? 'Income' : 'Expense',
+        cat: categorize(desc, isIncome),
+        amt: amt,
+        desc: desc,
+        source: 'plaid'
+      });
+      added++;
+    });
+
+    transactions.sort(function(a,b){ return a.date.localeCompare(b.date); });
+    saveTx(transactions);
+
+    var accountLabel = data.accountMask ? '····'+data.accountMask : '';
+    var balLabel = data.balance !== null ? ' · Balance: '+fmt(data.balance) : '';
+    var syncTime = new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+
+    setPlaidStatus('Last synced at '+syncTime+' · '+added+' new transaction'+(added!==1?'s':'')+' · '+skipped+' skipped', false);
+
+    var detailEl = document.getElementById('plaid-sync-details');
+    var lastSyncEl = document.getElementById('plaid-last-sync');
+    if(detailEl) detailEl.textContent = 'Wells Fargo Checking '+accountLabel+balLabel;
+    if(lastSyncEl) lastSyncEl.style.display = '';
+
+    renderAll();
+  })
+  .catch(function(e){ setPlaidStatus('Sync failed: ' + e.message, true); });
+}
+
+function disconnectPlaid() {
+  if(!confirm('Disconnect Wells Fargo? Your existing transactions will remain.')) return;
+  plaidAccessToken = null;
+  clearPlaidToken();
+  updatePlaidButtons();
+  setPlaidStatus('Disconnected.', false);
+  var lastSyncEl = document.getElementById('plaid-last-sync');
+  if(lastSyncEl) lastSyncEl.style.display = 'none';
+}
+
+// Categorize (unchanged, needed by syncPlaid)
+function categorize(desc, isIncome) {
+  var d = desc.toUpperCase();
+  if(isIncome) {
+    if(d.includes('PAYROLL')||d.includes('AMERICANAIRLINES')) return 'Paycheck';
+    if(d.includes('ZELLE FROM')) return 'Zelle Received';
+    if(d.includes('DEPOSIT')||d.includes('SCHOLARSHIP')) return 'Scholarship';
+    return 'Other Income';
+  }
+  if(d.includes('STEEL REAL')) return 'Gym/Fitness';
+  if(d.includes('ZELLE TO')) return 'Zelle Sent';
+  if(/QT |QUIKTRIP/.test(d)||d.includes('BUC-EE')||d.includes('7-ELEVEN')||d.includes('LEDBETTER')||d.includes('EXXON')||d.includes('HONEY FARMS')||d.includes('SPEEDMAX')) return 'Gas';
+  if(d.includes('KROGER')||d.includes('WALMART')||d.includes('WAL-MART')||d.includes('WM SUPER')||d.includes('TARGET')||d.includes('BEST BUY')) return 'Groceries/Shopping';
+  if(d.includes('CHIPOTLE')||d.includes('PANDA')||d.includes('JACK IN')||d.includes('TIFF')||d.includes('WAFFLE HOUSE')||d.includes('IHOP')||d.includes('DENNY')||d.includes('PLUCKERS')||d.includes('SMOOTHIE')||d.includes('CHILI')||d.includes('DUTCH BROS')||d.includes('SONIC')||d.includes('INSOMNIA')||d.includes('OCEAN KING')||d.includes('SPELLED MILK')||d.includes('ODDFELLOW')||d.includes('TWISTED')||d.includes('IN-N-OUT')||d.includes('CAFE BRAZIL')) return 'Dining Out';
+  if(d.includes('SPOTIFY')||d.includes('APPLE.COM')||d.includes('CLAUDE')||d.includes('ADOBE')) return 'Subscriptions';
+  if(d.includes('LUXX')||d.includes('GYM')) return 'Gym/Fitness';
+  if(d.includes('SKYVIEW')||d.includes('AASKYVIEW')) return 'AA Cafe (Work)';
+  if(d.includes('ATM')||d.includes('WITHDRAWAL')||d.includes('CASH E')) return 'Cash Withdrawal';
+  if(d.includes('AUTOZONE')||d.includes('ADVANCE AUTO')) return 'Car Maintenance/Mods';
+  if(d.includes('UBER')) return 'Transportation';
+  return 'Misc / Other';
+}
+
+function clearAll() {
+  if(!confirm('Clear all transaction data?')) return;
+  transactions=[]; saveTx(transactions); savedSoFar=0; saveSavedAmt(0); savingsLog=[]; saveSavLog([]);
+  var el = document.getElementById('plaid-status');
+  if(el) el.textContent = 'All data cleared.';
+  renderAll();
+}
+
+function showPage(p, btn) {
+  document.querySelectorAll('.page').forEach(function(e){ e.classList.remove('active'); });
+  document.querySelectorAll('.ni').forEach(function(e){ e.classList.remove('active'); });
+  document.getElementById('page-'+p).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(p==='overview') renderOverview();
+  else if(p==='transactions') renderTransactions();
+  else if(p==='budget') renderBudget();
+  else if(p==='subscriptions') renderSubscriptions();
+  else if(p==='savings') renderSavings();
+  else if(p==='import') { updatePlaidButtons(); }
+}
+
+// Build breakdown bars
+function buildBreakBars(mo) {
+  var catMap = {};
+  filterMo(mo).filter(function(t){ return t.type==='Expense'; }).forEach(function(t){ catMap[t.cat]=(catMap[t.cat]||0)+t.amt; });
+  var cats = Object.keys(catMap).sort(function(a,b){ return catMap[b]-catMap[a]; });
+  if(!cats.length) return '<div class="empty" style="padding:20px 0">No spending recorded.</div>';
+  var maxAmt = catMap[cats[0]];
+  return cats.map(function(c) {
+    var pct = (catMap[c]/maxAmt*100).toFixed(0);
+    return '<div class="break-row"><div class="break-name">'+c+'</div><div class="break-track"><div class="break-fill" style="width:'+pct+'%"></div></div><div class="break-amt">'+fmt(catMap[c])+'</div></div>';
+  }).join('');
+}
+
+// Overview
+function renderOverview() {
+  var mo = currentMonth();
+  var moTx = filterMo(mo);
+  var income = moTx.filter(function(t){ return t.type==='Income'; }).reduce(function(s,t){ return s+t.amt; },0);
+  var expenses = moTx.filter(function(t){ return t.type==='Expense'; }).reduce(function(s,t){ return s+t.amt; },0);
+  var net = income - expenses;
+  var needsSpent = moTx.filter(function(t){ return t.type==='Expense'&&NEEDS_CATS.includes(t.cat); }).reduce(function(s,t){ return s+t.amt; },0);
+  var wantsSpent = moTx.filter(function(t){ return t.type==='Expense'&&WANTS_CATS.includes(t.cat); }).reduce(function(s,t){ return s+t.amt; },0);
+  var subTotal = getSubsTotal();
+  var prevMonths = getMonths().filter(function(m){ return m!==mo; });
+  var moLabel = monthName(mo);
+  var moDate = new Date(); var dateLabel = moDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+  var prevOpts = prevMonths.map(function(m){ return '<option value="'+m+'">'+monthName(m)+'</option>'; }).join('');
+
+  var html = '<div class="greet">Good morning, Jorge</div>';
+  html += '<div class="greet-sub">Financial summary for '+moLabel+'.</div>';
+  html += '<div class="hero-card"><div>';
+  html += '<div class="hero-label">Posted balance</div>';
+  html += '<div class="hero-bal">'+fmt(calcCurrentBalance())+'</div>';
+  html += '<div class="hero-acct">Wells Fargo Checking ····9030</div>';
+  html += '</div><div class="hero-right"><div class="hero-period">'+moLabel+'</div><div class="hero-updated">Last updated '+dateLabel+'</div></div></div>';
+  html += '<div class="stat-grid">';
+  html += '<div class="stat"><div class="stat-label">Income this month</div><div class="stat-val pos income">'+fmt(income)+'</div></div>';
+  html += '<div class="stat"><div class="stat-label">Expenses this month</div><div class="stat-val neg">'+fmt(expenses)+'</div></div>';
+  html += '<div class="stat"><div class="stat-label">Net this month</div><div class="stat-val '+(net>=0?'pos':'neg')+'">'+fmtS(net)+'</div></div>';
+  html += '</div>';
+  // Breakdown with prev months dropdown
+  html += '<div class="break-wrap">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--navy)">';
+  html += '<div class="panel-head" style="margin-bottom:0;padding-bottom:0;border-bottom:none">Spending Breakdown</div>';
+  if(prevMonths.length) {
+    html += '<div style="display:flex;align-items:center;gap:8px">';
+    html += '<label style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3)">Previous months</label>';
+    html += '<select id="hist-sel" style="padding:5px 10px;border:1px solid var(--line);font-size:11px;color:var(--navy);font-family:var(--font);outline:none;cursor:pointer;background:#fff">';
+    html += '<option value="'+mo+'">'+moLabel+'</option>';
+    html += prevOpts;
+    html += '</select></div>';
+  }
+  html += '</div>';
+  html += '<div id="break-bars">'+buildBreakBars(mo)+'</div>';
+  html += '</div>';
+  // Two col
+  html += '<div class="two-col">';
+  html += '<div><div class="panel-head">50 / 30 / 20 budget</div>';
+  html += budRow('Needs',needsSpent,NEEDS_TARGET);
+  html += budRow('Wants',wantsSpent,WANTS_TARGET);
+  html += '<div class="bud-item"><div class="bud-top"><span class="bud-name">Savings</span><span class="bud-vals">'+fmt(SAVINGS_TARGET)+' / mo target</span></div><div class="bud-track"><div class="bud-fill" style="width:100%"></div></div></div>';
+  html += '</div>';
+  html += '<div><div class="panel-head">Key figures</div><div class="met-grid">';
+  html += '<div class="met"><div class="met-label">Savings target</div><div class="met-val">'+fmt(SAVINGS_TARGET)+'</div><div class="met-sub">per month</div></div>';
+  html += '<div class="met"><div class="met-label">Recurring</div><div class="met-val">'+fmt(subTotal)+'</div><div class="met-sub">subscriptions</div></div>';
+  html += '<div class="met"><div class="met-label">Needs used</div><div class="met-val">'+(NEEDS_TARGET>0?Math.round(needsSpent/NEEDS_TARGET*100):0)+'%</div><div class="met-sub">of target</div></div>';
+  html += '<div class="met"><div class="met-label">Wants used</div><div class="met-val">'+(WANTS_TARGET>0?Math.round(wantsSpent/WANTS_TARGET*100):0)+'%</div><div class="met-sub">of target</div></div>';
+  html += '</div></div></div>';
+  // Savings card
+  html += '<div class="sav-card"><div style="display:flex;justify-content:space-between;align-items:center">';
+  html += '<div><div class="hero-label" style="margin-bottom:2px">Total Savings</div>';
+  html += '<div style="font-size:11px;color:var(--text4)">MCT (20%) &middot; '+fmt(SAVINGS_TARGET)+' / mo</div></div>';
+  html += '<div style="font-size:32px;font-weight:300;color:var(--navy);letter-spacing:-1px">'+fmt(savedSoFar)+'</div>';
+  html += '</div></div>';
+
+  document.getElementById('page-overview').innerHTML = html;
+
+  // Attach dropdown listener
+  var sel = document.getElementById('hist-sel');
+  if(sel) {
+    sel.addEventListener('change', function() {
+      document.getElementById('break-bars').innerHTML = buildBreakBars(this.value);
+    });
+  }
+}
+
+function budRow(name, spent, target) {
+  var pct = target>0 ? Math.min(spent/target*100,100) : 0;
+  return '<div class="bud-item"><div class="bud-top"><span class="bud-name">'+name+'</span><span class="bud-vals">'+fmt(spent)+' / '+fmt(target)+'</span></div><div class="bud-track"><div class="bud-fill" style="width:'+pct.toFixed(0)+'%"></div></div></div>';
+}
+
+// Transactions
+function renderTransactions() {
+  var months = getMonths();
+  if(!txMonth||!months.includes(txMonth)) txMonth = months[0]||currentMonth();
+  var tx = filterMo(txMonth).sort(function(a,b){ return b.date.localeCompare(a.date); });
+  var income = tx.filter(function(t){ return t.type==='Income'; }).reduce(function(s,t){ return s+t.amt; },0);
+  var expenses = tx.filter(function(t){ return t.type==='Expense'; }).reduce(function(s,t){ return s+t.amt; },0);
+  var mtabs = months.map(function(m){ var a=m===txMonth?'active':''; return '<button class="mt '+a+'" data-m="'+m+'" onclick="setTxMonth(this.dataset.m)" style="font-family:var(--font)">'+monthName(m)+'</button>'; }).join('');
+  var rows = tx.map(function(t, i){
+    var realIdx = transactions.indexOf(t);
+    return '<tr><td class="tx-date">'+t.date.substring(5).replace('-','/')+'</td><td class="tx-desc" title="'+t.desc+'">'+t.desc+'</td><td class="tx-cat">'+t.cat+'</td><td class="'+(t.type==='Income'?'amt-inc':'amt-exp')+'">'+(t.type==='Income'?'+':'-')+fmt(t.amt)+'</td><td style="text-align:center;width:36px"><button data-idx="'+realIdx+'" class="tx-remove-btn" style="background:none;border:none;color:#aaa;font-size:16px;cursor:pointer;line-height:1;padding:2px 6px">&times;</button></td></tr>';
+  }).join('');
+  var html = '<div class="month-tabs">'+mtabs+'</div>';
+  html += '<div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:10px">';
+  html += '<button onclick="undoTx()" title="Undo" style="padding:5px 12px;border:1px solid var(--line);background:'+(txHistory.length?'var(--navy)':'#f0f0f0')+';color:'+(txHistory.length?'#fff':'#ccc')+';font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:'+(txHistory.length?'pointer':'default')+';font-family:var(--font)">&#8592; Undo</button>';
+  html += '<button onclick="redoTx()" title="Redo" style="padding:5px 12px;border:1px solid var(--line);background:'+(txFuture.length?'var(--navy)':'#f0f0f0')+';color:'+(txFuture.length?'#fff':'#ccc')+';font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:'+(txFuture.length?'pointer':'default')+';font-family:var(--font)">Redo &#8594;</button>';
+  html += '</div>';
+  html += '<div class="totals-bar">';
+  html += '<div class="tb-item"><div class="tb-label">Income</div><div class="tb-val">'+fmt(income)+'</div></div>';
+  html += '<div class="tb-item"><div class="tb-label">Expenses</div><div class="tb-val" style="color:var(--neg)">'+fmt(expenses)+'</div></div>';
+  html += '<div class="tb-item"><div class="tb-label">Net</div><div class="tb-val" id="tx-net">'+fmtS(income-expenses)+'</div></div>';
+  html += '<div class="tb-item"><div class="tb-label">Count</div><div class="tb-val">'+tx.length+'</div></div>';
+  html += '</div>';
+  html += tx.length ? '<table class="tbl"><thead><tr><th>Date</th><th>Description</th><th>Category</th><th style="text-align:right">Amount</th><th style="width:36px"></th></tr></thead><tbody>'+rows+'</tbody></table>' : '<div class="empty">No transactions for this month.</div>';
+  document.getElementById('page-transactions').innerHTML = html;
+  // Attach remove listeners
+  document.querySelectorAll('.tx-remove-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(this.dataset.idx);
+      snapshotTx();
+      transactions.splice(idx, 1);
+      saveTx(transactions);
+      renderTransactions();
+      renderOverview();
+    });
+  });
+  // Color net green/red
+  var netEl = document.getElementById('tx-net');
+  if(netEl) netEl.style.color = (income-expenses) >= 0 ? '#1a9e52' : '#cc2222';
+}
+function setTxMonth(m) { txMonth=m; renderTransactions(); }
+
+// Budget
+function renderBudget() {
+  var mo = currentMonth(); var moTx = filterMo(mo);
+  var needsSpent = moTx.filter(function(t){ return t.type==='Expense'&&NEEDS_CATS.includes(t.cat); }).reduce(function(s,t){ return s+t.amt; },0);
+  var wantsSpent = moTx.filter(function(t){ return t.type==='Expense'&&WANTS_CATS.includes(t.cat); }).reduce(function(s,t){ return s+t.amt; },0);
+  function bigRow(name, cats, spent, target) {
+    var pct = target>0?Math.min(spent/target*100,100):0; var over = spent>target;
+    return '<div style="border:1px solid var(--line);padding:20px 22px;margin-bottom:12px">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">'
+      +'<div><div style="font-size:14px;font-weight:500;color:var(--navy)">'+name+'</div>'
+      +'<div style="font-size:10px;color:var(--text4);margin-top:3px">'+cats+'</div></div>'
+      +'<div style="text-align:right"><div style="font-size:20px;font-weight:300;color:'+(over?'var(--neg)':'var(--navy)')+'">'+fmt(spent)+'</div>'
+      +'<div style="font-size:11px;color:var(--text3)">of '+fmt(target)+'</div></div></div>'
+      +'<div class="bud-track" style="margin-top:10px"><div class="bud-fill" style="width:'+pct.toFixed(0)+'%;background:'+(over?'var(--neg)':'var(--gold)')+'"></div></div>'
+      +'<div style="font-size:11px;color:var(--text3);margin-top:6px">'+pct.toFixed(0)+'% of target used</div></div>';
+  }
+  var html = '<div style="font-size:12px;color:var(--text3);margin-bottom:18px">Based on '+fmt(BIWEEKLY)+' biweekly &middot; Monthly estimate '+fmt(MONTHLY)+' &middot; '+monthName(currentMonth())+'</div>';
+  html += bigRow('Needs','Gas &middot; Groceries &middot; Car &middot; Gym &middot; Bills',needsSpent,NEEDS_TARGET);
+  html += bigRow('Wants','Dining &middot; Subscriptions &middot; Shopping &middot; Misc &middot; AA Cafe',wantsSpent,WANTS_TARGET);
+  html += '<div style="border:1px solid var(--line);border-left:3px solid var(--gold);padding:20px 22px">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center">'
+    +'<div><div style="font-size:14px;font-weight:500;color:var(--navy)">Savings</div>'
+    +'<div style="font-size:10px;color:var(--text4);margin-top:3px">20% of monthly income</div></div>'
+    +'<div style="text-align:right"><div style="font-size:20px;font-weight:300;color:var(--navy)">'+fmt(SAVINGS_TARGET)+'</div>'
+    +'<div style="font-size:11px;color:var(--text3)">per month</div></div></div></div>';
+  document.getElementById('page-budget').innerHTML = html;
+}
+
+// Subscriptions
+function getSubsList() {
+  var subs = {};
+  transactions.filter(function(t){ return t.type==='Expense'&&t.cat==='Subscriptions'; }).forEach(function(t) {
+    var name = 'Other';
+    Object.keys(SUB_MAP).forEach(function(k){ if(t.desc.toUpperCase().includes(SUB_MAP[k])) name=k; });
+    if(!subs[name]||t.date>subs[name].date) subs[name]={amt:t.amt,date:t.date};
+  });
+  return subs;
+}
+function getSubsTotal() {
+  var s=getSubsList(); return Object.values(s).reduce(function(a,b){ return a+b.amt; },0);
+}
+function renderSubscriptions() {
+  var subs = getSubsList(); var names = Object.keys(subs);
+  var items = names.map(function(n){
+    return '<div class="sub-item"><div class="sub-name">'+n+'</div><div class="sub-cycle">Monthly &middot; last '+subs[n].date.substring(5).replace('-','/')+'</div><div class="sub-amt">'+fmt(subs[n].amt)+'</div></div>';
+  }).join('');
+  if(names.length%2===1) items += '<div class="sub-item"></div>';
+  var total = getSubsTotal();
+  var html = '<div class="panel-head">Active subscriptions &amp; recurring payments</div>';
+  html += names.length
+    ? '<div class="sub-grid">'+items+'</div><div class="sub-total"><div class="sub-total-label">Total monthly recurring</div><div class="sub-total-val">'+fmt(total)+' / mo</div></div>'
+    : '<div class="empty">No recurring subscriptions detected yet.</div>';
+  document.getElementById('page-subscriptions').innerHTML = html;
+}
+
+// Savings
+function renderSavings() {
+  // Update total display
+  var totalEl = document.getElementById('sav-total-display');
+  var mctEl = document.getElementById('mct-label');
+  if(totalEl) totalEl.textContent = fmt(savedSoFar);
+  if(mctEl) mctEl.innerHTML = 'MCT (20%) &middot; ' + fmt(SAVINGS_TARGET) + ' / mo';
+
+  // Set button states
+  setSavMode(savMode);
+
+  // Render history
+  var histEl = document.getElementById('sav-history');
+  if(!histEl) return;
+  if(!savingsLog.length) { histEl.innerHTML = ''; return; }
+
+  var tableHTML = '<div style="border:1px solid var(--line);margin-top:16px">';
+  tableHTML += '<div style="display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:2px solid var(--navy)">';
+  tableHTML += '<span style="font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy)">Savings History</span>';
+  tableHTML += '<span style="font-size:10px;color:var(--text4)">Drag to reorder &middot; &times; to remove</span>';
+  tableHTML += '</div>';
+  tableHTML += '<table class="tbl"><thead><tr><th>Date</th><th>Note</th><th style="text-align:right">Amount</th><th style="width:40px"></th></tr></thead><tbody>';
+
+  var reversed = savingsLog.slice().reverse();
+  for(var i = 0; i < reversed.length; i++) {
+    var e = reversed[i];
+    var realIdx = savingsLog.length - 1 - i;
+    var isAdd = e.type === '+';
+    var color = isAdd ? 'var(--pos)' : 'var(--neg)';
+    var symbol = isAdd ? '+ ' : '- ';
+    tableHTML += '<tr draggable="true" data-idx="' + realIdx + '" style="cursor:grab">';
+    tableHTML += '<td class="tx-date">' + e.date + '</td>';
+    tableHTML += '<td>' + e.note + '</td>';
+    tableHTML += '<td style="text-align:right;font-weight:500;color:' + color + '">' + symbol + fmt(e.amt) + '</td>';
+    tableHTML += '<td style="text-align:center"><button data-idx="' + realIdx + '" class="sav-remove-btn" style="background:none;border:none;color:var(--text4);font-size:18px;cursor:pointer;line-height:1">&times;</button></td>';
+    tableHTML += '</tr>';
+  }
+  tableHTML += '</tbody></table></div>';
+  histEl.innerHTML = tableHTML;
+
+  // Attach drag and remove listeners
+  histEl.querySelectorAll('tr[data-idx]').forEach(function(row) {
+    row.addEventListener('dragstart', function() { dragIdx = parseInt(this.dataset.idx); });
+    row.addEventListener('dragover', function(e) { e.preventDefault(); });
+    row.addEventListener('drop', function() { dropOn(parseInt(this.dataset.idx)); });
+  });
+  histEl.querySelectorAll('.sav-remove-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() { removeSavEntry(parseInt(this.dataset.idx)); });
+  });
+}
+
+function setSavMode(mode) {
+  savMode = mode;
+  var btnAdd = document.getElementById('btn-add');
+  var btnSub = document.getElementById('btn-sub');
+  if(!btnAdd || !btnSub) return;
+  if(mode === '+') {
+    btnAdd.className = 'sav-toggle-btn active-add';
+    btnSub.className = 'sav-toggle-btn';
+  } else {
+    btnAdd.className = 'sav-toggle-btn';
+    btnSub.className = 'sav-toggle-btn active-sub';
+  }
+}
+
+function applySavEntry() {
+  var inp = document.getElementById('sav-amt');
+  var amt = parseFloat(inp.value) || 0;
+  if(amt <= 0) return;
+  var today = getToday();
+  var note = savMode === '+' ? 'Deposit' : 'Withdrawal';
+  if(savMode === '+') {
+    savedSoFar += amt;
+  } else {
+    savedSoFar = Math.max(0, savedSoFar - amt);
+  }
+  savingsLog.push({ type: savMode, amt: amt, note: note, date: today });
+  saveSavedAmt(savedSoFar);
+  saveSavLog(savingsLog);
+  inp.value = '';
+  renderSavings();
+  var totalEl = document.getElementById('sav-total-display');
+  if(totalEl) totalEl.textContent = fmt(savedSoFar);
+  // Also update overview savings card if visible
+  var ovEl = document.querySelector('#page-overview.active');
+  if(ovEl) renderOverview();
+}
+
+function dragStart(i) { dragIdx = i; }
+function dropOn(i) {
+  if(dragIdx === null || dragIdx === i) return;
+  var item = savingsLog.splice(dragIdx, 1)[0];
+  savingsLog.splice(i, 0, item);
+  saveSavLog(savingsLog);
+  renderSavings();
+  dragIdx = null;
+}
+function removeSavEntry(i) {
+  var e = savingsLog[i];
+  if(e.type === '+') {
+    savedSoFar = Math.max(0, savedSoFar - e.amt);
+  } else {
+    savedSoFar += e.amt;
+  }
+  savingsLog.splice(i, 1);
+  saveSavedAmt(savedSoFar);
+  saveSavLog(savingsLog);
+  renderSavings();
+  var ovEl = document.querySelector('#page-overview.active');
+  if(ovEl) renderOverview();
+}
+
+function renderAll() { renderOverview(); renderTransactions(); renderBudget(); renderSubscriptions(); renderSavings(); }
+
+// Attach Enter key to savings input (static element)
+document.addEventListener('DOMContentLoaded', function() {
+  var inp = document.getElementById('sav-amt');
+  if(inp) inp.addEventListener('keydown', function(e) { if(e.key==='Enter') applySavEntry(); });
+  setSavMode(savMode);
+  updatePlaidButtons();
+  // Auto-sync if already connected
+  if(plaidAccessToken) {
+    setTimeout(function(){ syncPlaid(); }, 800);
+  }
+});
+renderAll();
+</script>
+</body>
+</html>
