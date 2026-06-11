@@ -163,7 +163,8 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
   <button class="ni" onclick="showPage('budget',this)">Budget</button>
   <button class="ni" onclick="showPage('subscriptions',this)">Subscriptions</button>
   <button class="ni" onclick="showPage('savings',this)">Savings</button>
-  <button class="ni" onclick="showPage('import',this)">Connect</button>
+  <button class="ni" onclick="showPage('import',this)">Import</button>
+  <button class="ni" onclick="showPage('connect',this)">Connect</button>
 </div>
 <div class="body">
   <div id="page-overview" class="page active"></div>
@@ -189,7 +190,40 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
     </div>
     <div id="sav-history"></div>
   </div>
-  <div id="page-import" class="page">
+    <div id="page-import" class="page">
+    <div class="import-box">
+      <div class="import-label">Paste bank transactions</div>
+      <p class="import-tip">Copy from your Wells Fargo statement or online activity page. Supports multiple formats — one transaction per line.</p>
+      <textarea class="import-ta" id="paste-input" placeholder="06/08/26  PURCHASE KROGER #0213 DALLAS TX   $56.34&#10;05/29/26  AMERICANAIRLINES PAYROLL 00369933 JORGE LOPEZ   $782.65&#10;06/10/2026 ZELLE FROM MARIETH LIMA 100.00"></textarea>
+      <div class="import-actions">
+        <button class="btn" onclick="previewImport()">Preview import</button>
+      </div>
+      <div class="import-msg" id="import-msg"></div>
+    </div>
+
+    <div id="import-preview" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid var(--navy)">
+        <div style="font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy)">Preview — <span id="preview-count">0</span> transactions</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn" onclick="selectAllPreview(true)" style="padding:6px 14px;font-size:10px">Select all</button>
+          <button class="btn" onclick="selectAllPreview(false)" style="padding:6px 14px;font-size:10px;background:#fff;color:var(--navy)">Deselect all</button>
+        </div>
+      </div>
+      <div id="preview-table-wrap"></div>
+      <div style="margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <button class="btn" onclick="commitImport()" style="padding:10px 28px">Confirm import</button>
+        <button class="btn" onclick="cancelPreview()" style="background:#fff;color:var(--navy);padding:10px 20px">Cancel</button>
+        <span id="preview-dup-note" style="font-size:11px;color:var(--text3)"></span>
+      </div>
+    </div>
+
+    <div class="import-box" style="margin-top:16px">
+      <div class="import-label" style="margin-bottom:8px">Clear data</div>
+      <button class="btn btn-danger" onclick="clearAll()">Clear all transaction data</button>
+    </div>
+  </div>
+
+  <div id="page-connect" class="page">
     <div class="import-box">
       <div class="import-label">Bank connection</div>
       <p class="import-tip">Connect your Wells Fargo account to automatically sync your transactions and live balance. Your credentials never touch this app — authentication happens directly with Wells Fargo via Plaid.</p>
@@ -563,7 +597,8 @@ function showPage(p, btn) {
   else if(p==='budget') renderBudget();
   else if(p==='subscriptions') renderSubscriptions();
   else if(p==='savings') renderSavings();
-  else if(p==='import') { updatePlaidButtons(); }
+  else if(p==='import') { /* import tab */ }
+  else if(p==='connect') { updatePlaidButtons(); }
 }
 
 // Build breakdown bars
