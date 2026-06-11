@@ -231,6 +231,7 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
         <button class="btn" id="plaid-connect-btn" onclick="openPlaidLink()" style="padding:11px 28px">Connect Wells Fargo</button>
         <button class="btn" id="plaid-sync-btn" onclick="syncPlaid()" style="display:none;padding:11px 24px">Sync now</button>
         <button class="btn btn-danger" id="plaid-disconnect-btn" onclick="disconnectPlaid()" style="display:none;padding:11px 18px">Disconnect</button>
+        <button class="btn" onclick="forceReconnect()" style="padding:11px 18px;background:#fff;color:var(--navy);font-size:11px">Force reconnect</button>
       </div>
       <div id="plaid-status" style="margin-top:14px;font-size:12px;color:var(--text3)"></div>
     </div>
@@ -558,6 +559,14 @@ function syncPlaid() {
   .catch(function(e){ setPlaidStatus('Sync failed: ' + e.message, true); });
 }
 
+function forceReconnect() {
+  localStorage.removeItem('jlf_plaid_token');
+  plaidAccessToken = null;
+  updatePlaidButtons();
+  setPlaidStatus('Cleared. Now click Connect Wells Fargo.', false);
+  var lastSyncEl = document.getElementById('plaid-last-sync');
+  if(lastSyncEl) lastSyncEl.style.display='none';
+}
 function disconnectPlaid() {
   if(!confirm('Disconnect Wells Fargo?')) return;
   var removeData = confirm('Also remove all synced transactions?\nOK = yes remove them, Cancel = keep them.');
