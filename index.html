@@ -584,6 +584,98 @@ function categorize(desc, isIncome) {
   return 'Misc / Other';
 }
 
+
+// Import functions
+function parseLine(line) {
+  line = line.trim();
+  if(!line) return null;
+  var clean = line.replace(/^(PURCHASE|DEBIT CARD PURCHASE|DEBIT|CREDIT CARD|RECURRING)\s+/i, '');
+  var dm = clean.match(/^(\d{4}-\d{2}-\d{2})/) || clean.match(/^(\d{2}[\/\-]\d{2}[\/\-]\d{2,4})/);
+  if(!dm) return null;
+  var rawDate = dm[1];
+  var dateStr;
+  if(/^\d{4}-/.test(rawDate)) {
+    dateStr = rawDate;
+  } else {
+    var sep = rawDate.includes('/') ? '/' : '-';
+    var p = rawDate.split(sep);
+    var yr = p[2].length===2 ? '20'+p[2] : p[2];
+    dateStr = yr+'-'+p[0]+'-'+p[1];
+  }
+  var am = clean.match(/[\-\+]?\$?([\d,]+\.\d{2})\s*$/);
+  if(!am) return null;
+  var amt = parseFloat(am[1].replace(/,/g,''));
+  if(isNaN(amt)||amt<=0) return null;
+  var desc = clean.replace(dm[0],'').replace(am[0],'').trim().replace(/\s+/g,' ').replace(/\*+$/, '').trim();
+  if(!desc) return null;
+  var up = (line+' '+desc).toUpperCase();
+  var isIncome = up.includes('PAYROLL')||up.includes('ZELLE FROM')||up.includes('DIRECT DEP')||up.includes('DIRECT DEPOSIT')||up.includes('MOBILE DEPOSIT')||up.includes('SCHOLARSHIP')||up.includes('REFUND')||up.includes('REVERSAL')||(up.includes('RETURN')&&!up.includes('NO RETURN'))||(/\bCREDIT\b/.test(up)&&!up.includes('CREDIT CARD'));
+  if(am[0].trim().startsWith('-')) isIncome = false;
+  return { date: dateStr, desc: desc, amt: amt, isIncome: isIncome };
+}
+function isDuplicate(parsed) {
+  return transactions.some(function(t) {
+    return t.date===parsed.date && Math.abs(t.amt-parsed.amt)<0.001 && t.desc.toUpperCase()===parsed.desc.toUpperCase();
+  });
+}
+var pendingImport = [];
+function previewImport() {
+  var raw = document.getElementById('paste-input').value.trim();
+  var msg = document.getElementById('import-msg');
+  if(!raw) { msg.textContent='Paste some transactions first.'; return; }
+  msg.textContent='';
+  var skipped=0, parsed=[];
+  raw.split('\n').forEach(function(line) {
+    var p=parseLine(line);
+    if(!p){if(line.trim())skipped++;return;}
+    parsed.push(p);
+  });
+  if(!parsed.length){ msg.textContent='No recognizable transactions found.'+(skipped?' ('+skipped+' lines could not be parsed)':''); return; }
+  var dups=0;
+  pendingImport=parsed.map(function(p){var dup=isDuplicate(p);if(dup)dups++;return{parsed:p,isDup:dup,selected:!dup};});
+  renderPreview(dups,skipped);
+  document.getElementById('import-preview').style.display='block';
+  document.getElementById('import-preview').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function renderPreview(dups, skipped) {
+  document.getElementById('preview-count').textContent=pendingImport.length;
+  var dupNote='';
+  if(dups) dupNote=dups+' likely duplicate'+(dups>1?'s':'')+' pre-deselected.';
+  if(skipped) dupNote+=(dupNote?' · ':'')+skipped+' unparseable line'+(skipped>1?'s':'')+' skipped.';
+  document.getElementById('preview-dup-note').textContent=dupNote;
+  var rows=pendingImport.map(function(item,i){
+    var p=item.parsed;
+    var amtClass=p.isIncome?'amt-inc':'amt-exp';
+    var amtPrefix=p.isIncome?'+':'-';
+    var dupBadge=item.isDup?'<span style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;background:#fff3cd;color:#856404;padding:2px 6px;border:1px solid #ffd;margin-left:6px">duplicate?</span>':'';
+    var rowStyle=item.isDup?'opacity:0.55':'';
+    return '<tr style="'+rowStyle+'"><td style="width:32px;text-align:center"><input type="checkbox" data-idx="'+i+'" '+(item.selected?'checked':'')+' onchange="togglePreviewRow('+i+',this.checked)"></td><td class="tx-date">'+p.date.substring(5).replace('-','/')+'</td><td class="tx-desc" title="'+p.desc+'">'+p.desc+dupBadge+'</td><td class="tx-cat">'+categorize(p.desc,p.isIncome)+'</td><td class="'+amtClass+'">'+amtPrefix+fmt(p.amt)+'</td></tr>';
+  }).join('');
+  document.getElementById('preview-table-wrap').innerHTML='<table class="tbl"><thead><tr><th style="width:32px"></th><th>Date</th><th>Description</th><th>Category</th><th style="text-align:right">Amount</th></tr></thead><tbody>'+rows+'</tbody></table>';
+}
+function togglePreviewRow(i,checked){pendingImport[i].selected=checked;}
+function selectAllPreview(val){
+  pendingImport.forEach(function(item){item.selected=val;});
+  document.querySelectorAll('#preview-table-wrap input[type=checkbox]').forEach(function(cb,i){cb.checked=val;cb.closest('tr').style.opacity='';});
+}
+function cancelPreview(){pendingImport=[];document.getElementById('import-preview').style.display='none';}
+function commitImport(){
+  var toAdd=pendingImport.filter(function(item){return item.selected;});
+  if(!toAdd.length){document.getElementById('import-msg').textContent='No transactions selected.';return;}
+  snapshotTx();
+  toAdd.forEach(function(item){
+    var p=item.parsed;
+    transactions.push({date:p.date,type:p.isIncome?'Income':'Expense',cat:categorize(p.desc,p.isIncome),amt:p.amt,desc:p.desc,source:'manual'});
+  });
+  transactions.sort(function(a,b){return a.date.localeCompare(b.date);});
+  saveTx(transactions);
+  document.getElementById('import-msg').textContent='Imported '+toAdd.length+' transaction'+(toAdd.length!==1?'s':'')+'.';
+  document.getElementById('paste-input').value='';
+  document.getElementById('import-preview').style.display='none';
+  pendingImport=[];
+  renderAll();
+}
+
 function clearAll() {
   if(!confirm('Clear all transaction data?')) return;
   transactions=[]; saveTx(transactions); savedSoFar=0; saveSavedAmt(0); savingsLog=[]; saveSavLog([]);
