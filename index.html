@@ -252,17 +252,17 @@ const SEED_TX = [{"date": "2026-04-16", "type": "Expense", "cat": "AA Cafe (Work
 // Detect biweekly pay from current month's AA payroll transactions
 function detectBiweekly() {
   var mo = currentMonth();
-  var paychecks = filterMo(mo).filter(function(t) {
-    return t.type === 'Income' && (t.desc.toUpperCase().includes('PAYROLL') || t.desc.toUpperCase().includes('AMERICANAIRLINES'));
+  var paychecks = transactions.filter(function(t) {
+    var txMo = t.date.substring(0,7);
+    return txMo === mo && t.type === 'Income' && (t.desc.toUpperCase().includes('PAYROLL') || t.desc.toUpperCase().includes('AMERICANAIRLINES'));
   });
   if(paychecks.length > 0) {
-    // Use the most recent paycheck amount
     paychecks.sort(function(a,b){ return b.date.localeCompare(a.date); });
     return paychecks[0].amt;
   }
-  return 782.65; // fallback
+  return 1068.35; // fallback to latest known paycheck
 }
-var BIWEEKLY = detectBiweekly();
+var BIWEEKLY = 1068.35;
 var MONTHLY = BIWEEKLY * 2;
 var NEEDS_TARGET = MONTHLY * 0.5, WANTS_TARGET = MONTHLY * 0.3, SAVINGS_TARGET = MONTHLY * 0.2;
 const POSTED_BALANCE = 3022.15;
