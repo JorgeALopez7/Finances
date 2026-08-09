@@ -1,3 +1,4 @@
+<!-- JL Finance build 2026-08-09a | savings sources, per-row import detection, delete-month -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -450,6 +451,7 @@ function savedThisMonth(mo) {
   return savSources.reduce(function(n,s){ return n + srcNetForMonth(s, mo); }, 0);
 }
 var txMonth = null;
+var txDeleteNote = '';
 var historyMonth = null;
 var dragIdx = null;
 var txHistory = [];
@@ -1232,7 +1234,14 @@ function renderTransactions() {
   html += '<div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:10px">';
   html += '<button onclick="undoTx()" title="Undo" style="padding:5px 12px;border:1px solid var(--line);background:'+(txHistory.length?'var(--navy)':'#f0f0f0')+';color:'+(txHistory.length?'#fff':'#ccc')+';font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:'+(txHistory.length?'pointer':'default')+';font-family:var(--font)">&#8592; Undo</button>';
   html += '<button onclick="redoTx()" title="Redo" style="padding:5px 12px;border:1px solid var(--line);background:'+(txFuture.length?'var(--navy)':'#f0f0f0')+';color:'+(txFuture.length?'#fff':'#ccc')+';font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:'+(txFuture.length?'pointer':'default')+';font-family:var(--font)">Redo &#8594;</button>';
+  html += '<button onclick="deleteMonth()" title="Delete this month" style="padding:5px 12px;border:1px solid '+(tx.length?'var(--neg)':'var(--line)')+';background:#fff;color:'+(tx.length?'var(--neg)':'#ccc')+';font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:'+(tx.length?'pointer':'default')+';font-family:var(--font)">Delete month</button>';
   html += '</div>';
+  if(txDeleteNote) {
+    html += '<div style="padding:9px 14px;border:1px solid var(--line);border-left:3px solid var(--gold);'
+         +  'background:var(--surface);font-size:12px;color:var(--text2);margin-bottom:10px">'
+         +  txDeleteNote + ' Now showing ' + monthName(txMonth) + '. Undo will bring it back.</div>';
+    txDeleteNote = '';
+  }
   html += '<div class="totals-bar">';
   html += '<div class="tb-item"><div class="tb-label">Income</div><div class="tb-val">'+fmt(income)+'</div></div>';
   html += '<div class="tb-item"><div class="tb-label">Expenses</div><div class="tb-val" style="color:var(--neg)">'+fmt(expenses)+'</div></div>';
@@ -1267,6 +1276,31 @@ function renderTransactions() {
   var netEl = document.getElementById('tx-net');
   if(netEl) netEl.style.color = (income-expenses) >= 0 ? '#1a9e52' : '#cc2222';
 }
+// Clears the month currently shown. Paired transfer legs are removed with
+// their partner even when it sits in another month, or two balances break.
+function deleteMonth() {
+  var hit = transactions.filter(function(t){ return getMonthStr(t.date) === txMonth; });
+  if(!hit.length) { alert('No transactions in ' + monthName(txMonth) + ' to delete.'); return; }
+  var ids = {};
+  hit.forEach(function(t){ if(t.xfer) ids[t.xfer] = true; });
+  var outside = transactions.filter(function(t){
+    return t.xfer && ids[t.xfer] && getMonthStr(t.date) !== txMonth;
+  });
+  var note = outside.length
+    ? '\n\nAlso removes ' + outside.length + ' paired transfer leg'
+      + (outside.length>1?'s':'') + ' dated outside this month.'
+    : '';
+  if(!confirm('Delete all ' + hit.length + ' transaction' + (hit.length>1?'s':'')
+            + ' in ' + monthName(txMonth) + '?' + note + '\n\nUndo will reverse this.')) return;
+  snapshotTx();
+  transactions = transactions.filter(function(t){
+    if(t.xfer && ids[t.xfer]) return false;
+    return getMonthStr(t.date) !== txMonth;
+  });
+  saveTx(transactions);
+  renderAll();
+}
+
 function setTxMonth(m) { txMonth=m; renderTransactions(); }
 
 // Budget
