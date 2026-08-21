@@ -1,4 +1,4 @@
-<!-- JL Finance build 2026-08-09a | savings sources, per-row import detection, delete-month -->
+<!-- JL Finance build 2026-08-21a | card tab: live limit/dates/autopay, empty states -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -144,6 +144,39 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 .met-val{font-size:18px;font-weight:300;color:var(--navy)}
 .met-sub{font-size:10px;color:var(--text5);margin-top:3px}
 .sav-card{border:1px solid var(--line);border-top:3px solid var(--gold);padding:22px 24px}
+/* ---- Card tab ---- */
+.cdbar{border:1px solid var(--navy);border-top:3px solid var(--gold);background:var(--navy);padding:20px 22px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.cd-art{width:132px;height:84px;flex-shrink:0;position:relative}
+.cd-art img{width:100%;height:100%;object-fit:contain;display:block}
+.cd-art.noimg{background:linear-gradient(135deg,#3a4753 0%,#222d38 100%);border:1px solid #4a5764}
+.cd-art.noimg:after{content:"QUICKSILVER";position:absolute;left:10px;top:12px;font-size:9px;letter-spacing:0.18em;color:#c3ccd5}
+.cd-id{flex:1;min-width:150px}
+.cd-name{font-size:15px;color:#fff;letter-spacing:0.03em}
+.cd-last4{font-size:11px;color:#7e8b99;margin-top:5px;letter-spacing:0.06em}
+.cd-owed{font-size:34px;font-weight:300;color:#fff;letter-spacing:-1px;margin-top:12px}
+.cd-owed-l{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#7e8b99}
+.gauge{width:150px;flex-shrink:0;text-align:center}
+.gauge svg{display:block;margin:0 auto}
+.gauge-v{font-size:20px;font-weight:300;color:#fff;margin-top:-30px}
+.gauge-l{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#7e8b99;margin-top:14px}
+.cd-empty{padding:26px 20px;text-align:center;font-size:12px;color:var(--text3);line-height:1.6}
+.cd-empty b{display:block;font-size:13px;color:var(--navy);font-weight:400;margin-bottom:5px}
+.kd{display:flex;flex-wrap:wrap}
+.kd-c{flex:1;min-width:130px;padding:14px 18px;border-right:1px solid var(--line2)}
+.kd-c:last-child{border-right:none}
+.kd-l{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text4);margin-bottom:6px}
+.kd-v{font-size:15px;font-weight:300;color:var(--navy)}
+.kd-s{font-size:10px;color:var(--text5);margin-top:4px}
+.ap{padding:16px 20px}
+.ap-top{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.ap-mode{font-size:14px;color:var(--navy)}
+.ap-mode small{display:block;font-size:11px;color:var(--text3);margin-top:4px}
+.ap-when{text-align:right;font-size:11px;color:var(--text3)}
+.ap-when b{display:block;font-size:14px;font-weight:400;color:var(--navy);margin-bottom:3px}
+.ap-cov{display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid var(--line);border-left:3px solid var(--pos);background:var(--surface);font-size:12px;color:var(--text2)}
+.ap-cov.warn{border-left-color:var(--neg)}
+.ap-cov b{font-weight:400;color:var(--navy)}
+.ap-cov span{margin-left:auto;font-size:11px;color:var(--text4);white-space:nowrap}
 .tbl{width:100%;border-collapse:collapse}
 .tbl th{text-align:left;padding:10px 12px;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);border-bottom:2px solid var(--navy);font-weight:500}
 .tbl td{padding:11px 12px;font-size:13px;border-bottom:1px solid var(--line2);color:var(--navy)}
@@ -342,12 +375,42 @@ const ACCOUNTS = {
 // Opening balances + card limit live in localStorage so a data wipe never
 // resurrects a stale hardcoded number.
 function loadAcctCfg() {
-  var d = { checkingOpening:0, savingsOpening:0, cardOpening:0, cardLimit:0, cardName:'Credit Card' };
+  var d = { checkingOpening:0, savingsOpening:0, cardOpening:0,
+            cardLimit:220, cardName:'Capital One Quicksilver', cardLast4:'7039',
+            // Cycle close inferred from Capital One's "minimum calculated after"
+            // wording; confirm when the first real statement generates.
+            cardFirstClose:'2026-09-11', cardCloseDay:11,
+            cardFirstDue:'2026-10-06', cardDueDay:6,
+            // null (not 0) until a cycle actually closes. A genuine $0.00
+            // statement and "no statement yet" are different states.
+            cardStatementBal:null,
+            apOn:true, apMode:'statement', apFrom:'savings',
+            apDay:1, apFirst:'2026-10-01' };
   try { var s=localStorage.getItem('jlf_acctcfg'); if(s){ var o=JSON.parse(s); for(var k in d) if(o[k]!==undefined) d[k]=o[k]; } } catch(e){}
   return d;
 }
 function saveAcctCfg(c) { try { localStorage.setItem('jlf_acctcfg', JSON.stringify(c)); } catch(e){} }
 var acctCfg = loadAcctCfg();
+// One-time card seed. Stored config overrides defaults, so an existing
+// jlf_acctcfg written before the card existed would pin cardLimit at 0 and
+// leave the new date/autopay keys absent. Seed once, then leave it alone --
+// this must not clobber values edited later.
+(function(){
+  try { if(localStorage.getItem('jlf_cardseed') === '1') return; } catch(e){}
+  if(!acctCfg.cardLimit)     acctCfg.cardLimit = 220;
+  if(!acctCfg.cardName || acctCfg.cardName === 'Credit Card')
+                             acctCfg.cardName = 'Capital One Quicksilver';
+  if(!acctCfg.cardLast4)     acctCfg.cardLast4 = '7039';
+  if(!acctCfg.cardFirstClose){ acctCfg.cardFirstClose = '2026-09-11'; acctCfg.cardCloseDay = 11; }
+  if(!acctCfg.cardFirstDue)  { acctCfg.cardFirstDue   = '2026-10-06'; acctCfg.cardDueDay   = 6;  }
+  if(acctCfg.cardStatementBal === undefined) acctCfg.cardStatementBal = null;
+  if(acctCfg.apMode === undefined) {
+    acctCfg.apOn = true; acctCfg.apMode = 'statement'; acctCfg.apFrom = 'savings';
+    acctCfg.apDay = 1;   acctCfg.apFirst = '2026-10-01';
+  }
+  saveAcctCfg(acctCfg);
+  try { localStorage.setItem('jlf_cardseed','1'); } catch(e){}
+})();
 function acctOf(t) { return t.acct || 'checking'; }
 
 // One-time migration: tag every pre-existing transaction as checking.
@@ -1465,12 +1528,158 @@ function renderSavings() {
   el.innerHTML = h;
 }
 
+// ---- Card tab helpers ----
+function cdDate(iso) {
+  if(!iso) return '\u2014';
+  var p = iso.split('-');
+  return new Date(+p[0], +p[1]-1, +p[2])
+    .toLocaleString('default',{month:'short', day:'numeric', year:'numeric'});
+}
+function cdToday() { var n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
+function cdParse(iso) { var p=iso.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+function cdDaysUntil(iso) {
+  return Math.round((cdParse(iso) - cdToday()) / 86400000);
+}
+// Roll a day-of-month forward from the seeded first occurrence. Until the
+// seeded date passes it IS the answer -- nothing has cycled yet.
+function cdNextOn(firstIso, day) {
+  var t = cdToday(), f = cdParse(firstIso);
+  if(f >= t) return firstIso;
+  var c = new Date(t.getFullYear(), t.getMonth(), day);
+  if(c < t) c = new Date(t.getFullYear(), t.getMonth()+1, day);
+  return c.getFullYear()+'-'+String(c.getMonth()+1).padStart(2,'0')+'-'+String(c.getDate()).padStart(2,'0');
+}
+// Utilisation arc, piecewise-scaled: the 0-30% band (the band that actually
+// matters for scoring) gets 60% of the sweep so small moves stay legible.
+function cdGaugeFrac(pct) {
+  if(pct <= 0) return 0;
+  if(pct <= 30) return (pct / 30) * 0.60;
+  return 0.60 + Math.min((pct - 30) / 70, 1) * 0.40;
+}
+function cdGauge(pct) {
+  var R = 46, CX = 60, CY = 56, SW = 8;
+  var frac = cdGaugeFrac(pct);
+  function pt(f) {
+    var a = Math.PI * (1 + f);
+    return [CX + R*Math.cos(a), CY + R*Math.sin(a)];
+  }
+  var s = pt(0), e = pt(frac), full = pt(1);
+  var col = pct >= 70 ? '#c96a6a' : pct >= 30 ? '#d4b06a' : '#5fae86';
+  var h = '<svg viewBox="0 0 120 70" width="120" height="70">';
+  h += '<path d="M'+s[0].toFixed(1)+' '+s[1].toFixed(1)+' A'+R+' '+R+' 0 0 1 '
+     + full[0].toFixed(1)+' '+full[1].toFixed(1)+'" fill="none" stroke="#2c3a47" stroke-width="'+SW+'"/>';
+  if(frac > 0.001) {
+    h += '<path d="M'+s[0].toFixed(1)+' '+s[1].toFixed(1)+' A'+R+' '+R+' 0 0 1 '
+       + e[0].toFixed(1)+' '+e[1].toFixed(1)+'" fill="none" stroke="'+col+'" stroke-width="'+SW+'"/>';
+  }
+  h += '</svg>';
+  return h;
+}
+var AP_MODES = { statement:'Statement balance', minimum:'Minimum payment', fixed:'Fixed amount' };
+
 function renderCard() {
   var el = document.getElementById('page-card');
   if(!el) return;
-  el.innerHTML = '<div class="empty" style="padding:60px 20px;text-align:center">'
-    + '<div style="font-size:14px;color:var(--text2);margin-bottom:6px">Card tab not built yet</div>'
-    + '<div style="font-size:12px;color:var(--text4)">Waiting on the Capital One statement close date, due date and credit limit.</div></div>';
+  var c     = acctCfg;
+  var owed  = calcCardOwed();
+  var limit = c.cardLimit || 0;
+  var avail = limit - owed;
+  var pct   = limit > 0 ? (owed / limit) * 100 : 0;
+
+  // ---- Navy banner: identity, balance owed, utilisation ----
+  var h = '<div class="cdbar">';
+  h += '<div class="cd-art"><img src="quicksilver.png" alt=""'
+     + ' onerror="this.parentNode.classList.add(\'noimg\');this.remove()"></div>';
+  h += '<div class="cd-id"><div class="cd-name">'+c.cardName+'</div>';
+  h += '<div class="cd-last4">&middot;&middot;&middot;&middot; '+c.cardLast4+'</div>';
+  h += '<div class="cd-owed-l" style="margin-top:14px">Current balance</div>';
+  h += '<div class="cd-owed" style="margin-top:2px">'+fmt(owed)+'</div></div>';
+  h += '<div class="gauge">'+cdGauge(pct)
+     + '<div class="gauge-v">'+(Math.round(pct*10)/10)+'%</div>'
+     + '<div class="gauge-l">Utilisation</div></div>';
+  h += '</div>';
+
+  // ---- Two-cell summary ----
+  h += '<div class="met-grid" style="margin-top:24px">';
+  h += '<div class="met"><div class="met-label">Available credit</div>'
+     + '<div class="met-val">'+fmt(avail)+'</div>'
+     + '<div class="met-sub">of '+fmt(limit)+' limit</div></div>';
+  h += '<div class="met"><div class="met-label">Last statement</div>';
+  if(c.cardStatementBal === null || c.cardStatementBal === undefined) {
+    h += '<div class="met-val" style="color:var(--text4)">&mdash;</div>'
+       + '<div class="met-sub">No cycle has closed yet</div>';
+  } else {
+    h += '<div class="met-val">'+fmt(c.cardStatementBal)+'</div>'
+       + '<div class="met-sub">closed '+cdDate(c.cardFirstClose)+'</div>';
+  }
+  h += '</div></div>';
+
+  // ---- Key dates ----
+  var nextClose = cdNextOn(c.cardFirstClose, c.cardCloseDay);
+  var nextDue   = cdNextOn(c.cardFirstDue,   c.cardDueDay);
+  var dClose = cdDaysUntil(nextClose), dDue = cdDaysUntil(nextDue);
+  h += '<div class="spanel" style="margin-top:24px"><div class="spanel-h">Key dates</div><div class="kd">';
+  h += '<div class="kd-c"><div class="kd-l">Statement closes</div><div class="kd-v">'+cdDate(nextClose)+'</div>'
+     + '<div class="kd-s">'+(dClose>=0 ? 'in '+dClose+' day'+(dClose===1?'':'s') : 'passed')+'</div></div>';
+  h += '<div class="kd-c"><div class="kd-l">Payment due</div><div class="kd-v">'+cdDate(nextDue)+'</div>'
+     + '<div class="kd-s">'+(dDue>=0 ? 'in '+dDue+' day'+(dDue===1?'':'s') : 'passed')+'</div></div>';
+  h += '</div></div>';
+
+  // ---- Autopay coverage ----
+  h += '<div class="spanel"><div class="spanel-h">Autopay</div>';
+  if(!c.apOn) {
+    h += '<div class="cd-empty"><b>Not enrolled</b>Set up autopay with Capital One to see coverage here.</div>';
+  } else {
+    var nextDraw = cdNextOn(c.apFirst, c.apDay);
+    var dDraw = cdDaysUntil(nextDraw);
+    var fromName = (ACCOUNTS[c.apFrom] && ACCOUNTS[c.apFrom].name) || c.apFrom;
+    if(c.apFrom === 'savings') fromName = 'Wells Fargo Way2Save';
+    h += '<div class="ap"><div class="ap-top">';
+    h += '<div class="ap-mode">'+(AP_MODES[c.apMode]||c.apMode)+'<small>from '+fromName+'</small></div>';
+    h += '<div class="ap-when"><b>'+cdDate(nextDraw)+'</b>'
+       + (dDraw>=0 ? 'next draw, in '+dDraw+' day'+(dDraw===1?'':'s') : 'next draw')+'</div>';
+    h += '</div>';
+    // Coverage: what will be drawn vs what the funding account holds.
+    var fundBal = c.apFrom === 'savings' ? totalSavings()
+                : c.apFrom === 'checking' ? calcCheckingBalance() : 0;
+    var due = (c.cardStatementBal === null || c.cardStatementBal === undefined)
+              ? owed : c.cardStatementBal;
+    var covered = fundBal >= due;
+    h += '<div class="ap-cov'+(covered?'':' warn')+'">';
+    if(due <= 0.004) {
+      h += 'Nothing to draw &mdash; <b>'+fmt(0)+'</b> owed at close.';
+    } else {
+      h += (covered ? 'Covered: ' : 'Short: ') + '<b>'+fmt(due)+'</b> due against '+fmt(fundBal)+' available.';
+    }
+    h += '<span>max draw '+fmt(limit)+'</span></div></div>';
+  }
+  h += '</div>';
+
+  // ---- Transaction history ----
+  var ctx = transactions.filter(function(t){ return acctOf(t)==='card'; })
+                        .sort(function(a,b){ return a.date < b.date ? 1 : -1; });
+  h += '<div class="spanel"><div class="spanel-h">Transactions</div>';
+  if(!ctx.length) {
+    h += '<div class="cd-empty"><b>No transactions yet</b>'
+       + 'Charges and payments appear here once imported from Capital One.</div>';
+  } else {
+    h += '<table class="tbl"><thead><tr><th>Date</th><th>Description</th><th>Category</th>'
+       + '<th style="text-align:right">Amount</th></tr></thead><tbody>';
+    ctx.forEach(function(t){
+      var cls, sign, cat = t.cat;
+      if(t.type === 'Transfer') { cls='amt-xfer'; sign=(t.flow==='in'?'\u2192 ':'\u2190 '); cat='Card payment'; }
+      else if(t.type === 'Income') { cls='amt-inc'; sign='+'; }
+      else { cls='amt-exp'; sign='-'; }
+      h += '<tr><td class="tx-date">'+t.date.substring(5).replace('-','/')+'</td>'
+         + '<td class="tx-desc" title="'+t.desc+'">'+t.desc+'</td>'
+         + '<td class="tx-cat">'+cat+'</td>'
+         + '<td class="'+cls+'">'+sign+fmt(t.amt)+'</td></tr>';
+    });
+    h += '</tbody></table>';
+  }
+  h += '</div>';
+
+  el.innerHTML = h;
 }
 
 function addSavSource() {
