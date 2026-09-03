@@ -592,6 +592,7 @@ var subHidden = loadSubHidden();
 var subSortDesc = true;
 var subDetailKey = null;
 var subShowHidden = false;
+var subShowInactive = false;
 
 function loadSrc() { try { var s=localStorage.getItem('jlf_savsrc'); return s?JSON.parse(s):null; } catch(e){ return null; } }
 function saveSrc() { try { localStorage.setItem('jlf_savsrc', JSON.stringify(savSources)); } catch(e){} }
@@ -1578,8 +1579,34 @@ function subLifeStatus(cad, lastDate, today) {
   if(since <= cad.days * 2)       return { key:'missed',   label:'Missed'   };
   return { key:'inactive', label:'Inactive' };
 }
+// One merchant can run several subscriptions at once (Apple bills separately for
+// each service), so charges are clustered by amount before cadence is tested.
+// Chaining at 15% of the neighbouring amount keeps a price rise together while
+// still separating genuinely different products.
+function subClusterByAmount(rows) {
+  var byAmt = rows.slice().sort(function(a,b){ return a.amt - b.amt; });
+  var out = [], cur = [byAmt[0]];
+  for(var i=1;i<byAmt.length;i++) {
+    var prev = cur[cur.length-1].amt, a = byAmt[i].amt;
+    if((a - prev) / Math.max(prev, 0.01) <= 0.15) cur.push(byAmt[i]);
+    else { out.push(cur); cur = [byAmt[i]]; }
+  }
+  out.push(cur);
+  return out;
+}
+// Identity for confirm/ignore decisions. Includes the amount so ignoring one
+// Apple line does not silently ignore the other three.
+function subId(key, amt) { return key + '|' + Number(amt).toFixed(2); }
+// The newest transaction in the store, not the wall clock. Imports lag reality by
+// days or weeks, and measuring staleness against today marks every live
+// subscription as missed the moment the data goes stale.
+function subDataAsOf() {
+  var max = '';
+  transactions.forEach(function(t){ if(t.date && t.date > max) max = t.date; });
+  return max || new Date().toISOString().slice(0,10);
+}
 function analyzeSubs(todayStr) {
-  var today = todayStr || new Date().toISOString().slice(0,10);
+  var today = todayStr || subDataAsOf();
   var groups = {};
   transactions.filter(function(t){ return t.type === 'Expense'; }).forEach(function(t){
     var k = subKey(t.desc);
@@ -1588,34 +1615,50 @@ function analyzeSubs(todayStr) {
   });
   var out = { confirmed:[], potential:[], ignored:[] };
   Object.keys(groups).forEach(function(k){
-    var rows = groups[k].slice().sort(function(a,b){ return a.date < b.date ? -1 : 1; });
-    var last = rows[rows.length-1];
-    var rule = subRules[k];
-    if(rule === 'ignored') {
-      out.ignored.push({ key:k, n:rows.length, last:last.date, amt:last.amt, hidden:!!subHidden[k] });
-      return;
-    }
-    var intervals = [];
-    for(var i=1;i<rows.length;i++) intervals.push(daysApart(rows[i].date, rows[i-1].date));
-    var cad = subMatchCadence(intervals);
-    var item = { key:k, n:rows.length, amt:last.amt, last:last.date, first:rows[0].date,
-                 rows:rows, cad:cad, status:cad ? subLifeStatus(cad,last.date,today) : null };
-    if(rule === 'confirmed') {
-      // A user-confirmed subscription stays confirmed even if its cadence lapses;
-      // fall back to Monthly so it still carries a total and a status.
-      if(!item.cad) { item.cad = CADENCES[0]; item.status = subLifeStatus(CADENCES[0],last.date,today); }
-      item.section = 'confirmed'; out.confirmed.push(item); return;
-    }
-    if(!cad) return;
-    if(rows.length >= 3)      { item.section='confirmed'; out.confirmed.push(item); }
-    else if(rows.length === 2){ item.section='potential'; out.potential.push(item); }
+    var packs = subClusterByAmount(groups[k]);
+    packs.forEach(function(pack){
+      var rows = pack.slice().sort(function(a,b){ return a.date < b.date ? -1 : 1; });
+      var last = rows[rows.length-1];
+      var id   = subId(k, last.amt);
+      // Rules written before clustering were keyed on the bare merchant, so a
+      // merchant-level decision still applies to every cluster under it.
+      var rule = subRules[id] || subRules[k];
+      var label = k;   // disambiguated after the fact, see below
+      if(rule === 'ignored') {
+        out.ignored.push({ key:id, label:label, merchant:k, amt2:last.amt, n:rows.length, last:last.date,
+                           amt:last.amt, hidden:!!(subHidden[id] || subHidden[k]) });
+        return;
+      }
+      var intervals = [];
+      for(var i=1;i<rows.length;i++) intervals.push(daysApart(rows[i].date, rows[i-1].date));
+      var cad = subMatchCadence(intervals);
+      var item = { key:id, label:label, merchant:k, n:rows.length, amt:last.amt, last:last.date,
+                   first:rows[0].date, rows:rows, cad:cad,
+                   status:cad ? subLifeStatus(cad,last.date,today) : null };
+      if(rule === 'confirmed') {
+        if(!item.cad) { item.cad = CADENCES[0]; item.status = subLifeStatus(CADENCES[0],last.date,today); }
+        item.section = 'confirmed'; out.confirmed.push(item); return;
+      }
+      if(!cad) return;
+      if(rows.length >= 3)      { item.section='confirmed'; out.confirmed.push(item); }
+      else if(rows.length === 2){ item.section='potential'; out.potential.push(item); }
+    });
   });
-  // Rank on the monthly-equivalent figure so a yearly item does not outrank a
-  // monthly one purely on its charge size.
+  // Only append the amount to the name where a merchant actually surfaces more
+  // than once — a lone Adobe line does not need "Adobe \u00b7 $17.31".
+  var seen = {};
+  ['confirmed','potential','ignored'].forEach(function(sec){
+    out[sec].forEach(function(s){ seen[s.merchant] = (seen[s.merchant]||0) + 1; });
+  });
+  ['confirmed','potential','ignored'].forEach(function(sec){
+    out[sec].forEach(function(s){
+      if(seen[s.merchant] > 1) s.label = s.merchant + ' \u00b7 ' + fmt(s.amt !== undefined ? s.amt : s.amt2);
+    });
+  });
   var dir = subSortDesc ? 1 : -1;
   out.confirmed.sort(function(a,b){ return ((b.amt*b.cad.perMonth)-(a.amt*a.cad.perMonth))*dir; });
   out.potential.sort(function(a,b){ return (b.amt-a.amt)*dir; });
-  out.ignored.sort(function(a,b){ return a.key < b.key ? -1 : 1; });
+  out.ignored.sort(function(a,b){ return a.label < b.label ? -1 : 1; });
   return out;
 }
 // Confirmed and not lapsed, each normalised to a monthly figure.
@@ -1633,7 +1676,7 @@ function subDetailBody(s) {
     : s.cad.label.toLowerCase()+' &middot; '+fmt(s.amt*s.cad.perMonth)+' / mo';
   var pill = (s.status && s.status.key !== 'active')
     ? '<span class="pill '+s.status.key+'">'+s.status.label+'</span>' : '';
-  var h = '<div class="modal-h"><div class="modal-t">'+s.key+pill+'</div>'
+  var h = '<div class="modal-h"><div class="modal-t">'+(s.label||s.key)+pill+'</div>'
     +   '<button class="modal-x" onclick="closeSubDetail()" aria-label="Close">&times;</button></div>'
     + '<div class="modal-b"><div class="sd-head">'
     +   '<div class="sd-first">First payment<b>'+subLongDate(s.first)+'</b></div>'
@@ -1679,6 +1722,7 @@ function hideSubIgnored(key)   { subHidden[key] = true; saveSubHidden(); renderS
 function unhideSubIgnored(key) { delete subHidden[key]; saveSubHidden(); renderSubscriptions(); }
 function toggleSubSort()   { subSortDesc = !subSortDesc; renderSubscriptions(); }
 function toggleSubHidden() { subShowHidden = !subShowHidden; renderSubscriptions(); }
+function toggleSubInactive() { subShowInactive = !subShowInactive; renderSubscriptions(); }
 
 function renderSubscriptions() {
   var el = document.getElementById('page-subscriptions');
@@ -1702,20 +1746,31 @@ function renderSubscriptions() {
   var toggle = '<button class="sortbtn" onclick="toggleSubSort()">'
     + (subSortDesc ? 'High &rarr; Low <i>&#9660;</i>' : 'Low &rarr; High <i>&#9650;</i>')+'</button>';
 
+  // Lapsed subscriptions are kept out of the main list; they are history, not spend.
+  var live = res.confirmed.filter(function(s){ return s.status.key !== 'inactive'; });
+  var dead = res.confirmed.filter(function(s){ return s.status.key === 'inactive'; });
+  var subRow = function(s) {
+    var pill = s.status.key === 'active' ? ''
+      : '<span class="pill '+s.status.key+'">'+s.status.label+'</span>';
+    return '<div class="srow'+(s.status.key==='inactive'?' dim':'')+'">'
+      +   '<div class="srow-main"><div class="srow-name">'
+      +     '<button onclick="openSubDetail(\''+esc(s.key)+'\')">'+(s.label||s.key)+'</button>'+pill+'</div></div>'
+      +   '<div class="srow-amt">'+fmt(s.amt)
+      +     (s.cad.perMonth!==1 ? '<em>'+fmt(s.amt*s.cad.perMonth)+' / mo</em>' : '')+'</div></div>';
+  };
   h += '<div class="sec"><div class="sec-head"><div class="sec-title">Subscriptions</div>'
-    +  '<div class="sec-right"><div class="sec-count">'+res.confirmed.length+'</div>'+toggle+'</div></div>';
-  if(res.confirmed.length) {
-    res.confirmed.forEach(function(s){
-      var pill = s.status.key === 'active' ? ''
-        : '<span class="pill '+s.status.key+'">'+s.status.label+'</span>';
-      h += '<div class="srow'+(s.status.key==='inactive'?' dim':'')+'">'
-        +   '<div class="srow-main"><div class="srow-name">'
-        +     '<button onclick="openSubDetail(\''+esc(s.key)+'\')">'+s.key+'</button>'+pill+'</div></div>'
-        +   '<div class="srow-amt">'+fmt(s.amt)
-        +     (s.cad.perMonth!==1 ? '<em>'+fmt(s.amt*s.cad.perMonth)+' / mo</em>' : '')+'</div></div>';
-    });
+    +  '<div class="sec-right"><div class="sec-count">'+live.length+'</div>'
+    +  (dead.length ? '<button class="sortbtn" onclick="toggleSubInactive()">'
+        +(subShowInactive ? 'Hide inactive' : 'Show '+dead.length+' inactive')+'</button>' : '')
+    +  toggle+'</div></div>';
+  if(live.length) {
+    live.forEach(function(s){ h += subRow(s); });
   } else {
     h += '<div class="empty">Nothing detected yet &mdash; three charges are needed before a merchant qualifies.</div>';
+  }
+  if(subShowInactive && dead.length) {
+    h += '<div class="sec-sub">No charge for more than two billing periods. Not counted toward the total.</div>';
+    dead.forEach(function(s){ h += subRow(s); });
   }
   h += '</div>';
 
@@ -1742,7 +1797,7 @@ function renderSubscriptions() {
     +  '</div></div>';
   if(vis.length) {
     vis.forEach(function(s){
-      h += '<div class="igrow"><b>'+s.key+'</b> &middot; '+fmt(s.amt)+' &middot; '+s.n+' charges'
+      h += '<div class="igrow"><b>'+(s.label||s.key)+'</b> &middot; '+fmt(s.amt)+' &middot; '+s.n+' charges'
         +  '<span class="sp"><button class="abtn" onclick="setSubRule(\''+esc(s.key)+'\',null)">Undo</button>'
         +  '<button class="abtn" onclick="hideSubIgnored(\''+esc(s.key)+'\')">Delete</button></span></div>';
     });
@@ -1752,7 +1807,7 @@ function renderSubscriptions() {
   if(subShowHidden && hid.length) {
     h += '<div class="sec-sub">Deleted from this list. Still suppressed from Subscriptions and Potential.</div>';
     hid.forEach(function(s){
-      h += '<div class="igrow del"><b>'+s.key+'</b> &middot; '+fmt(s.amt)+' &middot; '+s.n+' charges'
+      h += '<div class="igrow del"><b>'+(s.label||s.key)+'</b> &middot; '+fmt(s.amt)+' &middot; '+s.n+' charges'
         +  '<span class="sp"><button class="abtn" onclick="unhideSubIgnored(\''+esc(s.key)+'\')">Restore</button>'
         +  '<button class="abtn" onclick="setSubRule(\''+esc(s.key)+'\',null)">Undo ignore</button></span></div>';
     });
