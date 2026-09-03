@@ -24,7 +24,7 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 .logo{font-size:17px;font-weight:400;color:var(--navy);letter-spacing:0.02em}
 .logo span{font-weight:700}
 .logo-mark{display:inline-block;width:22px;height:22px;background:var(--navy);color:#fff;text-align:center;line-height:22px;font-size:11px;font-weight:700;margin-right:8px;vertical-align:middle}
-.hdr-right{display:flex;align-items:center;gap:12px}
+.hdr-right{display:flex;align-items:center;gap:12px;position:relative}
 .avatar{width:30px;height:30px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#fff}
 .uname{font-size:12px;color:var(--text2);letter-spacing:0.02em}
 .nav{background:var(--navy);padding:0 28px;display:flex;gap:0;overflow-x:auto}
@@ -116,6 +116,31 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 .modal-f{padding:14px 22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .modal-f .hint{font-size:11px;color:var(--text4)}
 .btn-ghost{padding:10px 20px;border:1px solid var(--line);background:#fff;color:var(--navy);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;font-family:var(--font)}
+.prof-btn{display:flex;align-items:center;gap:10px;background:none;border:1px solid transparent;padding:4px 6px 4px 10px;cursor:pointer;font-family:var(--font)}
+.prof-btn:hover{border-color:var(--line)}
+.prof-btn.open{border-color:var(--line);background:var(--surface)}
+.menu{position:absolute;top:calc(100% + 8px);right:0;min-width:230px;background:#fff;border:1px solid var(--line);border-top:3px solid var(--gold);box-shadow:0 6px 22px rgba(16,24,32,.13);z-index:400;display:none}
+.menu.on{display:block}
+.menu-id{padding:13px 16px 12px;border-bottom:1px solid var(--line2)}
+.menu-id b{display:block;font-size:13px;font-weight:500;color:var(--navy)}
+.menu-id span{display:block;font-size:10px;color:var(--text4);margin-top:3px}
+.menu-sec{font-size:8px;letter-spacing:0.11em;text-transform:uppercase;color:var(--text5);padding:11px 16px 5px}
+.menu-i{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:none;font-family:var(--font);font-size:12px;color:var(--text);padding:9px 16px;cursor:pointer}
+.menu-i:hover{background:var(--surface);color:var(--navy)}
+.menu-i i{font-style:normal;font-size:11px;color:var(--text4);width:14px;text-align:center}
+.menu-i:hover i{color:var(--gold)}
+.menu-i.danger{color:var(--neg)}
+.menu-i.danger:hover{background:#fdf3f3}
+.menu-i.danger i{color:var(--neg)}
+.menu-hr{height:1px;background:var(--line2);margin:6px 0}
+.stat{display:inline-block;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 7px;border:1px solid var(--line);color:var(--text3);margin-left:auto}
+.stat.off{border-color:var(--gold);color:var(--gold)}
+.stat.on{border-color:var(--pos);color:var(--pos)}
+.note{font-size:11px;color:var(--text3);line-height:1.55;margin-top:14px}
+.abtn.danger{border-color:var(--neg);background:var(--neg);color:#fff}
+.abtn.danger:hover{background:#8f2626;border-color:#8f2626}
+.acct-pick{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px}
+.acct-pick label{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text4)}
 .det-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:11px 14px;border:1px solid var(--line);border-left:3px solid var(--pos);background:var(--surface);margin-bottom:12px}
 .det-bar.unsure{border-left-color:var(--gold)}
 .det-l{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3)}
@@ -324,6 +349,49 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
     <div class="lock-err" id="pw-error"></div>
   </div>
 </div>
+<div class="mask" id="prof-mask" role="dialog" aria-modal="true" onclick="closeProf(event)">
+  <div class="modal" id="prof-modal" style="max-width:470px">
+
+    <div class="modal-h">
+      <div class="modal-t" id="prof-title">&nbsp;</div>
+      <button class="modal-x" onclick="closeProf()" aria-label="Close">&times;</button>
+    </div>
+
+    <div class="modal-b" id="pm-backup" style="display:none">
+      <div class="sd-line"><span>Transactions stored</span><b id="bk-count">0</b></div>
+      <div class="sd-line"><span>Covering</span><b id="bk-range">&mdash;</b></div>
+      <div class="sd-line"><span>Last export</span><b id="bk-last">Never</b></div>
+      <div class="note">Your history lives only in this browser. Export a copy you can keep, and restore it here on any browser or machine.</div>
+      <div class="import-msg" id="backup-msg"></div>
+      <input type="file" id="restore-file" accept="application/json,.json" style="display:none" onchange="stageRestore(this)">
+    </div>
+
+    <div class="modal-b" id="pm-connect" style="display:none">
+    <div>
+            <p class="import-tip">Connect your Wells Fargo account to automatically sync your transactions and live balance. Your credentials never touch this app — authentication happens directly with Wells Fargo via Plaid.</p>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:4px">
+        <button class="btn" id="plaid-connect-btn" onclick="openPlaidLink()" style="padding:11px 28px">Connect Wells Fargo</button>
+        <button class="btn" id="plaid-sync-btn" onclick="syncPlaid()" style="display:none;padding:11px 24px">Sync now</button>
+        <button class="btn btn-danger" id="plaid-disconnect-btn" onclick="disconnectPlaid()" style="display:none;padding:11px 18px">Disconnect</button>
+        <button class="btn" onclick="forceReconnect()" style="padding:11px 18px;background:#fff;color:var(--navy);font-size:11px">Force reconnect</button>
+      </div>
+      <div id="plaid-status" style="margin-top:14px;font-size:12px;color:var(--text3)"></div>
+    </div>
+
+    <div id="plaid-last-sync" style="display:none" class="import-box">
+      <div class="import-label">Last sync</div>
+      <div id="plaid-sync-details" style="font-size:13px;color:var(--navy)"></div>
+    </div>
+    </div>
+
+    <div class="modal-b" id="pm-logout" style="display:none">
+      You will need your password to sign back in on this device.
+      <div class="note">Your transactions stay on this browser and are not deleted.</div>
+    </div>
+
+    <div class="modal-f" id="prof-foot"></div>
+  </div>
+</div>
 <div class="mask" id="restore-mask" role="dialog" aria-modal="true" onclick="closeRestore(event)">
   <div class="modal" id="restore-modal" style="max-width:480px"></div>
 </div>
@@ -350,8 +418,18 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 <div class="hdr">
   <div class="logo"><span class="logo-mark">JL</span><span>J.L.</span> Finance</div>
   <div class="hdr-right">
-    <span class="uname">Jorge Lopez</span>
-    <div class="avatar">JL</div>
+    <button class="prof-btn" id="prof-btn" onclick="toggleProfMenu(event)">
+      <span class="uname">Jorge Lopez</span>
+      <div class="avatar">JL</div>
+    </button>
+    <div class="menu" id="prof-menu">
+      <div class="menu-id"><b>Jorge Lopez</b><span>Signed in on this device</span></div>
+      <div class="menu-sec">Data</div>
+      <button class="menu-i" onclick="openProf('backup')"><i>&#8681;</i> Backup &amp; restore</button>
+      <button class="menu-i" onclick="openProf('connect')"><i>&#8644;</i> Bank connection <span class="stat off" id="prof-plaid-stat">Off</span></button>
+      <div class="menu-hr"></div>
+      <button class="menu-i danger" onclick="openProf('logout')"><i>&#8617;</i> Log out</button>
+    </div>
   </div>
 </div>
 <div class="nav">
@@ -362,7 +440,6 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
   <button class="ni" onclick="showPage('import',this)">Import</button>
   <button class="ni" onclick="showPage('savings',this)">Savings</button>
   <button class="ni" onclick="showPage('card',this)">Card</button>
-  <button class="ni" onclick="showPage('connect',this)">Connect</button>
 </div>
 <div class="body">
   <div id="page-overview" class="page active"></div>
@@ -377,6 +454,15 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
       <p class="import-tip">Copy from your bank statement or online activity page. Supports multiple formats — one transaction per line.</p>
 
       <textarea class="import-ta" id="paste-input" placeholder="06/08/26  PURCHASE KROGER #0213 DALLAS TX   $56.34&#10;05/29/26  AMERICANAIRLINES PAYROLL 00369933 JORGE LOPEZ   $782.65&#10;06/10/2026 ZELLE FROM MARIETH LIMA 100.00"></textarea>
+      <div class="acct-pick">
+        <label for="import-acct">Account</label>
+        <select class="acct-sel" id="import-acct" onchange="setImportAcct(this.value)">
+          <option value="">Auto-detect</option>
+          <option value="checking">Wells Fargo Checking</option>
+          <option value="savings">Wells Fargo Way2Save</option>
+          <option value="card">Capital One Quicksilver</option>
+        </select>
+      </div>
       <div class="import-actions">
         <button class="btn" onclick="previewImport()">Preview import</button>
       </div>
@@ -399,38 +485,9 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
       </div>
     </div>
 
-    <div class="import-box" style="margin-top:26px">
-      <div class="import-label">Backup &amp; restore</div>
-      <p class="import-tip">Your history lives only in this browser. Export a copy you can keep, and restore it here on any browser or machine.</p>
-      <div class="import-actions">
-        <button class="btn" onclick="exportBackup()">Export backup</button>
-        <button class="btn" onclick="document.getElementById('restore-file').click()" style="background:#fff;color:var(--navy)">Restore from file</button>
-        <input type="file" id="restore-file" accept="application/json,.json" style="display:none" onchange="stageRestore(this)">
-      </div>
-      <div class="import-msg" id="backup-msg"></div>
-    </div>
 
   </div>
 
-  <div id="page-connect" class="page">
-    <div class="import-box">
-      <div class="import-label">Bank connection</div>
-      <p class="import-tip">Connect your Wells Fargo account to automatically sync your transactions and live balance. Your credentials never touch this app — authentication happens directly with Wells Fargo via Plaid.</p>
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:4px">
-        <button class="btn" id="plaid-connect-btn" onclick="openPlaidLink()" style="padding:11px 28px">Connect Wells Fargo</button>
-        <button class="btn" id="plaid-sync-btn" onclick="syncPlaid()" style="display:none;padding:11px 24px">Sync now</button>
-        <button class="btn btn-danger" id="plaid-disconnect-btn" onclick="disconnectPlaid()" style="display:none;padding:11px 18px">Disconnect</button>
-        <button class="btn" onclick="forceReconnect()" style="padding:11px 18px;background:#fff;color:var(--navy);font-size:11px">Force reconnect</button>
-      </div>
-      <div id="plaid-status" style="margin-top:14px;font-size:12px;color:var(--text3)"></div>
-    </div>
-
-    <div id="plaid-last-sync" style="display:none" class="import-box">
-      <div class="import-label">Last sync</div>
-      <div id="plaid-sync-details" style="font-size:13px;color:var(--navy)"></div>
-    </div>
-
-  </div>
 </div>
 <script>
 const PW_HASH = '578202bb2f950725df16e4bf6ae68f691e983f03e7e87469975ea782517e36ae';
@@ -776,6 +833,12 @@ function setPlaidStatus(msg, isError) {
 }
 
 function updatePlaidButtons() {
+  var chip = document.getElementById('prof-plaid-stat');
+  if(chip) {
+    var on = !!plaidAccessToken;
+    chip.textContent = on ? 'On' : 'Off';
+    chip.className = 'stat ' + (on ? 'on' : 'off');
+  }
   var connectBtn = document.getElementById('plaid-connect-btn');
   var syncBtn = document.getElementById('plaid-sync-btn');
   var disconnectBtn = document.getElementById('plaid-disconnect-btn');
@@ -1105,24 +1168,144 @@ function detectLine(line, fallback) {
 }
 var importAcctOverride = null;
 
-function setImportAcct(a) { importAcctOverride = a; previewImport(); }
+function setImportAcct(a) {
+  importAcctOverride = a || null;   // '' means auto-detect
+  var pre = document.getElementById('import-acct');
+  if(pre && pre.value !== (a||'')) pre.value = a||'';
+  previewImport();
+}
 
+// ---- Capital One paste mode -------------------------------------------
+// Capital One's activity page copies as three lines per transaction:
+//   Aug31
+//   Craft Boba Tea
+//   Dining1.5% cash backJorge L. ...7039$12.20
+// The third line has no delimiters, so the category is read off the front and
+// the amount off the back; the cashback and cardholder text between is dropped.
+var C1_CATS = {
+  'Dining':'Dining Out', 'Gas/Automotive':'Gas', 'Merchandise':'Groceries/Shopping',
+  'Grocery':'Groceries/Shopping', 'Entertainment':'Entertainment',
+  'Health Care':'Bills & Utilities', 'Internet':'Bills & Utilities',
+  'Phone/Cable':'Bills & Utilities', 'Travel':'Transportation',
+  'Professional Services':'Misc / Other', 'Other Services':'Misc / Other',
+  'Other':'Misc / Other', 'Payment/Credit':'__PAYMENT__',
+  'Fee/Interest Charge':'Bills & Utilities'
+};
+var C1_MON = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+
+// "Aug31" carries no year. Take the most recent occurrence that is not in the
+// future, which is right for a 90-day export in either direction.
+function c1Date(tok, today) {
+  var m = String(tok).trim().match(/^([A-Za-z]{3})[a-z]*\s*(\d{1,2})$/);
+  if(!m) return null;
+  var mo = C1_MON[m[1].toLowerCase()];
+  if(!mo) return null;
+  var day = parseInt(m[2],10);
+  if(day < 1 || day > 31) return null;
+  var ref = today ? new Date(today+'T00:00:00') : new Date();
+  var y = ref.getFullYear();
+  var mk = function(yy){ return yy+'-'+String(mo).padStart(2,'0')+'-'+String(day).padStart(2,'0'); };
+  // Feb 30 silently rolls into March, so round-trip the parts to reject it.
+  var valid = function(str){
+    var dt = new Date(str+'T00:00:00');
+    return dt.getFullYear()===+str.slice(0,4) && (dt.getMonth()+1)===+str.slice(5,7) && dt.getDate()===+str.slice(8,10);
+  };
+  var d = mk(y);
+  if(!valid(d)) { d = mk(y-1); return valid(d) ? d : null; }
+  if(new Date(d+'T00:00:00') > ref) { var p = mk(y-1); if(!valid(p)) return null; d = p; }
+  return d;
+}
+// A tail line looks like <Category><noise>$12.20 and must end in an amount.
+function c1Tail(line) {
+  // The sign can sit before the $ (-$250.00), after it ($-250.00), or the whole
+  // amount can be parenthesised. A card payment must not import as a purchase.
+  var am = String(line).match(/(-)?\s*\$\s*(-?[\d,]+\.\d{2})\s*\)?\s*$/);
+  if(!am) return null;
+  var amt = parseFloat(am[2].replace(/,/g,''));
+  if(isNaN(amt)) return null;
+  var head = line.slice(0, am.index);
+  var signBefore = !!am[1];
+  var cat = null, raw = null;
+  Object.keys(C1_CATS).forEach(function(c){
+    if(head.toLowerCase().indexOf(c.toLowerCase()) === 0 && (!raw || c.length > raw.length)) {
+      raw = c; cat = C1_CATS[c];
+    }
+  });
+  var negated = signBefore || /\(\s*-?\$/.test(line);
+  return { amt: Math.abs(amt), cat: cat, rawCat: raw, negative: amt < 0 || negated };
+}
+// Two bare month-day tokens and two tail lines is a shape Wells Fargo never produces.
+function looksCapitalOne(raw) {
+  var lines = String(raw).split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+  var dates = 0, tails = 0;
+  lines.forEach(function(l){
+    if(c1Date(l)) dates++;
+    else if(!/^total\b/i.test(l) && c1Tail(l) && /[A-Za-z]/.test(l)) tails++;
+  });
+  return dates >= 2 && tails >= 2;
+}
+// Walk in groups. Merchant lines are whatever sits between the date and the
+// tail, so a name that wraps onto two lines still parses.
+function parseCapitalOne(raw, acct, today) {
+  var lines = String(raw).split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+  var out = [], skipped = 0, i = 0;
+  while(i < lines.length) {
+    var d = c1Date(lines[i], today);
+    if(!d) { if(!/^total\b/i.test(lines[i])) skipped++; i++; continue; }
+    var j = i+1, desc = [], tail = null;
+    while(j < lines.length) {
+      if(c1Date(lines[j], today)) break;         // next row started; this one is malformed
+      var t = c1Tail(lines[j]);
+      if(t) { tail = t; j++; break; }
+      desc.push(lines[j]); j++;
+    }
+    if(!tail || !desc.length) { skipped++; i++; continue; }
+    var description = desc.join(' ').replace(/\s+/g,' ').trim();
+    var isPayment = tail.rawCat === 'Payment/Credit' || tail.negative
+                 || /\b(payment|thank you|autopay)\b/i.test(description);
+    var row = { date:d, desc:description, amt:tail.amt, acct:acct||'card', isIncome:false };
+    if(isPayment) {
+      // A payment is the card leg of a transfer from checking, never income.
+      row.looksTransfer = true; row.xferFlow = 'in';
+    } else if(tail.cat && tail.cat !== '__PAYMENT__') {
+      row.cat = tail.cat;                        // Capital One's own category
+    }
+    out.push(row);
+    i = j;
+  }
+  return { rows: out, skipped: skipped };
+}
 function previewImport() {
   var raw = document.getElementById('paste-input').value.trim();
   var msg = document.getElementById('import-msg');
   if(!raw) { msg.textContent='Paste some transactions first.'; return; }
-  if(window.__lastRaw !== raw) { importAcctOverride = null; window.__lastRaw = raw; }
+  if(window.__lastRaw !== raw) {
+    // A new paste clears a per-preview override, but keeps the choice made in
+    // the box above, which is set before pasting and is meant to persist.
+    var pre = document.getElementById('import-acct');
+    importAcctOverride = (pre && pre.value) ? pre.value : null;
+    window.__lastRaw = raw;
+  }
   msg.textContent='';
-  var det = detectAccount(raw);
-  var acct = importAcctOverride || det.acct;
-  window.__detect = { det: det, used: acct };
-  var skipped=0, parsed=[];
-  raw.split('\n').forEach(function(line) {
-    var lineAcct = importAcctOverride || detectLine(line, acct);
-    var p=parseLine(line, lineAcct);
-    if(!p){if(line.trim())skipped++;return;}
-    parsed.push(p);
-  });
+  var skipped=0, parsed=[], det, acct;
+  if(looksCapitalOne(raw)) {
+    // Capital One rows span three lines, so the line-by-line path cannot read them.
+    acct = importAcctOverride || 'card';
+    det = { acct: acct, confident: true, c1: true };
+    var c1 = parseCapitalOne(raw, acct);
+    parsed = c1.rows; skipped = c1.skipped;
+    window.__detect = { det: det, used: acct };
+  } else {
+    det = detectAccount(raw);
+    acct = importAcctOverride || det.acct;
+    window.__detect = { det: det, used: acct };
+    raw.split('\n').forEach(function(line) {
+      var lineAcct = importAcctOverride || detectLine(line, acct);
+      var p=parseLine(line, lineAcct);
+      if(!p){if(line.trim())skipped++;return;}
+      parsed.push(p);
+    });
+  }
   if(!parsed.length){ msg.textContent='No recognizable transactions found.'+(skipped?' ('+skipped+' lines could not be parsed)':''); return; }
   var dups=0, xfers=0;
   pendingImport=parsed.map(function(p, i){
@@ -1159,7 +1342,7 @@ function renderPreview(dups, skipped) {
     if(item.isXfer) dupBadge+='<span style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;background:#eef2f7;color:var(--navy2);padding:2px 6px;border:1px solid var(--line);margin-left:6px">transfer '+(p.xferFlow==='in'?'in':'out')+'</span>';
     var rowStyle=item.isDup?'opacity:0.55':'';
     if(item.isXfer){ amtClass='amt-xfer'; amtPrefix=(p.xferFlow==='in'?'\u2192 ':'\u2190 '); }
-    return '<tr style="'+rowStyle+'"><td style="width:32px;text-align:center"><input type="checkbox" data-idx="'+i+'" '+(item.selected?'checked':'')+' onchange="togglePreviewRow('+i+',this.checked)"></td><td class="tx-date">'+p.date.substring(5).replace('-','/')+'</td><td class="tx-desc" title="'+p.desc+'">'+p.desc+dupBadge+'</td><td class="tx-cat">'+categorize(p.desc,p.isIncome)+'</td><td class="'+amtClass+'">'+amtPrefix+fmt(p.amt)+'</td></tr>';
+    return '<tr style="'+rowStyle+'"><td style="width:32px;text-align:center"><input type="checkbox" data-idx="'+i+'" '+(item.selected?'checked':'')+' onchange="togglePreviewRow('+i+',this.checked)"></td><td class="tx-date">'+p.date.substring(5).replace('-','/')+'</td><td class="tx-desc" title="'+p.desc+'">'+p.desc+dupBadge+'</td><td class="tx-cat">'+(p.cat||categorize(p.desc,p.isIncome))+'</td><td class="'+amtClass+'">'+amtPrefix+fmt(p.amt)+'</td></tr>';
   }).join('');
   var d = window.__detect;
   var banner = '';
@@ -1239,7 +1422,7 @@ function commitImport(){
       transactions.push({date:p.date,type:'Transfer',cat:cat,amt:p.amt,desc:p.desc,
                          acct:acct,flow:p.xferFlow,source:'manual'});
     } else {
-      transactions.push({date:p.date,type:p.isIncome?'Income':'Expense',cat:categorize(p.desc,p.isIncome),
+      transactions.push({date:p.date,type:p.isIncome?'Income':'Expense',cat:p.cat||categorize(p.desc,p.isIncome),
                          amt:p.amt,desc:p.desc,acct:acct,source:'manual'});
     }
   });
@@ -2161,6 +2344,74 @@ function removeSavEntry(i) {
 // Clears a date range forward so a bad import can be redone without losing
 // the history behind it.
 
+// ---- Profile menu -----------------------------------------------------
+var profMenuOpen = false;
+function toggleProfMenu(e) {
+  e.stopPropagation();
+  profMenuOpen = !profMenuOpen;
+  document.getElementById('prof-menu').classList.toggle('on', profMenuOpen);
+  document.getElementById('prof-btn').classList.toggle('open', profMenuOpen);
+}
+function shutProfMenu() {
+  profMenuOpen = false;
+  var m = document.getElementById('prof-menu'), b = document.getElementById('prof-btn');
+  if(m) m.classList.remove('on');
+  if(b) b.classList.remove('open');
+}
+document.addEventListener('click', function(){ if(profMenuOpen) shutProfMenu(); });
+document.addEventListener('keydown', function(e){
+  if(e.key !== 'Escape') return;
+  var mask = document.getElementById('prof-mask');
+  if(mask && mask.classList.contains('on')) closeProf();
+  else if(profMenuOpen) shutProfMenu();
+});
+
+var PROF_TITLES = { backup:'Backup & restore', connect:'Bank connection', logout:'Log out' };
+var PROF_FEET = {
+  backup: '<button class="abtn" onclick="document.getElementById(\'restore-file\').click()">Restore from file</button>'
+        + '<button class="abtn pri" onclick="exportBackup()">Export backup</button>',
+  connect: '<button class="abtn" onclick="closeProf()">Close</button>',
+  logout: '<button class="abtn" onclick="closeProf()">Cancel</button>'
+        + '<button class="abtn danger" onclick="doLogout()">Log out</button>'
+};
+function openProf(k) {
+  shutProfMenu();
+  ['backup','connect','logout'].forEach(function(x){
+    var el = document.getElementById('pm-'+x);
+    if(el) el.style.display = (x === k) ? 'block' : 'none';
+  });
+  document.getElementById('prof-title').textContent = PROF_TITLES[k] || '';
+  document.getElementById('prof-foot').innerHTML = PROF_FEET[k] || '';
+  if(k === 'backup') fillBackupStats();
+  if(k === 'connect' && typeof updatePlaidButtons === 'function') updatePlaidButtons();
+  document.getElementById('prof-mask').classList.add('on');
+}
+function closeProf(e) {
+  if(e && e.target && e.target.id !== 'prof-mask') return;
+  var m = document.getElementById('prof-mask');
+  if(m) m.classList.remove('on');
+}
+function fillBackupStats() {
+  var ds = transactions.map(function(t){ return t.date; }).filter(Boolean).sort();
+  document.getElementById('bk-count').textContent = transactions.length;
+  document.getElementById('bk-range').textContent = ds.length
+    ? subLongDate(ds[0]) + ' to ' + subLongDate(ds[ds.length-1]) : '\u2014';
+  var last = null;
+  try { last = localStorage.getItem('jlf_lastexport'); } catch(e){}
+  document.getElementById('bk-last').textContent = last ? subLongDate(last.slice(0,10)) : 'Never';
+  var msg = document.getElementById('backup-msg');
+  if(msg) msg.textContent = '';
+}
+function doLogout() {
+  try { sessionStorage.removeItem('jlf_auth'); } catch(e){}
+  closeProf();
+  var lock = document.getElementById('lock');
+  if(lock) lock.style.display = 'flex';
+  var pw = document.getElementById('pw-input');
+  if(pw) { pw.value = ''; pw.focus(); }
+  var err = document.getElementById('pw-error');
+  if(err) err.textContent = '';
+}
 // ---- Backup & restore -------------------------------------------------
 // Everything the app owns lives under these keys. Auth and the Plaid token are
 // deliberately excluded: one is a session flag, the other a bank credential that
@@ -2188,6 +2439,8 @@ function exportBackup() {
   a.download = 'jlfinance-backup-' + new Date().toISOString().slice(0,10) + '.json';
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  try { localStorage.setItem('jlf_lastexport', new Date().toISOString()); } catch(e){}
+  if(document.getElementById('bk-last')) fillBackupStats();
   msgBackup(count + ' transactions exported. Keep this file somewhere safe.');
 }
 
