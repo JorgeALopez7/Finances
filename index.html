@@ -221,6 +221,77 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 .sav-toggle-btn{width:36px;height:36px;border:1.5px solid var(--line);background:#fff;color:var(--navy);font-size:22px;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;transition:all 0.15s}
 .sav-toggle-btn.active-add{background:var(--navy);color:#fff;border-color:var(--navy)}
 .sav-toggle-btn.active-sub{background:var(--neg);color:#fff;border-color:var(--neg)}
+.sub-hero{background:var(--navy);padding:22px 24px;display:flex;justify-content:space-between;align-items:flex-end}
+.sub-hero-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#9aa5b1;margin-bottom:8px}
+.sub-hero-val{font-size:34px;font-weight:200;color:#fff;line-height:1}
+.sub-hero-val span{font-size:14px;color:#9aa5b1;margin-left:4px}
+.sub-hero-right{text-align:right}
+.sub-hero-meta{font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:#9aa5b1;line-height:1.9}
+.sub-hero-meta b{color:#fff;font-weight:400}
+.sub-strip{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-top:none;margin-bottom:30px}
+.sub-strip div{padding:12px 18px;border-right:1px solid var(--line2)}
+.sub-strip div:last-child{border-right:none}
+.strip-label{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text4);margin-bottom:5px}
+.strip-val{font-size:16px;font-weight:300;color:var(--navy)}
+.sec{margin-bottom:34px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid var(--navy);padding-bottom:9px}
+.sec-title{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy)}
+.sec-count{font-size:10px;color:var(--text4);letter-spacing:0.06em}
+.sec-right{display:flex;align-items:center;gap:12px}
+.sortbtn{font-family:var(--font);font-size:9px;letter-spacing:0.09em;text-transform:uppercase;padding:5px 10px;border:1px solid var(--line);background:#fff;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:6px}
+.sortbtn:hover{border-color:var(--navy);color:var(--navy)}
+.sortbtn i{font-style:normal;font-size:8px;color:var(--gold)}
+.sec-sub{font-size:10px;color:var(--text3);padding:9px 0 0;line-height:1.5}
+.srow{display:flex;align-items:center;gap:14px;padding:14px 2px;border-bottom:1px solid var(--line2)}
+.srow:last-child{border-bottom:none}
+.srow-main{min-width:0;flex:1}
+.srow-name{font-size:14px;font-weight:500;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srow-name button{font-family:var(--font);font-size:14px;font-weight:500;color:var(--navy);background:none;border:none;padding:0;cursor:pointer;border-bottom:1px solid transparent}
+.srow-name button:hover{border-bottom-color:var(--gold)}
+.srow-amt{font-size:19px;font-weight:300;color:var(--navy);text-align:right;white-space:nowrap}
+.srow-amt em{display:block;font-size:9px;font-style:normal;letter-spacing:0.09em;text-transform:uppercase;color:var(--text5);margin-top:3px}
+.srow.dim .srow-name,.srow.dim .srow-name button,.srow.dim .srow-amt{color:var(--text3)}
+.abtn{font-family:var(--font);font-size:9px;letter-spacing:0.09em;text-transform:uppercase;padding:6px 11px;border:1px solid var(--line);background:#fff;color:var(--text2);cursor:pointer}
+.abtn:hover{border-color:var(--navy);color:var(--navy)}
+.abtn.pri{border-color:var(--navy);background:var(--navy);color:#fff}
+.abtn.pri:hover{background:var(--navy2);border-color:var(--navy2)}
+.pill{display:inline-block;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 7px;border:1px solid;margin-left:8px;vertical-align:1px}
+.pill.missed{color:var(--gold);border-color:var(--gold)}
+.pill.inactive{color:var(--text4);border-color:var(--line)}
+.igrow{display:flex;align-items:center;gap:12px;padding:9px 2px;border-bottom:1px solid var(--line2);font-size:12px;color:var(--text3)}
+.igrow:last-child{border-bottom:none}
+.igrow b{font-weight:400;color:var(--text2)}
+.igrow .sp{margin-left:auto;display:flex;gap:6px;flex-shrink:0}
+.igrow.del{opacity:.55}
+.igrow.del b{text-decoration:line-through}
+.modal-x{font-family:var(--font);font-size:17px;line-height:1;color:var(--text4);background:none;border:none;cursor:pointer;padding:0 2px}
+.modal-x:hover{color:var(--navy)}
+#sub-modal{max-width:460px}
+#sub-modal .modal-h{display:flex;align-items:flex-start;gap:12px}
+#sub-modal .modal-b{padding:0 22px 20px}
+#sub-modal .modal-f{justify-content:flex-end}
+.sd-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--navy);padding:16px 0 9px;margin-bottom:2px}
+.sd-first{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text4)}
+.sd-first b{display:block;font-size:12px;letter-spacing:0.02em;text-transform:none;color:var(--navy);font-weight:400;margin-top:4px}
+.sd-rate{text-align:right}
+.sd-rate .v{font-size:17px;font-weight:300;color:var(--navy)}
+.sd-rate .l{font-size:9px;letter-spacing:0.09em;text-transform:uppercase;color:var(--text4);margin-top:3px}
+.sd-cap{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text4);padding:14px 0 4px}
+.sd-line{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid var(--line2)}
+.sd-line:last-child{border-bottom:none}
+.sd-line span{color:var(--text2)}
+.sd-line b{font-weight:400;color:var(--navy)}
+.sd-line.chg b{color:var(--gold)}
+.sd-line.chg span:after{content:' \00b7 price change';font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold)}
+@media(max-width:640px){
+  .sub-hero{flex-direction:column;align-items:flex-start;gap:16px}
+  .sub-hero-right{text-align:left}
+  .sub-strip{grid-template-columns:1fr}
+  .sub-strip div{border-right:none;border-bottom:1px solid var(--line2)}
+  .sub-strip div:last-child{border-bottom:none}
+  .srow{flex-wrap:wrap}
+  .srow-amt{text-align:left}
+}
 #lock{position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:9999}
 .lock-mark{width:48px;height:48px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;margin:0 auto 20px}
 .lock-title{font-size:16px;color:var(--navy);margin-bottom:6px}
@@ -252,6 +323,12 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
     <button class="btn" onclick="checkPw()" style="padding:11px 36px">Unlock</button>
     <div class="lock-err" id="pw-error"></div>
   </div>
+</div>
+<div class="mask" id="restore-mask" role="dialog" aria-modal="true" onclick="closeRestore(event)">
+  <div class="modal" id="restore-modal" style="max-width:480px"></div>
+</div>
+<div class="mask" id="sub-mask" role="dialog" aria-modal="true" onclick="closeSubDetail(event)">
+  <div class="modal" id="sub-modal"></div>
 </div>
 <div class="mask" id="dup-mask" role="dialog" aria-modal="true" aria-labelledby="dup-title">
   <div class="modal">
@@ -320,6 +397,17 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
         <button class="btn" onclick="cancelPreview()" style="background:#fff;color:var(--navy);padding:10px 20px">Cancel</button>
         <span id="preview-dup-note" style="font-size:11px;color:var(--text3)"></span>
       </div>
+    </div>
+
+    <div class="import-box" style="margin-top:26px">
+      <div class="import-label">Backup &amp; restore</div>
+      <p class="import-tip">Your history lives only in this browser. Export a copy you can keep, and restore it here on any browser or machine.</p>
+      <div class="import-actions">
+        <button class="btn" onclick="exportBackup()">Export backup</button>
+        <button class="btn" onclick="document.getElementById('restore-file').click()" style="background:#fff;color:var(--navy)">Restore from file</button>
+        <input type="file" id="restore-file" accept="application/json,.json" style="display:none" onchange="stageRestore(this)">
+      </div>
+      <div class="import-msg" id="backup-msg"></div>
     </div>
 
   </div>
@@ -424,7 +512,27 @@ function migrateSchema(tx) {
 }
 const NEEDS_CATS = ['Gas','Groceries/Shopping','Car Maintenance/Mods','Gym/Fitness','Bills & Utilities'];
 const WANTS_CATS = ['Dining Out','Subscriptions','Cash Withdrawal','AA Cafe (Work)','Zelle Sent','Entertainment','Misc / Other','Transportation'];
-const SUB_MAP = {'Spotify':'SPOTIFY','Apple.com':'APPLE.COM','Claude.ai':'CLAUDE','Adobe':'ADOBE'};
+// Merchant aliases: many raw descriptions collapse to one subscription. Values are
+// prefixes tested against normDesc() output, so they must already be normalised
+// (no punctuation, single-spaced, uppercase).
+const SUB_ALIAS_DEFAULT = {
+  'Apple':        ['APPLE COM BILL','APPLE SERVICES','APPLE COM','ITUNES','APPLE SUB'],
+  'Netflix':      ['NETFLIX'],
+  'Spotify':      ['SPOTIFY'],
+  'Claude.ai':    ['CLAUDE AI','CLAUDE ANTHROPIC','ANTHROPIC'],
+  'Adobe':        ['ADOBE'],
+  'Google':       ['GOOGLE ONE','GOOGLE STORAGE','GOOGLE'],
+  'Microsoft':    ['MICROSOFT','MSFT'],
+  'Amazon Prime': ['AMAZON PRIME','PRIME MEMBERSHIP'],
+  'YouTube':      ['YOUTUBE'],
+  'Canva':        ['CANVA']
+};
+// days = nominal period, tol = how far an individual interval may drift.
+const CADENCES = [
+  { name:'Monthly',   label:'Monthly',   days:30.44, tol:4,  perMonth:1    },
+  { name:'Quarterly', label:'Quarterly', days:91.31, tol:7,  perMonth:1/3  },
+  { name:'Yearly',    label:'Yearly',    days:365.0, tol:14, perMonth:1/12 }
+];
 
 // Auth
 (function(){ if(sessionStorage.getItem('jlf_auth')==='1') document.getElementById('lock').style.display='none'; })();
@@ -469,6 +577,22 @@ var DEFAULT_SRC = [
   { id:'savings',  name:'Wells Fargo Way2Save', desc:'Posted from imported transactions', type:'posted', color:'#b9975b' },
   { id:'cashroll', name:'CashRoll',             desc:'Physical cash you hold',            type:'manual', color:'#4a6072', balance:0 }
 ];
+function loadSubAlias() {
+  try { var s=localStorage.getItem('jlf_subalias'); if(s) return JSON.parse(s); } catch(e){}
+  return JSON.parse(JSON.stringify(SUB_ALIAS_DEFAULT));
+}
+function saveSubAlias() { try { localStorage.setItem('jlf_subalias', JSON.stringify(subAlias)); } catch(e){} }
+function loadSubRules() { try { var s=localStorage.getItem('jlf_subrules'); return s?JSON.parse(s):{}; } catch(e){ return {}; } }
+function saveSubRules() { try { localStorage.setItem('jlf_subrules', JSON.stringify(subRules)); } catch(e){} }
+function loadSubHidden() { try { var s=localStorage.getItem('jlf_subhidden'); return s?JSON.parse(s):{}; } catch(e){ return {}; } }
+function saveSubHidden() { try { localStorage.setItem('jlf_subhidden', JSON.stringify(subHidden)); } catch(e){} }
+var subAlias  = loadSubAlias();
+var subRules  = loadSubRules();
+var subHidden = loadSubHidden();
+var subSortDesc = true;
+var subDetailKey = null;
+var subShowHidden = false;
+
 function loadSrc() { try { var s=localStorage.getItem('jlf_savsrc'); return s?JSON.parse(s):null; } catch(e){ return null; } }
 function saveSrc() { try { localStorage.setItem('jlf_savsrc', JSON.stringify(savSources)); } catch(e){} }
 var savSources = loadSrc() || JSON.parse(JSON.stringify(DEFAULT_SRC));
@@ -1399,30 +1523,244 @@ function renderBudget() {
 }
 
 // Subscriptions
-function getSubsList() {
-  var subs = {};
-  transactions.filter(function(t){ return t.type==='Expense'&&t.cat==='Subscriptions'; }).forEach(function(t) {
-    var name = 'Other';
-    Object.keys(SUB_MAP).forEach(function(k){ if(t.desc.toUpperCase().includes(SUB_MAP[k])) name=k; });
-    if(!subs[name]||t.date>subs[name].date) subs[name]={amt:t.amt,date:t.date};
+// Detection is deliberately rule-based, not scored: three occurrences on a valid
+// cadence, or two for a "potential". Confirm/ignore decisions are stored per
+// normalised merchant and always win over the rules.
+
+// Store numbers survive normDesc (it only strips digit runs of 6+), which would
+// split one merchant across locations. Trim short trailing digits for grouping
+// only -- normDesc itself is left alone because import dedupe depends on it.
+function subStripStore(n) {
+  return n.replace(/\s+#?\d{1,5}$/, '').trim() || n;
+}
+function subPretty(key) {
+  return key.toLowerCase().split(' ').filter(Boolean).map(function(w){
+    return w.charAt(0).toUpperCase()+w.slice(1);
+  }).join(' ');
+}
+// Merchant keys go into inline onclick attributes; normDesc strips punctuation so
+// quotes should never appear, but alias display names are user-editable later.
+function esc(s) {
+  return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+}
+// Normalise, then collapse through the alias map by longest matching prefix.
+function subKey(desc) {
+  var n = normDesc(desc);
+  if(!n) return null;
+  var hit = null;
+  Object.keys(subAlias).forEach(function(name){
+    (subAlias[name]||[]).forEach(function(pre){
+      if(n.indexOf(pre) === 0 && (!hit || pre.length > hit.len)) hit = { name:name, len:pre.length };
+    });
   });
-  return subs;
+  if(hit) return hit.name;
+  return subPretty(subStripStore(n.split(' ').slice(0,3).join(' ')));
 }
+// Median interval picks the cadence; every interval must then sit inside that
+// cadence's tolerance, with one violation forgiven so a single skipped or
+// double-billed month does not disqualify an obvious subscription.
+function subMatchCadence(intervals) {
+  if(!intervals.length) return null;
+  var sorted = intervals.slice().sort(function(a,b){ return a-b; });
+  var mid = Math.floor(sorted.length/2);
+  var median = sorted.length%2 ? sorted[mid] : (sorted[mid-1]+sorted[mid])/2;
+  var cad = null;
+  CADENCES.forEach(function(c){ if(Math.abs(median - c.days) <= c.tol) cad = c; });
+  if(!cad) return null;
+  var bad = 0;
+  intervals.forEach(function(iv){ if(Math.abs(iv - cad.days) > cad.tol) bad++; });
+  return bad > 1 ? null : cad;
+}
+// Cancellation detection: how overdue the next charge is, relative to cadence.
+function subLifeStatus(cad, lastDate, today) {
+  var since = daysApart(today, lastDate);
+  if(since <= cad.days + cad.tol) return { key:'active',   label:'Active'   };
+  if(since <= cad.days * 2)       return { key:'missed',   label:'Missed'   };
+  return { key:'inactive', label:'Inactive' };
+}
+function analyzeSubs(todayStr) {
+  var today = todayStr || new Date().toISOString().slice(0,10);
+  var groups = {};
+  transactions.filter(function(t){ return t.type === 'Expense'; }).forEach(function(t){
+    var k = subKey(t.desc);
+    if(!k) return;
+    (groups[k] = groups[k] || []).push(t);
+  });
+  var out = { confirmed:[], potential:[], ignored:[] };
+  Object.keys(groups).forEach(function(k){
+    var rows = groups[k].slice().sort(function(a,b){ return a.date < b.date ? -1 : 1; });
+    var last = rows[rows.length-1];
+    var rule = subRules[k];
+    if(rule === 'ignored') {
+      out.ignored.push({ key:k, n:rows.length, last:last.date, amt:last.amt, hidden:!!subHidden[k] });
+      return;
+    }
+    var intervals = [];
+    for(var i=1;i<rows.length;i++) intervals.push(daysApart(rows[i].date, rows[i-1].date));
+    var cad = subMatchCadence(intervals);
+    var item = { key:k, n:rows.length, amt:last.amt, last:last.date, first:rows[0].date,
+                 rows:rows, cad:cad, status:cad ? subLifeStatus(cad,last.date,today) : null };
+    if(rule === 'confirmed') {
+      // A user-confirmed subscription stays confirmed even if its cadence lapses;
+      // fall back to Monthly so it still carries a total and a status.
+      if(!item.cad) { item.cad = CADENCES[0]; item.status = subLifeStatus(CADENCES[0],last.date,today); }
+      item.section = 'confirmed'; out.confirmed.push(item); return;
+    }
+    if(!cad) return;
+    if(rows.length >= 3)      { item.section='confirmed'; out.confirmed.push(item); }
+    else if(rows.length === 2){ item.section='potential'; out.potential.push(item); }
+  });
+  // Rank on the monthly-equivalent figure so a yearly item does not outrank a
+  // monthly one purely on its charge size.
+  var dir = subSortDesc ? 1 : -1;
+  out.confirmed.sort(function(a,b){ return ((b.amt*b.cad.perMonth)-(a.amt*a.cad.perMonth))*dir; });
+  out.potential.sort(function(a,b){ return (b.amt-a.amt)*dir; });
+  out.ignored.sort(function(a,b){ return a.key < b.key ? -1 : 1; });
+  return out;
+}
+// Confirmed and not lapsed, each normalised to a monthly figure.
 function getSubsTotal() {
-  var s=getSubsList(); return Object.values(s).reduce(function(a,b){ return a+b.amt; },0);
+  return analyzeSubs().confirmed.reduce(function(sum,s){
+    return s.status.key === 'inactive' ? sum : sum + s.amt * s.cad.perMonth;
+  }, 0);
 }
+
+var SUB_MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function subLongDate(d){ var p=d.split('-'); return SUB_MON[+p[1]-1]+' '+(+p[2])+', '+p[0]; }
+
+function subDetailBody(s) {
+  var rate = s.cad.perMonth === 1 ? 'per month'
+    : s.cad.label.toLowerCase()+' &middot; '+fmt(s.amt*s.cad.perMonth)+' / mo';
+  var pill = (s.status && s.status.key !== 'active')
+    ? '<span class="pill '+s.status.key+'">'+s.status.label+'</span>' : '';
+  var h = '<div class="modal-h"><div class="modal-t">'+s.key+pill+'</div>'
+    +   '<button class="modal-x" onclick="closeSubDetail()" aria-label="Close">&times;</button></div>'
+    + '<div class="modal-b"><div class="sd-head">'
+    +   '<div class="sd-first">First payment<b>'+subLongDate(s.first)+'</b></div>'
+    +   '<div class="sd-rate"><div class="v">'+fmt(s.amt)+'</div><div class="l">'+rate+'</div></div>'
+    + '</div><div class="sd-cap">'+s.n+' charge'+(s.n===1?'':'s')+'</div>';
+  s.rows.forEach(function(r,i){
+    var chg = i > 0 && Math.abs(r.amt - s.rows[i-1].amt) > 0.005;
+    h += '<div class="sd-line'+(chg?' chg':'')+'"><span>'+subLongDate(r.date)+'</span><b>'+fmt(r.amt)+'</b></div>';
+  });
+  return h + '</div><div class="modal-f">'
+    + (s.section === 'potential'
+        ? '<button class="abtn pri" onclick="setSubRule(\'' + esc(s.key) + '\',\'confirmed\')">Confirm subscription</button>'
+        : '')
+    + '<button class="abtn" onclick="setSubRule(\'' + esc(s.key) + '\',\'ignored\')">Ignore this merchant</button>'
+    + '</div>';
+}
+function openSubDetail(key) { subDetailKey = key; renderSubDetail(); }
+function closeSubDetail(e) {
+  // Only the backdrop or the X dismisses; clicks inside the box must not.
+  if(e && e.target && e.target.id !== 'sub-mask') return;
+  subDetailKey = null; renderSubDetail();
+}
+function renderSubDetail() {
+  var mask = document.getElementById('sub-mask');
+  if(!mask) return;
+  if(!subDetailKey) { mask.classList.remove('on'); return; }
+  var res = analyzeSubs();
+  var s = res.confirmed.concat(res.potential).filter(function(x){ return x.key === subDetailKey; })[0];
+  if(!s) { subDetailKey = null; mask.classList.remove('on'); return; }
+  document.getElementById('sub-modal').innerHTML = subDetailBody(s);
+  mask.classList.add('on');
+}
+function setSubRule(key, val) {
+  if(subDetailKey === key) subDetailKey = null;
+  // Un-ignoring clears the deleted flag too, so a merchant cannot return to the
+  // list carrying an invisible deletion.
+  if(val === null) { delete subRules[key]; delete subHidden[key]; saveSubHidden(); }
+  else subRules[key] = val;
+  saveSubRules();
+  renderSubscriptions(); renderOverview();
+}
+function hideSubIgnored(key)   { subHidden[key] = true; saveSubHidden(); renderSubscriptions(); }
+function unhideSubIgnored(key) { delete subHidden[key]; saveSubHidden(); renderSubscriptions(); }
+function toggleSubSort()   { subSortDesc = !subSortDesc; renderSubscriptions(); }
+function toggleSubHidden() { subShowHidden = !subShowHidden; renderSubscriptions(); }
+
 function renderSubscriptions() {
-  var subs = getSubsList(); var names = Object.keys(subs);
-  var items = names.map(function(n){
-    return '<div class="sub-item"><div class="sub-name">'+n+'</div><div class="sub-cycle">Monthly &middot; last '+subs[n].date.substring(5).replace('-','/')+'</div><div class="sub-amt">'+fmt(subs[n].amt)+'</div></div>';
-  }).join('');
-  if(names.length%2===1) items += '<div class="sub-item"></div>';
-  var total = getSubsTotal();
-  var html = '<div class="panel-head">Active subscriptions &amp; recurring payments</div>';
-  html += names.length
-    ? '<div class="sub-grid">'+items+'</div><div class="sub-total"><div class="sub-total-label">Total monthly recurring</div><div class="sub-total-val">'+fmt(total)+' / mo</div></div>'
-    : '<div class="empty">No recurring subscriptions detected yet.</div>';
-  document.getElementById('page-subscriptions').innerHTML = html;
+  var el = document.getElementById('page-subscriptions');
+  if(!el) return;
+  var res = analyzeSubs();
+  var monthly = res.confirmed.reduce(function(sum,s){
+    return s.status.key === 'inactive' ? sum : sum + s.amt * s.cad.perMonth; }, 0);
+  var active  = res.confirmed.filter(function(s){ return s.status.key !== 'inactive'; }).length;
+  var flagged = res.confirmed.filter(function(s){ return s.status.key !== 'active'; }).length;
+
+  var h = '<div class="sub-hero">'
+    +   '<div><div class="sub-hero-label">Monthly recurring</div>'
+    +   '<div class="sub-hero-val">'+fmt(monthly)+'<span>/ mo</span></div></div>'
+    +   '<div class="sub-hero-right"><div class="sub-hero-meta"><b>'+active+'</b> active'
+    +   (flagged ? ' &middot; <b>'+flagged+'</b> needs review' : '')+'</div></div></div>'
+    + '<div class="sub-strip">'
+    +   '<div><div class="strip-label">Detected</div><div class="strip-val">'+res.confirmed.length+'</div></div>'
+    +   '<div><div class="strip-label">Awaiting review</div><div class="strip-val">'+res.potential.length+'</div></div>'
+    + '</div>';
+
+  var toggle = '<button class="sortbtn" onclick="toggleSubSort()">'
+    + (subSortDesc ? 'High &rarr; Low <i>&#9660;</i>' : 'Low &rarr; High <i>&#9650;</i>')+'</button>';
+
+  h += '<div class="sec"><div class="sec-head"><div class="sec-title">Subscriptions</div>'
+    +  '<div class="sec-right"><div class="sec-count">'+res.confirmed.length+'</div>'+toggle+'</div></div>';
+  if(res.confirmed.length) {
+    res.confirmed.forEach(function(s){
+      var pill = s.status.key === 'active' ? ''
+        : '<span class="pill '+s.status.key+'">'+s.status.label+'</span>';
+      h += '<div class="srow'+(s.status.key==='inactive'?' dim':'')+'">'
+        +   '<div class="srow-main"><div class="srow-name">'
+        +     '<button onclick="openSubDetail(\''+esc(s.key)+'\')">'+s.key+'</button>'+pill+'</div></div>'
+        +   '<div class="srow-amt">'+fmt(s.amt)
+        +     (s.cad.perMonth!==1 ? '<em>'+fmt(s.amt*s.cad.perMonth)+' / mo</em>' : '')+'</div></div>';
+    });
+  } else {
+    h += '<div class="empty">Nothing detected yet &mdash; three charges are needed before a merchant qualifies.</div>';
+  }
+  h += '</div>';
+
+  h += '<div class="sec"><div class="sec-head"><div class="sec-title">Potential</div>'
+    +  '<div class="sec-right"><div class="sec-count">'+res.potential.length+'</div></div></div>'
+    +  '<div class="sec-sub">Seen twice on a regular interval. Not counted toward the total until confirmed.</div>';
+  if(res.potential.length) {
+    res.potential.forEach(function(s){
+      h += '<div class="srow"><div class="srow-main"><div class="srow-name">'
+        +   '<button onclick="openSubDetail(\''+esc(s.key)+'\')">'+s.key+'</button></div></div>'
+        +   '<div class="srow-amt">'+fmt(s.amt)+'</div></div>';
+    });
+  } else {
+    h += '<div class="empty">Nothing awaiting review.</div>';
+  }
+  h += '</div>';
+
+  var vis = res.ignored.filter(function(s){ return !s.hidden; });
+  var hid = res.ignored.filter(function(s){ return s.hidden; });
+  h += '<div class="sec"><div class="sec-head"><div class="sec-title">Ignored</div>'
+    +  '<div class="sec-right"><div class="sec-count">'+vis.length+'</div>'
+    +  (hid.length ? '<button class="sortbtn" onclick="toggleSubHidden()">'
+        +(subShowHidden ? 'Hide deleted' : 'Show '+hid.length+' deleted')+'</button>' : '')
+    +  '</div></div>';
+  if(vis.length) {
+    vis.forEach(function(s){
+      h += '<div class="igrow"><b>'+s.key+'</b> &middot; '+fmt(s.amt)+' &middot; '+s.n+' charges'
+        +  '<span class="sp"><button class="abtn" onclick="setSubRule(\''+esc(s.key)+'\',null)">Undo</button>'
+        +  '<button class="abtn" onclick="hideSubIgnored(\''+esc(s.key)+'\')">Delete</button></span></div>';
+    });
+  } else {
+    h += '<div class="empty">Nothing ignored.</div>';
+  }
+  if(subShowHidden && hid.length) {
+    h += '<div class="sec-sub">Deleted from this list. Still suppressed from Subscriptions and Potential.</div>';
+    hid.forEach(function(s){
+      h += '<div class="igrow del"><b>'+s.key+'</b> &middot; '+fmt(s.amt)+' &middot; '+s.n+' charges'
+        +  '<span class="sp"><button class="abtn" onclick="unhideSubIgnored(\''+esc(s.key)+'\')">Restore</button>'
+        +  '<button class="abtn" onclick="setSubRule(\''+esc(s.key)+'\',null)">Undo ignore</button></span></div>';
+    });
+  }
+  h += '</div>';
+
+  el.innerHTML = h;
+  renderSubDetail();
 }
 
 // Savings
@@ -1767,6 +2105,151 @@ function removeSavEntry(i) {
 
 // Clears a date range forward so a bad import can be redone without losing
 // the history behind it.
+
+// ---- Backup & restore -------------------------------------------------
+// Everything the app owns lives under these keys. Auth and the Plaid token are
+// deliberately excluded: one is a session flag, the other a bank credential that
+// should not be written to a file that gets emailed around.
+var BACKUP_KEYS = ['jlf_tx','jlf_saved','jlf_savlog','jlf_savsrc','jlf_acctcfg',
+                   'jlf_bal','jlf_subrules','jlf_subhidden','jlf_subalias',
+                   'jlf_schema','jlf_seedpurge','jlf_savmig','jlf_cardseed'];
+
+function collectBackup() {
+  var data = {};
+  BACKUP_KEYS.forEach(function(k){
+    try { var v = localStorage.getItem(k); if(v !== null) data[k] = v; } catch(e){}
+  });
+  return { app:'JLFinance', version:1, exported:new Date().toISOString(), data:data };
+}
+
+function exportBackup() {
+  var payload = collectBackup();
+  var count = 0;
+  try { count = (JSON.parse(payload.data.jlf_tx||'[]')||[]).length; } catch(e){}
+  var blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href = url;
+  a.download = 'jlfinance-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  msgBackup(count + ' transactions exported. Keep this file somewhere safe.');
+}
+
+function msgBackup(t, bad) {
+  var el = document.getElementById('backup-msg');
+  if(!el) return;
+  el.textContent = t;
+  el.style.color = bad ? 'var(--neg)' : 'var(--pos)';
+}
+
+var pendingRestore = null;
+
+function stageRestore(input) {
+  var f = input.files && input.files[0];
+  input.value = '';               // allow re-picking the same file later
+  if(!f) return;
+  var r = new FileReader();
+  r.onload = function() {
+    var p;
+    try { p = JSON.parse(r.result); } catch(e) { return msgBackup('That file is not valid JSON.', true); }
+    if(!p || p.app !== 'JLFinance' || !p.data) return msgBackup('That is not a JLFinance backup file.', true);
+    var incoming = [];
+    try { incoming = JSON.parse(p.data.jlf_tx || '[]') || []; } catch(e) {}
+    if(!incoming.length) return msgBackup('That backup contains no transactions.', true);
+    pendingRestore = { payload:p, incoming:incoming };
+    showRestore();
+  };
+  r.onerror = function(){ msgBackup('Could not read that file.', true); };
+  r.readAsText(f);
+}
+
+function txSpan(list) {
+  var ds = list.map(function(t){ return t.date; }).filter(Boolean).sort();
+  return ds.length ? ds[0] + ' to ' + ds[ds.length-1] : 'unknown range';
+}
+
+function showRestore() {
+  var p = pendingRestore; if(!p) return;
+  var cur = transactions.length, inc = p.incoming.length;
+  var when = (p.payload.exported||'').slice(0,10) || 'unknown date';
+  var h = '<div class="modal-h"><div class="modal-t">Restore backup</div></div>'
+    + '<div class="modal-b" style="padding:16px 22px 4px">'
+    + '<div class="sd-line"><span>Backup taken</span><b>'+when+'</b></div>'
+    + '<div class="sd-line"><span>Transactions in file</span><b>'+inc+'</b></div>'
+    + '<div class="sd-line"><span>Covering</span><b>'+txSpan(p.incoming)+'</b></div>'
+    + '<div class="sd-line"><span>Currently in this browser</span><b>'+cur+'</b></div>'
+    + '</div>'
+    + '<div style="padding:14px 22px 0;font-size:11px;color:var(--text2);line-height:1.55">'
+    + 'Merge keeps what is here and adds only rows the duplicate check does not already match. '
+    + 'Replace discards everything in this browser first. Replace is the right choice on a fresh browser; '
+    + 'merge is the right choice if you have imported anything since this backup.'
+    + '</div>'
+    + '<div class="modal-f" style="justify-content:flex-end">'
+    + '<button class="abtn" onclick="closeRestore()">Cancel</button>'
+    + '<button class="abtn" onclick="runRestore(\'replace\')">Replace all</button>'
+    + '<button class="abtn pri" onclick="runRestore(\'merge\')">Merge</button>'
+    + '</div>';
+  document.getElementById('restore-modal').innerHTML = h;
+  document.getElementById('restore-mask').classList.add('on');
+}
+
+function closeRestore(e) {
+  if(e && e.target && e.target.id !== 'restore-mask') return;
+  pendingRestore = null;
+  var m = document.getElementById('restore-mask');
+  if(m) m.classList.remove('on');
+}
+
+function runRestore(mode) {
+  var p = pendingRestore; if(!p) return;
+  // Snapshot first: a restore is the one action here that can destroy data, so
+  // it must be undoable even if the file turns out to be the wrong one.
+  try { localStorage.setItem('jlf_prerestore', JSON.stringify(collectBackup())); } catch(e){}
+
+  var added = 0, skipped = 0;
+  if(mode === 'replace') {
+    // Settings come from the file wholesale; transactions are handled below.
+    Object.keys(p.payload.data).forEach(function(k){
+      if(k === 'jlf_tx') return;
+      try { localStorage.setItem(k, p.payload.data[k]); } catch(e){}
+    });
+    transactions = p.incoming.slice();
+    added = transactions.length;
+  } else {
+    p.incoming.forEach(function(t){
+      var cand = { acct: acctOf(t), amt: t.amt, date: t.date, desc: t.desc };
+      if(findDuplicate(cand)) { skipped++; return; }
+      transactions.push(t); added++;
+    });
+  }
+  migrateSchema(transactions);
+  saveTx(transactions);
+
+  // Re-read anything the restore may have rewritten.
+  subRules  = loadSubRules();
+  subHidden = loadSubHidden();
+  subAlias  = loadSubAlias();
+
+  closeRestore();
+  renderAll();
+  msgBackup(mode === 'replace'
+    ? added + ' transactions restored, replacing what was here.'
+    : added + ' transactions added, ' + skipped + ' already present.');
+}
+
+// Recovery hatch for a restore done against the wrong file. Console only —
+// it is a repair tool, not something to put in front of you by accident.
+function undoRestore() {
+  var s = null;
+  try { s = localStorage.getItem('jlf_prerestore'); } catch(e){}
+  if(!s) { console.log('No pre-restore snapshot found.'); return; }
+  var p = JSON.parse(s);
+  Object.keys(p.data).forEach(function(k){
+    try { localStorage.setItem(k, p.data[k]); } catch(e){}
+  });
+  console.log('Reverted to the snapshot taken before the last restore. Reload the page.');
+}
 
 function renderAll() { renderCard(); renderOverview(); renderTransactions(); renderBudget(); renderSubscriptions(); renderSavings(); }
 
