@@ -1525,9 +1525,20 @@ var C1_MON = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:1
 
 // "Aug31" carries no year. Take the most recent occurrence that is not in the
 // future, which is right for a 90-day export in either direction.
-function c1Date(tok, today) {
-  var m = String(tok).trim().match(/^([A-Za-z]{3})[a-z]*\s*(\d{1,2})$/);
-  if(!m) return null;
+// "Aug 31" arrives three ways: one token, or the month and day on separate
+// lines. next is the following line, supplied when the day may live there.
+function c1Date(tok, today, next) {
+  var t = String(tok).trim();
+  var m = t.match(/^([A-Za-z]{3})[a-z]*\s*(\d{1,2})$/);
+  var usedNext = false;
+  if(!m) {
+    var bare = t.match(/^([A-Za-z]{3})[a-z]*$/);
+    if(!bare || next === undefined || next === null) return null;
+    var d2 = String(next).trim().match(/^(\d{1,2})$/);
+    if(!d2) return null;
+    m = [null, bare[1], d2[1]];
+    usedNext = true;
+  }
   var mo = C1_MON[m[1].toLowerCase()];
   if(!mo) return null;
   var day = parseInt(m[2],10);
@@ -1541,10 +1552,12 @@ function c1Date(tok, today) {
     return dt.getFullYear()===+str.slice(0,4) && (dt.getMonth()+1)===+str.slice(5,7) && dt.getDate()===+str.slice(8,10);
   };
   var d = mk(y);
-  if(!valid(d)) { d = mk(y-1); return valid(d) ? d : null; }
-  if(new Date(d+'T00:00:00') > ref) { var p = mk(y-1); if(!valid(p)) return null; d = p; }
-  return d;
+  if(!valid(d)) { d = mk(y-1); if(!valid(d)) return null; }
+  else if(new Date(d+'T00:00:00') > ref) { var p = mk(y-1); if(!valid(p)) return null; d = p; }
+  return usedNext ? { date:d, span:2 } : { date:d, span:1 };
 }
+// Convenience for callers that only want the string.
+function c1DateStr(tok, today, next) { var r = c1Date(tok, today, next); return r ? r.date : null; }
 // A tail line looks like <Category><noise>$12.20 and must end in an amount.
 function c1Tail(line) {
   // The sign can sit before the $ (-$250.00), after it ($-250.00), or the whole
@@ -1568,11 +1581,12 @@ function c1Tail(line) {
 function looksCapitalOne(raw) {
   var lines = String(raw).split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
   var dates = 0, tails = 0;
-  lines.forEach(function(l){
-    if(c1Date(l)) { dates++; return; }
+  lines.forEach(function(l, i){
+    if(c1DateStr(l, null, lines[i+1])) { dates++; return; }
     if(/^total\b/i.test(l)) return;
     // The amount can share a line with the category and cardholder, or sit on a
     // line of its own; both are Capital One, neither is Wells Fargo.
+    if(/^\d{1,2}$/.test(l)) return;   // a day number belonging to the line above
     if(c1Tail(l)) tails++;
   });
   return dates >= 2 && tails >= 2;
@@ -1583,16 +1597,17 @@ function parseCapitalOne(raw, acct, today) {
   var lines = String(raw).split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
   var out = [], skipped = 0, i = 0;
   while(i < lines.length) {
-    var d = c1Date(lines[i], today);
+    var dr = c1Date(lines[i], today, lines[i+1]);
+    var d = dr ? dr.date : null;
     if(!d) {
       // "Total:" and the bare amount under it are trailer noise, not failures.
       var noise = /^total\b/i.test(lines[i]) || /^\$?\s*[\d,]+\.\d{2}$/.test(lines[i]);
       if(!noise) skipped++;
       i++; continue;
     }
-    var j = i+1, desc = [], tail = null, lineCat = null;
+    var j = i + (dr.span || 1), desc = [], tail = null, lineCat = null;
     while(j < lines.length) {
-      if(c1Date(lines[j], today)) break;         // next row started; this one is malformed
+      if(c1DateStr(lines[j], today, lines[j+1])) break;   // next row started
       var t = c1Tail(lines[j]);
       if(t) { tail = t; j++; break; }
       var ln = lines[j];
