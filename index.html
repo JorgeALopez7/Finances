@@ -116,6 +116,55 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 .modal-f{padding:14px 22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .modal-f .hint{font-size:11px;color:var(--text4)}
 .btn-ghost{padding:10px 20px;border:1px solid var(--line);background:#fff;color:var(--navy);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;font-family:var(--font)}
+.mo-nav{display:flex;align-items:stretch;border:1px solid var(--line)}
+.mo-arrow{font-family:var(--font);font-size:20px;line-height:1;width:46px;flex-shrink:0;background:#fff;border:none;color:var(--navy);cursor:pointer}
+.mo-arrow:hover:not(:disabled){background:var(--surface)}
+.mo-arrow:disabled{color:var(--line);cursor:default}
+.mo-mid{flex:1;min-width:0;text-align:center;padding:9px 6px;border-left:1px solid var(--line2);border-right:1px solid var(--line2)}
+.mo-sel{font-family:var(--font);font-size:14px;color:var(--navy);background:none;border:none;text-align:center;text-align-last:center;cursor:pointer;max-width:100%;padding:0 2px}
+.mo-sel:focus{outline:none}
+.mo-sub{font-size:9px;letter-spacing:0.09em;text-transform:uppercase;color:var(--text4);margin-top:3px}
+.alloc-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0 10px}
+.alloc-t{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text4)}
+.alloc-box{border:1px solid var(--line);border-left:3px solid var(--gold);background:var(--surface);padding:14px;margin-bottom:12px}
+.al-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.al-f{display:flex;align-items:center;gap:6px}
+.al-f label{font-size:9px;letter-spacing:0.09em;text-transform:uppercase;color:var(--text4);min-width:46px}
+.al-f input{font-family:var(--font);font-size:13px;width:56px;padding:6px 8px;border:1px solid var(--line);background:#fff;color:var(--navy);text-align:right}
+.al-f span{font-size:11px;color:var(--text4)}
+.al-sum{margin-left:auto;font-size:11px;color:var(--pos)}
+.al-sum.bad{color:var(--neg)}
+.bigrow{border:1px solid var(--line);padding:18px 20px;margin-bottom:12px}
+.bigrow.sav{border-left:3px solid var(--gold)}
+.br-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;gap:12px}
+.br-n{font-size:14px;font-weight:500;color:var(--navy)}
+.br-c{font-size:10px;color:var(--text4);margin-top:3px}
+.br-a{font-size:19px;font-weight:300;color:var(--navy);text-align:right;white-space:nowrap}
+.br-a.over{color:var(--neg)}
+.br-of{font-size:11px;color:var(--text3);text-align:right}
+.track{height:5px;background:var(--line2);margin-top:10px}
+.fill{height:100%;background:var(--gold)}
+.fill.over{background:var(--neg)}
+.br-f{font-size:11px;color:var(--text3);margin-top:6px;display:flex;justify-content:space-between;gap:10px}
+.avg{font-size:10px;color:var(--text4)}
+.isrc{display:flex;align-items:center;gap:12px;padding:11px 2px;border-bottom:1px solid var(--line2)}
+.isrc:last-child{border-bottom:none}
+.isrc input{width:15px;height:15px;flex-shrink:0;cursor:pointer}
+.isrc-m{flex:1;min-width:0}
+.isrc-n{font-size:13px;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.isrc-d{font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text4);margin-top:3px}
+.isrc-a{font-size:14px;font-weight:300;color:var(--navy);text-align:right;white-space:nowrap}
+.isrc.off .isrc-n,.isrc.off .isrc-a{color:var(--text4)}
+.ask{border:1px solid var(--line);border-left:3px solid var(--gold);background:var(--surface);padding:12px 14px;margin:0 0 4px}
+.ask-t{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:10px}
+.ask-t b{color:var(--navy);font-weight:500}
+.ask-b{display:flex;gap:8px;flex-wrap:wrap}
+.more{display:flex;align-items:center;justify-content:space-between;width:100%;font-family:var(--font);font-size:10px;letter-spacing:0.09em;text-transform:uppercase;color:var(--text3);background:none;border:none;border-top:1px solid var(--line2);padding:12px 2px;cursor:pointer;margin-top:2px}
+.more:hover{color:var(--navy)}
+.more i{font-style:normal;font-size:8px;color:var(--text4)}
+.more:hover i{color:var(--gold)}
+.other-wrap{border-left:2px solid var(--line2);padding-left:12px}
+#sb-banner{display:none;background:var(--gold);color:#fff;font-size:11px;padding:9px 16px;text-align:center;letter-spacing:0.02em}
 .prof-btn{display:flex;align-items:center;gap:10px;background:none;border:1px solid transparent;padding:4px 6px 4px 10px;cursor:pointer;font-family:var(--font)}
 .prof-btn:hover{border-color:var(--line)}
 .prof-btn.open{border-color:var(--line);background:var(--surface)}
@@ -212,10 +261,6 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 .tx-cat{font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:var(--text3)}
 .tx-date{font-size:12px;color:var(--text3);white-space:nowrap}
 .tx-desc{max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.month-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--line);overflow-x:auto}
-.month-tabs::-webkit-scrollbar{display:none}
-.mt{padding:9px 16px;font-size:11px;letter-spacing:0.05em;color:var(--text3);cursor:pointer;white-space:nowrap;border-right:1px solid var(--line);background:none;border-top:none;border-bottom:none;border-left:none;font-family:var(--font)}
-.mt.active{background:var(--navy);color:#fff}
 .mt:last-child{border-right:none}
 .totals-bar{display:flex;gap:0;border:1px solid var(--line);margin-bottom:20px}
 .tb-item{padding:14px 18px;border-right:1px solid var(--line);flex:1}
@@ -283,6 +328,8 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 .pill{display:inline-block;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 7px;border:1px solid;margin-left:8px;vertical-align:1px}
 .pill.missed{color:var(--gold);border-color:var(--gold)}
 .pill.inactive{color:var(--text4);border-color:var(--line)}
+.ignored-sec .sec-head{border-bottom-color:var(--line)}
+.ignored-sec .sec-title{color:var(--text3)}
 .igrow{display:flex;align-items:center;gap:12px;padding:9px 2px;border-bottom:1px solid var(--line2);font-size:12px;color:var(--text3)}
 .igrow:last-child{border-bottom:none}
 .igrow b{font-weight:400;color:var(--text2)}
@@ -292,7 +339,11 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 .modal-x{font-family:var(--font);font-size:17px;line-height:1;color:var(--text4);background:none;border:none;cursor:pointer;padding:0 2px}
 .modal-x:hover{color:var(--navy)}
 #sub-modal{max-width:460px}
-#sub-modal .modal-h{display:flex;align-items:flex-start;gap:12px}
+#sub-modal .modal-h{display:flex;align-items:flex-start;gap:10px}
+#sub-modal .modal-t{flex:1;min-width:0}
+.modal-ic{background:none;border:none;color:var(--text4);font-size:15px;line-height:1;cursor:pointer;padding:0 3px;font-family:var(--font)}
+.modal-ic:hover{color:var(--navy)}
+.modal-ic.on{color:var(--gold)}
 #sub-modal .modal-b{padding:0 22px 20px}
 #sub-modal .modal-f{justify-content:flex-end}
 .sd-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--navy);padding:16px 0 9px;margin-bottom:2px}
@@ -307,6 +358,12 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 .sd-line span{color:var(--text2)}
 .sd-line b{font-weight:400;color:var(--navy)}
 .sd-line.chg b{color:var(--gold)}
+.sd-cx{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-left:3px solid var(--gold);background:var(--surface);padding:11px 13px;margin-top:16px;font-size:11px;color:var(--text2)}
+.sd-cx b{color:var(--navy);font-weight:500}
+.sd-cx.col{display:block}
+.sd-cx-t{font-size:11px;color:var(--text2);margin-bottom:10px}
+.sd-cx-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cx-sel{font-size:12px;border:1px solid var(--line);padding:6px 8px;text-align:left;text-align-last:left;background:#fff}
 .sd-line.chg span:after{content:' \00b7 price change';font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold)}
 @media(max-width:640px){
   .sub-hero{flex-direction:column;align-items:flex-start;gap:16px}
@@ -337,18 +394,21 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 }
 </style>
 <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div id="lock">
   <div style="text-align:center">
     <div class="lock-mark">JL</div>
     <div class="lock-title">J.L. Finance</div>
-    <div class="lock-sub">Enter password to continue</div>
-    <input type="password" class="lock-input" id="pw-input" placeholder="Password">
-    <button class="btn" onclick="checkPw()" style="padding:11px 36px">Unlock</button>
+    <div class="lock-sub" id="lock-sub">Sign in to continue</div>
+    <input type="email" class="lock-input" id="email-input" placeholder="Email" autocomplete="username">
+    <input type="password" class="lock-input" id="pw-input" placeholder="Password" autocomplete="current-password">
+    <button class="btn" id="lock-btn" onclick="checkPw()" style="padding:11px 36px">Sign in</button>
     <div class="lock-err" id="pw-error"></div>
   </div>
 </div>
+<div id="sb-banner"></div>
 <div class="mask" id="prof-mask" role="dialog" aria-modal="true" onclick="closeProf(event)">
   <div class="modal" id="prof-modal" style="max-width:470px">
 
@@ -493,21 +553,9 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 const PW_HASH = '578202bb2f950725df16e4bf6ae68f691e983f03e7e87469975ea782517e36ae';
 const SEED_TX = [];
 // Detect biweekly pay from current month's AA payroll transactions
-function detectBiweekly() {
-  var mo = currentMonth();
-  var paychecks = transactions.filter(function(t) {
-    var txMo = t.date.substring(0,7);
-    return txMo === mo && t.type === 'Income' && (t.desc.toUpperCase().includes('PAYROLL') || t.desc.toUpperCase().includes('AMERICANAIRLINES'));
-  });
-  if(paychecks.length > 0) {
-    paychecks.sort(function(a,b){ return b.date.localeCompare(a.date); });
-    return paychecks[0].amt;
-  }
-  return 1068.35; // fallback to latest known paycheck
-}
 var BIWEEKLY = 1068.35;
 var MONTHLY = BIWEEKLY * 2;
-var NEEDS_TARGET = MONTHLY * 0.5, WANTS_TARGET = MONTHLY * 0.3, SAVINGS_TARGET = MONTHLY * 0.2;
+var NEEDS_TARGET = MONTHLY * 0.5, WANTS_TARGET = MONTHLY * 0.3, SAVINGS_TARGET = MONTHLY * 0.2;  // recomputed by refreshTargets()
 const POSTED_BALANCE = 3022.15;
 const POSTED_BALANCE_DATE = '2026-06-08';
 
@@ -592,26 +640,301 @@ const CADENCES = [
 ];
 
 // Auth
-(function(){ if(sessionStorage.getItem('jlf_auth')==='1') document.getElementById('lock').style.display='none'; })();
-document.getElementById('pw-input').addEventListener('keydown', function(e){ if(e.key==='Enter') checkPw(); });
-function checkPw() {
-  const v = document.getElementById('pw-input').value;
-  crypto.subtle.digest('SHA-256', new TextEncoder().encode(v)).then(function(buf) {
-    const hash = Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
-    if(hash === PW_HASH) {
-      sessionStorage.setItem('jlf_auth','1');
-      document.getElementById('lock').style.display='none';
-    } else {
-      document.getElementById('pw-error').textContent = 'Incorrect password.';
-      document.getElementById('pw-input').value = '';
-      document.getElementById('pw-input').focus();
+// ---- Supabase -----------------------------------------------------------
+// The publishable key is meant to be public: it identifies the project, it does
+// not grant access. Every table has row level security, so rows are only
+// readable by the signed-in user whose id matches them. Nothing here weakens if
+// the repository is public.
+const SUPA_URL = 'https://ljgbyrbtbdzuyzmkzcyy.supabase.co';
+const SUPA_KEY = 'sb_publishable_vReO8oQ1UASv7MVrujnp7w_1rSV3Su8';
+var sb = null, sbUser = null, sbReady = false, sbOffline = false;
+var sbMigrating = false, sbMigrateOffered = false;
+
+// Config that lives in the settings row. jlf_tx is the transactions table, and
+// auth/plaid keys are deliberately excluded.
+var SETTINGS_KEYS = ['jlf_saved','jlf_savlog','jlf_savsrc','jlf_acctcfg','jlf_bal',
+                     'jlf_subrules','jlf_subhidden','jlf_subalias','jlf_subcancel',
+                     'jlf_incsrc','jlf_alloc','jlf_schema','jlf_seedpurge',
+                     'jlf_savmig','jlf_cardseed'];
+
+function sbInit() {
+  if(sb) return sb;
+  if(typeof supabase === 'undefined' || !supabase.createClient) return null;
+  sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+  return sb;
+}
+function lockErr(msg, bad) {
+  var e = document.getElementById('pw-error');
+  if(e) { e.textContent = msg || ''; e.style.color = bad === false ? 'var(--text3)' : ''; }
+}
+
+// The column is "description" because desc is a reserved SQL word; everything
+// else maps straight across.
+function rowToTx(r) {
+  return { _id:r.id, date:r.date, type:r.type, cat:r.cat, amt:Number(r.amt),
+           desc:r.description, acct:r.acct, flow:r.flow || undefined,
+           xfer:r.xfer || undefined, source:r.source || 'manual' };
+}
+function txToRow(t) {
+  return { date:t.date, type:t.type, cat:t.cat || null, amt:t.amt,
+           description:t.desc, acct:acctOf(t), flow:t.flow || t.xferFlow || null,
+           xfer:t.xfer || null, source:t.source || 'manual' };
+}
+function txFingerprint(t) {
+  return [t.date,t.type,t.cat,t.amt,t.desc,acctOf(t),t.flow||t.xferFlow||'',t.xfer||''].join('\u0001');
+}
+
+async function checkPw() {
+  var email = (document.getElementById('email-input')||{}).value || '';
+  var pw    = (document.getElementById('pw-input')||{}).value || '';
+  if(!email || !pw) { lockErr('Enter your email and password.'); return; }
+  var c = sbInit();
+  if(!c) { lockErr('Could not reach the sign-in service. Check your connection.'); return; }
+  var btn = document.getElementById('lock-btn');
+  if(btn) { btn.disabled = true; btn.textContent = 'Signing in\u2026'; }
+  lockErr('');
+  try {
+    var res = await c.auth.signInWithPassword({ email: email.trim(), password: pw });
+    if(res.error) throw res.error;
+    document.getElementById('pw-input').value = '';
+    await sbAfterLogin();
+  } catch(err) {
+    lockErr(/Invalid/i.test(err.message||'') ? 'Incorrect email or password.' : (err.message || 'Sign-in failed.'));
+    var p = document.getElementById('pw-input');
+    if(p) { p.value=''; p.focus(); }
+  } finally {
+    if(btn) { btn.disabled = false; btn.textContent = 'Sign in'; }
+  }
+}
+
+async function sbAfterLogin() {
+  var c = sbInit();
+  var { data:{ user } } = await c.auth.getUser();
+  sbUser = user;
+  lockErr('Loading your data\u2026', false);
+  await sbLoadAll();
+  document.getElementById('lock').style.display = 'none';
+  lockErr('');
+}
+
+// Pull the settings blob into localStorage, then the transactions table. The
+// local copy stays as a read-only fallback for when the project is paused or
+// the browser is offline.
+async function sbLoadAll() {
+  var c = sbInit();
+  // Capture what this browser holds before anything overwrites it. On a first
+  // run the server is empty, and snapshotting that empty result would destroy
+  // the only copy of the data we are about to offer to upload.
+  var localBefore = [];
+  try { localBefore = JSON.parse(localStorage.getItem('jlf_tx') || '[]') || []; } catch(e){}
+  try {
+    var st = await c.from('settings').select('data').maybeSingle();
+    if(st.error) throw st.error;
+    if(st.data && st.data.data) {
+      Object.keys(st.data.data).forEach(function(k){
+        if(SETTINGS_KEYS.indexOf(k) < 0) return;
+        try { localStorage.setItem(k, st.data.data[k]); } catch(e){}
+      });
     }
-  });
+    var tx = await c.from('transactions').select('*').order('date', { ascending:true });
+    if(tx.error) throw tx.error;
+    transactions = (tx.data || []).map(rowToTx);
+    // Record what the server already has, so the next save only sends real
+    // changes instead of an update for every existing row.
+    sbLastSeen = {};
+    transactions.forEach(function(t){ if(t._id) sbLastSeen[t._id] = txFingerprint(t); });
+    sbOffline = false;
+    // Only mirror the server locally once it actually has rows; an empty server
+    // must never overwrite a populated local copy.
+    if(transactions.length || !localBefore.length) sbSnapshot();
+  } catch(err) {
+    // Fall back to whatever this browser last saw, and make it read-only so a
+    // stale copy cannot be written back over good server data.
+    console.warn('Supabase unreachable, using local snapshot:', err.message || err);
+    sbOffline = true;
+    transactions = loadTx();
+  }
+  sbReady = true;
+  reloadSettingsState();
+  migrateSchema(transactions);
+  renderAll();
+  // migrateSchema can legitimately change rows; push those once.
+  if(!sbOffline) sbSyncTx();
+  if(sbOffline) sbBanner('Offline \u2014 showing the last copy saved on this device. Changes will not be saved.');
+  else if(!transactions.length && localBefore.length) sbOfferMigration(localBefore);
+}
+
+// Re-read every module's config after the settings blob lands.
+function reloadSettingsState() {
+  // Each assignment is guarded separately: one bad key should not stop the rest
+  // of the app's config from loading.
+  var step = function(fn){ try { fn(); } catch(e) { console.warn('settings reload:', e); } };
+  step(function(){ subRules   = loadSubRules(); });
+  step(function(){ subHidden  = loadSubHidden(); });
+  step(function(){ subAlias   = loadSubAlias(); });
+  step(function(){ subCancel  = loadSubCancel(); });
+  step(function(){ incSrcState= loadIncSrc(); });
+  step(function(){ ALLOC      = loadAlloc(); });
+  step(function(){ acctCfg    = loadAcctCfg(); });
+  step(function(){ savSources = loadSrc() || savSources; });
+  step(function(){ refreshTargets(); });
+}
+
+// Never let an empty result overwrite a populated local copy. There is no
+// delete-everything action in the app, so an empty array here always means
+// something went wrong rather than something the user asked for.
+function sbSafeToWrite(list) {
+  if(sbMigrating) return false;
+  if(list && list.length) return true;
+  var had = 0;
+  try { had = (JSON.parse(localStorage.getItem('jlf_tx') || '[]') || []).length; } catch(e){}
+  return had === 0;
+}
+function sbSnapshot() {
+  if(!sbSafeToWrite(transactions)) return;
+  try { localStorage.setItem('jlf_tx', JSON.stringify(transactions)); } catch(e){}
+}
+function sbBanner(msg) {
+  var el = document.getElementById('sb-banner');
+  if(!el) return;
+  el.textContent = msg || '';
+  el.style.display = msg ? 'block' : 'none';
+}
+
+// ---- writes -------------------------------------------------------------
+// saveTx is the single choke point every mutation already routes through, so a
+// diff against the last known server state covers inserts, edits and deletes
+// without touching the twelve call sites.
+var sbLastSeen = {};   // id -> fingerprint
+var sbSyncTimer = null, sbSyncing = false;
+
+function saveTx(t) {
+  if(sbSafeToWrite(t)) {
+    try { localStorage.setItem('jlf_tx', JSON.stringify(t)); } catch(e){}
+  }
+  if(sbMigrating) return;
+  if(!sbReady || sbOffline) return;
+  clearTimeout(sbSyncTimer);
+  sbSyncTimer = setTimeout(sbSyncTx, 400);
+}
+
+async function sbSyncTx() {
+  if(sbSyncing || !sbReady || sbOffline) return;
+  sbSyncing = true;
+  var c = sbInit();
+  try {
+    var here = {}, inserts = [], updates = [];
+    transactions.forEach(function(t){
+      if(!t._id) { inserts.push(t); return; }
+      here[t._id] = true;
+      var fp = txFingerprint(t);
+      if(sbLastSeen[t._id] !== fp) updates.push(t);
+    });
+    var removals = Object.keys(sbLastSeen).filter(function(id){ return !here[id]; });
+
+    if(removals.length) {
+      var del = await c.from('transactions').delete().in('id', removals);
+      if(del.error) throw del.error;
+      removals.forEach(function(id){ delete sbLastSeen[id]; });
+    }
+    for(var i=0;i<updates.length;i++) {
+      var u = await c.from('transactions').update(txToRow(updates[i])).eq('id', updates[i]._id);
+      if(u.error) throw u.error;
+      sbLastSeen[updates[i]._id] = txFingerprint(updates[i]);
+    }
+    if(inserts.length) {
+      // chunked so a large import does not exceed the request size
+      for(var j=0;j<inserts.length;j+=200) {
+        var slice = inserts.slice(j, j+200);
+        var ins = await c.from('transactions').insert(slice.map(txToRow)).select('id');
+        if(ins.error) throw ins.error;
+        (ins.data||[]).forEach(function(row, k){
+          slice[k]._id = row.id;
+          sbLastSeen[row.id] = txFingerprint(slice[k]);
+        });
+      }
+    }
+    sbSnapshot();
+    sbBanner('');
+  } catch(err) {
+    console.error('sync failed:', err);
+    sbBanner('Could not save to the server: ' + (err.message || err) + ' \u2014 your changes are only on this device.');
+  } finally {
+    sbSyncing = false;
+  }
+}
+
+// Settings are small, so the whole blob is written on any change.
+var sbSetTimer = null;
+function sbPushSettings() {
+  if(!sbReady || sbOffline) return;
+  clearTimeout(sbSetTimer);
+  sbSetTimer = setTimeout(async function(){
+    var c = sbInit(), blob = {};
+    SETTINGS_KEYS.forEach(function(k){
+      try { var v = localStorage.getItem(k); if(v !== null) blob[k] = v; } catch(e){}
+    });
+    try {
+      var r = await c.from('settings').upsert({ user_id: sbUser.id, data: blob, updated_at: new Date().toISOString() });
+      if(r.error) throw r.error;
+    } catch(err) { console.error('settings sync failed:', err); }
+  }, 600);
+}
+
+// Any config write also queues a settings push, so no save site needs changing.
+(function(){
+  var raw = localStorage.setItem.bind(localStorage);
+  localStorage.setItem = function(k, v) {
+    raw(k, v);
+    if(SETTINGS_KEYS.indexOf(k) >= 0) sbPushSettings();
+  };
+})();
+
+// ---- first run ----------------------------------------------------------
+function sbOfferMigration(local) {
+  if(sbMigrateOffered) return;   // asked once; a failed upload must not loop
+  sbMigrateOffered = true;
+  if(!local || !local.length) return;
+  if(!confirm('This account has no transactions yet.\n\nUpload the ' + local.length
+            + ' transactions stored in this browser?\n\nNothing is deleted either way \u2014 '
+            + 'your local copy stays until the upload succeeds.')) return;
+  sbUpload(local);
+}
+async function sbUpload(list) {
+  var c = sbInit();
+  sbMigrating = true;
+  sbBanner('Uploading ' + list.length + ' transactions\u2026');
+  try {
+    for(var i=0;i<list.length;i+=200) {
+      var slice = list.slice(i, i+200).map(txToRow);
+      var r = await c.from('transactions').insert(slice);
+      if(r.error) throw r.error;
+    }
+    sbMigrating = false;
+    await sbLoadAll();
+    sbBanner('');
+    alert('Uploaded ' + list.length + ' transactions.');
+  } catch(err) {
+    sbMigrating = false;
+    sbBanner('Upload failed: ' + (err.message || err) + ' \u2014 your local copy is untouched.');
+  }
+}
+
+// ---- boot ---------------------------------------------------------------
+['pw-input','email-input'].forEach(function(id){
+  var el = document.getElementById(id);
+  if(el) el.addEventListener('keydown', function(e){ if(e.key==='Enter') checkPw(); });
+});
+
+async function sbBoot() {
+  var c = sbInit();
+  if(!c) { lockErr('Could not load the sign-in service.'); return; }
+  var { data:{ session } } = await c.auth.getSession();
+  if(session) { await sbAfterLogin(); }   // stays signed in until you log out
 }
 
 // Storage
 function loadTx() { try { var s=localStorage.getItem('jlf_tx'); var p=s?JSON.parse(s):null; return (p&&p.length>0)?p:JSON.parse(JSON.stringify(SEED_TX)); } catch(e) { return JSON.parse(JSON.stringify(SEED_TX)); } }
-function saveTx(t) { try { localStorage.setItem('jlf_tx',JSON.stringify(t)); } catch(e) {} }
 function loadSaved() { try { var v=parseFloat(localStorage.getItem('jlf_saved')||'0'); return isNaN(v)?0:v; } catch(e) { return 0; } }
 function saveSavedAmt(v) { try { localStorage.setItem('jlf_saved',String(v)); } catch(e) {} }
 function loadSavLog() { try { var s=localStorage.getItem('jlf_savlog'); return s?JSON.parse(s):[]; } catch(e) { return []; } }
@@ -650,6 +973,13 @@ var subSortDesc = true;
 var subDetailKey = null;
 var subShowHidden = false;
 var subShowInactive = false;
+// Manually cancelled subscriptions: key -> 'YYYY-MM', the first month it no
+// longer applies. Detection alone needs two missed billing periods before it
+// notices, which is too slow when you know you cancelled.
+function loadSubCancel(){ try{ var s=localStorage.getItem('jlf_subcancel'); return s?JSON.parse(s):{}; }catch(e){ return {}; } }
+function saveSubCancel(){ try{ localStorage.setItem('jlf_subcancel', JSON.stringify(subCancel)); }catch(e){} }
+var subCancel = loadSubCancel();
+var subCancelAsk = null;   // key awaiting a month choice
 
 function loadSrc() { try { var s=localStorage.getItem('jlf_savsrc'); return s?JSON.parse(s):null; } catch(e){ return null; } }
 function saveSrc() { try { localStorage.setItem('jlf_savsrc', JSON.stringify(savSources)); } catch(e){} }
@@ -1523,7 +1853,7 @@ function renderOverview() {
   // Savings card
   html += '<div class="sav-card"><div style="display:flex;justify-content:space-between;align-items:center">';
   html += '<div><div class="hero-label" style="margin-bottom:2px">Total Savings</div>';
-  html += '<div style="font-size:11px;color:var(--text4)">MCT (20%) &middot; '+fmt(SAVINGS_TARGET)+' / mo</div></div>';
+  html += '<div style="font-size:11px;color:var(--text4)">MCT ('+ALLOC.s+'%) &middot; '+fmt(SAVINGS_TARGET)+' / mo</div></div>';
   html += '<div style="font-size:32px;font-weight:300;color:var(--navy);letter-spacing:-1px">'+fmt(totalSavings())+'</div>';
   html += '</div>';
   if(savSources.length) {
@@ -1580,7 +1910,17 @@ function renderTransactions() {
   var tx = filterMo(txMonth).sort(function(a,b){ return b.date.localeCompare(a.date); });
   var income = tx.filter(function(t){ return t.type==='Income'; }).reduce(function(s,t){ return s+t.amt; },0);
   var expenses = tx.filter(function(t){ return t.type==='Expense'; }).reduce(function(s,t){ return s+t.amt; },0);
-  var mtabs = months.map(function(m){ var a=m===txMonth?'active':''; return '<button class="mt '+a+'" data-m="'+m+'" onclick="setTxMonth(this.dataset.m)" style="font-family:var(--font)">'+monthName(m)+'</button>'; }).join('');
+  // Oldest-first for the navigator, so the left arrow always moves backwards.
+  var msAsc = months.slice().reverse();
+  var tmi = msAsc.indexOf(txMonth);
+  var mnav = '<div class="mo-nav" style="margin-bottom:12px">'
+    + '<button class="mo-arrow" onclick="stepTxMonth(-1)"'+(tmi<=0?' disabled':'')+' aria-label="Previous month">&#8249;</button>'
+    + '<div class="mo-mid"><select class="mo-sel" onchange="setTxMonth(this.value)">'
+    +   msAsc.map(function(m){ return '<option value="'+m+'"'+(m===txMonth?' selected':'')+'>'+moFull(m)+'</option>'; }).join('')
+    + '</select><div class="mo-sub">'+(tmi+1)+' of '+msAsc.length
+    +   (txMonth===msAsc[msAsc.length-1]?' &middot; latest':'')+'</div></div>'
+    + '<button class="mo-arrow" onclick="stepTxMonth(1)"'+(tmi>=msAsc.length-1?' disabled':'')+' aria-label="Next month">&#8250;</button>'
+    + '</div>';
   var rows = tx.map(function(t, i){
     var realIdx = transactions.indexOf(t);
     var acct = acctOf(t);
@@ -1601,7 +1941,7 @@ function renderTransactions() {
       + '<td class="'+cls+'">'+sign+fmt(t.amt)+'</td>'
       + '<td style="text-align:center;width:36px"><button data-idx="'+realIdx+'" class="tx-remove-btn" style="background:none;border:none;color:#aaa;font-size:16px;cursor:pointer;line-height:1;padding:2px 6px">&times;</button></td></tr>';
   }).join('');
-  var html = '<div class="month-tabs">'+mtabs+'</div>';
+  var html = mnav;
   html += '<div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:10px">';
   html += '<button onclick="undoTx()" title="Undo" style="padding:5px 12px;border:1px solid var(--line);background:'+(txHistory.length?'var(--navy)':'#f0f0f0')+';color:'+(txHistory.length?'#fff':'#ccc')+';font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:'+(txHistory.length?'pointer':'default')+';font-family:var(--font)">&#8592; Undo</button>';
   html += '<button onclick="redoTx()" title="Redo" style="padding:5px 12px;border:1px solid var(--line);background:'+(txFuture.length?'var(--navy)':'#f0f0f0')+';color:'+(txFuture.length?'#fff':'#ccc')+';font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:'+(txFuture.length?'pointer':'default')+';font-family:var(--font)">Redo &#8594;</button>';
@@ -1673,47 +2013,306 @@ function deleteMonth() {
 }
 
 function setTxMonth(m) { txMonth=m; renderTransactions(); }
-
-// Budget
-function renderBudget() {
-  var mo = currentMonth(); var moTx = filterMo(mo);
-  // Recalculate income from this month's AA paycheck
-  BIWEEKLY = detectBiweekly();
-  MONTHLY = BIWEEKLY * 2;
-  NEEDS_TARGET = MONTHLY * 0.5; WANTS_TARGET = MONTHLY * 0.3; SAVINGS_TARGET = MONTHLY * 0.2;
-  var needsSpent = moTx.filter(function(t){ return t.type==='Expense'&&NEEDS_CATS.includes(t.cat); }).reduce(function(s,t){ return s+t.amt; },0);
-  var wantsSpent = moTx.filter(function(t){ return t.type==='Expense'&&WANTS_CATS.includes(t.cat); }).reduce(function(s,t){ return s+t.amt; },0);
-  function bigRow(name, cats, spent, target) {
-    var pct = target>0?Math.min(spent/target*100,100):0; var over = spent>target;
-    return '<div style="border:1px solid var(--line);padding:20px 22px;margin-bottom:12px">'
-      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">'
-      +'<div><div style="font-size:14px;font-weight:500;color:var(--navy)">'+name+'</div>'
-      +'<div style="font-size:10px;color:var(--text4);margin-top:3px">'+cats+'</div></div>'
-      +'<div style="text-align:right"><div style="font-size:20px;font-weight:300;color:'+(over?'var(--neg)':'var(--navy)')+'">'+fmt(spent)+'</div>'
-      +'<div style="font-size:11px;color:var(--text3)">of '+fmt(target)+'</div></div></div>'
-      +'<div class="bud-track" style="margin-top:10px"><div class="bud-fill" style="width:'+pct.toFixed(0)+'%;background:'+(over?'var(--neg)':'var(--gold)')+'"></div></div>'
-      +'<div style="font-size:11px;color:var(--text3);margin-top:6px">'+pct.toFixed(0)+'% of target used</div></div>';
-  }
-  var html = '<div style="font-size:12px;color:var(--text3);margin-bottom:18px">Based on '+fmt(BIWEEKLY)+' biweekly &middot; Monthly estimate '+fmt(MONTHLY)+' &middot; '+monthName(currentMonth())+'</div>';
-  html += bigRow('Needs','Gas &middot; Groceries &middot; Car &middot; Gym &middot; Bills',needsSpent,NEEDS_TARGET);
-  html += bigRow('Wants','Dining &middot; Subscriptions &middot; Shopping &middot; Misc &middot; AA Cafe',wantsSpent,WANTS_TARGET);
-  html += '<div style="border:1px solid var(--line);border-left:3px solid var(--gold);padding:20px 22px">'
-    +'<div style="display:flex;justify-content:space-between;align-items:center">'
-    +'<div><div style="font-size:14px;font-weight:500;color:var(--navy)">Savings</div>'
-    +'<div style="font-size:10px;color:var(--text4);margin-top:3px">20% of monthly income</div></div>'
-    +'<div style="text-align:right"><div style="font-size:20px;font-weight:300;color:var(--navy)">'+fmt(SAVINGS_TARGET)+'</div>'
-    +'<div style="font-size:11px;color:var(--text3)">per month</div></div></div></div>';
-  document.getElementById('page-budget').innerHTML = html;
+function stepTxMonth(d) {
+  var msAsc = getMonths().slice().reverse();
+  var i = msAsc.indexOf(txMonth) + d;
+  if(i < 0 || i >= msAsc.length) return;
+  setTxMonth(msAsc[i]);
 }
 
-// Subscriptions
-// Detection is deliberately rule-based, not scored: three occurrences on a valid
-// cadence, or two for a "potential". Confirm/ignore decisions are stored per
-// normalised merchant and always win over the rules.
+// Budget
+// ---- Budget income model ----------------------------------------------
+// The old model doubled the latest paycheck found in the month, which broke
+// badly across job changes and counted refunds and Zelle as earnings. Income is
+// now the actual total received from sources you have chosen to count.
 
-// Store numbers survive normDesc (it only strips digit runs of 6+), which would
-// split one merchant across locations. Trim short trailing digits for grouping
-// only -- normDesc itself is left alone because import dedupe depends on it.
+// Group income rows by a stable-ish source name.
+function incSrcKey(desc) {
+  return String(desc).toUpperCase()
+    .replace(/ON \d+\/\d+/g, ' ')
+    .replace(/REF NUMBER.*/, ' ')
+    .replace(/[^A-Z ]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim().split(' ').slice(0,3).join(' ');
+}
+function incomeSources() {
+  var g = {};
+  transactions.filter(function(t){ return t.type === 'Income'; }).forEach(function(t){
+    var k = incSrcKey(t.desc);
+    if(!k) return;
+    g[k] = g[k] || { key:k, n:0, sum:0, first:t.date, last:t.date, byMo:{} };
+    var s = g[k]; s.n++; s.sum += t.amt;
+    if(t.date < s.first) s.first = t.date;
+    if(t.date > s.last)  s.last  = t.date;
+    var m = t.date.slice(0,7);
+    s.byMo[m] = (s.byMo[m] || 0) + t.amt;
+  });
+  return Object.keys(g).map(function(k){ return g[k]; })
+    .sort(function(a,b){ return b.sum - a.sum; });
+}
+// Months that have any activity, oldest first.
+function budgetMonths() {
+  var set = {};
+  transactions.forEach(function(t){ if(t.date) set[t.date.slice(0,7)] = 1; });
+  var out = Object.keys(set).sort();
+  var now = currentMonth();
+  if(out.indexOf(now) < 0) out.push(now);
+  return out.sort();
+}
+function budgetLatestMonth() {
+  var ms = budgetMonths();
+  return ms.length ? ms[ms.length-1] : currentMonth();
+}
+// Landing month: the newest one that actually has transactions, so an
+// as-yet-unimported current month does not greet you with an empty budget.
+function budgetDefaultMonth() {
+  var withData = {};
+  transactions.forEach(function(t){ if(t.date) withData[t.date.slice(0,7)] = 1; });
+  var ms = budgetMonths().filter(function(m){ return withData[m]; });
+  return ms.length ? ms[ms.length-1] : currentMonth();
+}
+function moPrev(m){ var y=+m.slice(0,4), o=+m.slice(5,7)-1; if(o===0){y--;o=12;} return y+'-'+String(o).padStart(2,'0'); }
+function moNext(m){ var y=+m.slice(0,4), o=+m.slice(5,7)+1; if(o===13){y++;o=1;} return y+'-'+String(o).padStart(2,'0'); }
+function moFull(m){
+  var N=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return N[+m.slice(5,7)-1]+' '+m.slice(0,4);
+}
+function moShort(m){
+  var N=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return N[+m.slice(5,7)-1]+" '"+m.slice(2,4);
+}
+
+// Each source carries a timeline of changes rather than one on/off flag, so a
+// source can be turned off for a single month, or from a month onward, without
+// rewriting what was true before it.
+//   incSrcState[key] = { base:bool, changes:[{from:'YYYY-MM', on:bool}] }
+function loadIncSrc(){ try{ var s=localStorage.getItem('jlf_incsrc'); return s?JSON.parse(s):{}; }catch(e){ return {}; } }
+function saveIncSrc(){ try{ localStorage.setItem('jlf_incsrc', JSON.stringify(incSrcState)); }catch(e){} }
+function loadAlloc(){
+  try{ var s=localStorage.getItem('jlf_alloc'); if(s) return JSON.parse(s); }catch(e){}
+  return { n:50, w:30, s:20 };
+}
+function saveAlloc(){ try{ localStorage.setItem('jlf_alloc', JSON.stringify(ALLOC)); }catch(e){} }
+
+var incSrcState = loadIncSrc();
+var ALLOC       = loadAlloc();
+var budViewMo   = null;    // set on first render
+var budAskKey   = null;
+var budShowOther = false;
+var budEditAlloc = false;
+
+// Anything never classified stays out, so refunds and transfers cannot quietly
+// inflate a target. Payroll-looking sources start counted.
+function incSrcBase(key) {
+  if(incSrcState[key] && typeof incSrcState[key].base === 'boolean') return incSrcState[key].base;
+  return /PAYROLL|AMERICANAIRLINES|DIRECT DEP/.test(key);
+}
+function incCountsIn(key, mo) {
+  var st = incSrcState[key];
+  var on = incSrcBase(key);
+  if(st && st.changes) {
+    st.changes.slice().sort(function(a,b){ return a.from < b.from ? -1 : 1; })
+      .forEach(function(c){ if(c.from <= mo) on = c.on; });
+  }
+  return on;
+}
+function incPush(key, from, on) {
+  var st = incSrcState[key] = incSrcState[key] || { base: incSrcBase(key), changes: [] };
+  if(typeof st.base !== 'boolean') st.base = incSrcBase(key);
+  st.changes = (st.changes || []).filter(function(c){ return c.from !== from; });
+  st.changes.push({ from:from, on:on });
+  // Collapse changes that repeat the state before them so the list cannot grow
+  // without bound as months are toggled.
+  st.changes.sort(function(a,b){ return a.from < b.from ? -1 : 1; });
+  var prev = st.base, kept = [];
+  st.changes.forEach(function(c){ if(c.on !== prev) { kept.push(c); prev = c.on; } });
+  st.changes = kept;
+  saveIncSrc();
+}
+function incomeFor(mo) {
+  var sum = 0;
+  incomeSources().forEach(function(s){
+    if(s.byMo[mo] && incCountsIn(s.key, mo)) sum += s.byMo[mo];
+  });
+  return sum;
+}
+
+// Targets stay as globals because the Overview and Savings tabs read them.
+function refreshTargets() {
+  MONTHLY = incomeFor(currentMonth());
+  BIWEEKLY = MONTHLY / 2;
+  NEEDS_TARGET   = MONTHLY * ALLOC.n / 100;
+  WANTS_TARGET   = MONTHLY * ALLOC.w / 100;
+  SAVINGS_TARGET = MONTHLY * ALLOC.s / 100;
+}
+
+function budSetAlloc(k, v) {
+  ALLOC[k] = Math.max(0, Math.min(100, Math.round(+v || 0)));
+  saveAlloc(); refreshTargets(); renderBudget(); renderOverview(); renderSavings();
+}
+function budToggleAlloc(){ budEditAlloc = !budEditAlloc; renderBudget(); }
+function budToggleOther(){ budShowOther = !budShowOther; renderBudget(); }
+function budPickMo(m){ budViewMo = m; budAskKey = null; renderBudget(); }
+function budStepMo(d) {
+  var ms = budgetMonths(), i = ms.indexOf(budViewMo) + d;
+  if(i < 0 || i >= ms.length) return;
+  budPickMo(ms[i]);
+}
+function budEnable(key, mo) {
+  incPush(key, mo, true);
+  budAskKey = null;
+  refreshTargets(); renderBudget(); renderOverview(); renderSavings();
+}
+function budDisableFrom(key, mo) {
+  incPush(key, mo, false);
+  budAskKey = null;
+  refreshTargets(); renderBudget(); renderOverview(); renderSavings();
+}
+function budDisableOnly(key, mo) {
+  incPush(key, mo, false);
+  incPush(key, moNext(mo), true);
+  budAskKey = null;
+  refreshTargets(); renderBudget(); renderOverview(); renderSavings();
+}
+function budToggleSrc(key) {
+  if(!incCountsIn(key, budViewMo)) { budEnable(key, budViewMo); return; }
+  // The newest month has no future to distinguish, so skip the question.
+  if(budViewMo >= budgetLatestMonth()) { budDisableFrom(key, budViewMo); return; }
+  budAskKey = key;
+  if(!incCountsIn(key, budViewMo)) budShowOther = true;
+  renderBudget();
+}
+function budCancelAsk(){ budAskKey = null; renderBudget(); }
+// Handlers address a source by position so a name with a quote cannot break markup.
+var BUD_SRC = [];
+function budToggleAt(i){ budToggleSrc(BUD_SRC[i].key); }
+function budOnlyAt(i){ budDisableOnly(BUD_SRC[i].key, budViewMo); }
+function budFromAt(i){ budDisableFrom(BUD_SRC[i].key, budViewMo); }
+
+function renderBudget() {
+  var el = document.getElementById('page-budget');
+  if(!el) return;
+  var ms = budgetMonths();
+  if(!budViewMo || ms.indexOf(budViewMo) < 0) budViewMo = budgetDefaultMonth();
+  var mi = ms.indexOf(budViewMo);
+  var latest = budgetLatestMonth();
+
+  BUD_SRC = incomeSources();
+  var inc  = incomeFor(budViewMo);
+  var moTx = filterMo(budViewMo);
+  var needsSpent = moTx.filter(function(t){ return t.type==='Expense'&&NEEDS_CATS.includes(t.cat); }).reduce(function(s,t){ return s+t.amt; },0);
+  var wantsSpent = moTx.filter(function(t){ return t.type==='Expense'&&WANTS_CATS.includes(t.cat); }).reduce(function(s,t){ return s+t.amt; },0);
+  var savMoved   = moTx.filter(function(t){ return t.type==='Transfer'&&acctOf(t)==='savings'; }).reduce(function(s,t){ return s+t.amt; },0);
+  var nT = inc*ALLOC.n/100, wT = inc*ALLOC.w/100, sT = inc*ALLOC.s/100;
+  var left = inc - needsSpent - wantsSpent;
+
+  var prior = ms.filter(function(m){ return m < budViewMo; });
+  var avgOf = function(cats) {
+    if(!prior.length) return 0;
+    return prior.reduce(function(a,m){
+      return a + filterMo(m).filter(function(t){ return t.type==='Expense'&&cats.includes(t.cat); })
+                            .reduce(function(s,t){ return s+t.amt; },0);
+    },0) / prior.length;
+  };
+  var avgInc = prior.length ? prior.reduce(function(a,m){ return a+incomeFor(m); },0)/prior.length : 0;
+
+  var h = '<div class="mo-nav">'
+    + '<button class="mo-arrow" onclick="budStepMo(-1)"'+(mi<=0?' disabled':'')+' aria-label="Previous month">&#8249;</button>'
+    + '<div class="mo-mid"><select class="mo-sel" onchange="budPickMo(this.value)">'
+    +   ms.map(function(m){ return '<option value="'+m+'"'+(m===budViewMo?' selected':'')+'>'+moFull(m)+'</option>'; }).join('')
+    + '</select><div class="mo-sub">'+(mi+1)+' of '+ms.length+(budViewMo===latest?' &middot; latest':'')+'</div></div>'
+    + '<button class="mo-arrow" onclick="budStepMo(1)"'+(mi>=ms.length-1?' disabled':'')+' aria-label="Next month">&#8250;</button>'
+    + '</div>';
+
+  h += '<div class="sub-hero"><div><div class="sub-hero-label">Income counted &middot; '+moShort(budViewMo)+'</div>'
+    + '<div class="sub-hero-val">'+fmt(inc)+'</div></div>'
+    + '<div class="sub-hero-right"><div class="sub-hero-meta"><b>'+fmt(needsSpent+wantsSpent)+'</b> spent<br>'
+    + '<b>'+fmt(left)+'</b> unspent</div></div></div>';
+
+  h += '<div class="alloc-head"><div class="alloc-t">Allocation &middot; '+ALLOC.n+' / '+ALLOC.w+' / '+ALLOC.s+'</div>'
+    + '<button class="sortbtn" onclick="budToggleAlloc()">'+(budEditAlloc?'Done':'Adjust')+'</button></div>';
+  if(budEditAlloc) {
+    var sum = ALLOC.n+ALLOC.w+ALLOC.s, ok = sum === 100;
+    var fld = function(k,label){
+      return '<div class="al-f"><label>'+label+'</label><input type="number" min="0" max="100" value="'+ALLOC[k]+'" '
+           + 'onchange="budSetAlloc(\''+k+'\',this.value)"><span>%</span></div>';
+    };
+    h += '<div class="alloc-box"><div class="al-row">'+fld('n','Needs')+fld('w','Wants')+fld('s','Savings')
+      +  '<div class="al-sum'+(ok?'':' bad')+'">'+sum+'%'+(ok?'':' &mdash; must total 100')+'</div></div></div>';
+  }
+
+  h += '<div class="sub-strip">'
+    + '<div><div class="strip-label">Needs target &middot; '+ALLOC.n+'%</div><div class="strip-val">'+fmt(nT)+'</div></div>'
+    + '<div><div class="strip-label">Wants target &middot; '+ALLOC.w+'%</div><div class="strip-val">'+fmt(wT)+'</div></div>'
+    + '</div>';
+
+  var budRow2 = function(name, cats, spent, target, avg) {
+    var truePct = target>0 ? spent/target*100 : 0;
+    var pct = Math.min(truePct,100);          // bar width only; label shows the real figure
+    var over = target>0 && spent>target;
+    var delta = avg ? spent-avg : 0;
+    return '<div class="bigrow"><div class="br-top">'
+      + '<div><div class="br-n">'+name+'</div><div class="br-c">'+cats+'</div></div>'
+      + '<div><div class="br-a'+(over?' over':'')+'">'+fmt(spent)+'</div><div class="br-of">of '+fmt(target)+'</div></div></div>'
+      + '<div class="track"><div class="fill'+(over?' over':'')+'" style="width:'+pct.toFixed(0)+'%"></div></div>'
+      + '<div class="br-f"><span>'+(target>0?truePct.toFixed(0)+'% of target used':'no income counted this month')+'</span>'
+      + '<span class="avg">'+(avg?(delta>=0?'+':'')+fmt(delta)+' vs your average':'')+'</span></div></div>';
+  };
+  h += budRow2('Needs','Gas &middot; Groceries &middot; Car &middot; Gym &middot; Bills', needsSpent, nT, avgOf(NEEDS_CATS));
+  h += budRow2('Wants','Dining &middot; Subscriptions &middot; Shopping &middot; Misc &middot; AA Cafe', wantsSpent, wT, avgOf(WANTS_CATS));
+
+  var savTrue = sT>0 ? savMoved/sT*100 : 0;
+  h += '<div class="bigrow sav"><div class="br-top">'
+    + '<div><div class="br-n">Savings</div><div class="br-c">'+ALLOC.s+'% of counted income</div></div>'
+    + '<div><div class="br-a">'+fmt(savMoved)+'</div><div class="br-of">of '+fmt(sT)+'</div></div></div>'
+    + '<div class="track"><div class="fill" style="width:'+Math.min(savTrue,100).toFixed(0)+'%"></div></div>'
+    + '<div class="br-f"><span>'+savTrue.toFixed(0)+'% of target</span>'
+    + '<span class="avg">'+(avgInc?(inc>=avgInc?'+':'')+fmt(inc-avgInc)+' income vs average':'')+'</span></div></div>';
+
+  // ---- income sources
+  h += '<div class="sec" style="margin-top:32px"><div class="sec-head"><div class="sec-title">Income sources</div>'
+    + '<div class="sec-right"><div class="sec-count">'
+    + BUD_SRC.filter(function(s){ return incCountsIn(s.key, budViewMo); }).length+' counted</div></div></div>'
+    + '<div class="sec-sub">Showing what counted in '+moFull(budViewMo)
+    + '. Ticking carries forward from this month; unticking asks whether it applies to this month alone or from here on.</div>';
+
+  var srcRow = function(s, si) {
+    var on = incCountsIn(s.key, budViewMo), onNow = incCountsIn(s.key, latest);
+    var tag = '';
+    if(!on && onNow) tag = '<span class="pill missed">off this month</span>';
+    else if(on && !onNow) tag = '<span class="pill missed">off from '+moShort(latest)+'</span>';
+    var out = '<div class="isrc'+(on?'':' off')+'">'
+      + '<input type="checkbox" '+(on?'checked':'')+' onchange="budToggleAt('+si+')">'
+      + '<div class="isrc-m"><div class="isrc-n">'+s.key+tag+'</div>'
+      + '<div class="isrc-d">'+s.n+' payment'+(s.n===1?'':'s')+' &middot; '+s.first+' to '+s.last+'</div></div>'
+      + '<div class="isrc-a">'+fmt(s.byMo[budViewMo]||0)+'</div></div>';
+    if(budAskKey === s.key) {
+      out += '<div class="ask"><div class="ask-t">Stop counting <b>'+s.key+'</b> &mdash; for '+moFull(budViewMo)+' only, or from then on?</div>'
+        + '<div class="ask-b">'
+        + '<button class="sortbtn" onclick="budOnlyAt('+si+')">'+moShort(budViewMo)+' only</button>'
+        + '<button class="sortbtn" onclick="budFromAt('+si+')">'+moShort(budViewMo)+' and after</button>'
+        + '<button class="sortbtn" onclick="budCancelAsk()">Cancel</button></div></div>';
+    }
+    return out;
+  };
+  var counted = [], other = [];
+  BUD_SRC.forEach(function(s, si){ (incCountsIn(s.key, budViewMo) ? counted : other).push({s:s,i:si}); });
+  if(counted.length) counted.forEach(function(o){ h += srcRow(o.s, o.i); });
+  else h += '<div class="empty">No income sources counted this month.</div>';
+  if(other.length) {
+    h += '<button class="more" onclick="budToggleOther()">'
+      + (budShowOther?'Hide':'Show')+' '+other.length+' other income source'+(other.length===1?'':'s')
+      + '<i>'+(budShowOther?'&#9650;':'&#9660;')+'</i></button>';
+    if(budShowOther) {
+      h += '<div class="other-wrap">';
+      other.forEach(function(o){ h += srcRow(o.s, o.i); });
+      h += '</div>';
+    }
+  }
+  h += '</div>';
+  el.innerHTML = h;
+}
+
 function subStripStore(n) {
   return n.replace(/\s+#?\d{1,5}$/, '').trim() || n;
 }
@@ -1818,6 +2417,14 @@ function analyzeSubs(todayStr) {
       var item = { key:id, label:label, merchant:k, n:rows.length, amt:last.amt, last:last.date,
                    first:rows[0].date, rows:rows, cad:cad,
                    status:cad ? subLifeStatus(cad,last.date,today) : null };
+      // A manual cancellation wins over whatever the cadence check concluded.
+      var cx = subCancel[id] || subCancel[k];
+      if(cx) {
+        item.cancelled = cx;
+        // Compared against the real calendar month, not the data's as-of date: a
+        // cancellation is a statement about reality, and imports usually lag it.
+        if(currentMonth() >= cx) item.status = { key:'inactive', label:'Cancelled' };
+      }
       if(rule === 'confirmed') {
         if(!item.cad) { item.cad = CADENCES[0]; item.status = subLifeStatus(CADENCES[0],last.date,today); }
         item.section = 'confirmed'; out.confirmed.push(item); return;
@@ -1859,7 +2466,11 @@ function subDetailBody(s) {
     : s.cad.label.toLowerCase()+' &middot; '+fmt(s.amt*s.cad.perMonth)+' / mo';
   var pill = (s.status && s.status.key !== 'active')
     ? '<span class="pill '+s.status.key+'">'+s.status.label+'</span>' : '';
+  var cxBtn = s.cancelled
+    ? '<button class="modal-ic on" onclick="clearSubCancel(\''+esc(s.key)+'\')" title="Cancelled from '+moFull(s.cancelled)+' \u2014 click to undo">&#8416;</button>'
+    : '<button class="modal-ic" onclick="askSubCancel(\''+esc(s.key)+'\')" title="Mark cancelled">&#8416;</button>';
   var h = '<div class="modal-h"><div class="modal-t">'+(s.label||s.key)+pill+'</div>'
+    +   cxBtn
     +   '<button class="modal-x" onclick="closeSubDetail()" aria-label="Close">&times;</button></div>'
     + '<div class="modal-b"><div class="sd-head">'
     +   '<div class="sd-first">First payment<b>'+subLongDate(s.first)+'</b></div>'
@@ -1869,6 +2480,22 @@ function subDetailBody(s) {
     var chg = i > 0 && Math.abs(r.amt - s.rows[i-1].amt) > 0.005;
     h += '<div class="sd-line'+(chg?' chg':'')+'"><span>'+subLongDate(r.date)+'</span><b>'+fmt(r.amt)+'</b></div>';
   });
+  // Cancellation control
+  if(s.cancelled) {
+    h += '<div class="sd-cx"><span>Marked cancelled from <b>'+moFull(s.cancelled)+'</b></span>'
+      +  '<button class="abtn" onclick="clearSubCancel(\'' + esc(s.key) + '\')">Undo</button></div>';
+  } else if(subCancelAsk === s.key) {
+    // Default to the month after the last charge, which is usually when a
+    // subscription actually stopped.
+    var opts = subCancelMonths(s);
+    h += '<div class="sd-cx col"><div class="sd-cx-t">Stopped being charged from which month?</div>'
+      +  '<div class="sd-cx-r"><select class="mo-sel cx-sel" id="sub-cx-mo">'
+      +    opts.map(function(o){ return '<option value="'+o.m+'"'+(o.def?' selected':'')+'>'+moFull(o.m)+'</option>'; }).join('')
+      +  '</select>'
+      +  '<button class="abtn pri" onclick="applySubCancel(\'' + esc(s.key) + '\')">Mark cancelled</button>'
+      +  '<button class="abtn" onclick="cancelSubCancelAsk()">Cancel</button></div></div>';
+  }
+
   return h + '</div><div class="modal-f">'
     + (s.section === 'potential'
         ? '<button class="abtn pri" onclick="setSubRule(\'' + esc(s.key) + '\',\'confirmed\')">Confirm subscription</button>'
@@ -1876,11 +2503,41 @@ function subDetailBody(s) {
     + '<button class="abtn" onclick="setSubRule(\'' + esc(s.key) + '\',\'ignored\')">Ignore this merchant</button>'
     + '</div>';
 }
+
+// Month choices run from the last charge to the current month.
+function subCancelMonths(s) {
+  var start = s.last.slice(0,7);
+  var end = currentMonth();
+  var def = moNext(start);
+  if(def > end) def = end;
+  var out = [], m = start, guard = 0;
+  while(m <= end && guard++ < 240) { out.push({ m:m, def:(m === def) }); m = moNext(m); }
+  if(!out.length) out.push({ m:end, def:true });
+  if(!out.some(function(o){ return o.def; })) out[out.length-1].def = true;
+  return out;
+}
+function askSubCancel(key){ subCancelAsk = key; renderSubDetail(); }
+// From a list row: open the detail already asking which month it stopped.
+function openSubCancel(key){ subDetailKey = key; subCancelAsk = key; renderSubDetail(); }
+function cancelSubCancelAsk(){ subCancelAsk = null; renderSubDetail(); }
+function applySubCancel(key) {
+  var sel = document.getElementById('sub-cx-mo');
+  var mo = sel ? sel.value : currentMonth();
+  subCancel[key] = mo;
+  saveSubCancel();
+  subCancelAsk = null;
+  renderSubscriptions(); renderOverview();
+}
+function clearSubCancel(key) {
+  delete subCancel[key];
+  saveSubCancel();
+  renderSubscriptions(); renderOverview();
+}
 function openSubDetail(key) { subDetailKey = key; renderSubDetail(); }
 function closeSubDetail(e) {
   // Only the backdrop or the X dismisses; clicks inside the box must not.
   if(e && e.target && e.target.id !== 'sub-mask') return;
-  subDetailKey = null; renderSubDetail();
+  subDetailKey = null; subCancelAsk = null; renderSubDetail();
 }
 function renderSubDetail() {
   var mask = document.getElementById('sub-mask');
@@ -1939,21 +2596,15 @@ function renderSubscriptions() {
       +   '<div class="srow-main"><div class="srow-name">'
       +     '<button onclick="openSubDetail(\''+esc(s.key)+'\')">'+(s.label||s.key)+'</button>'+pill+'</div></div>'
       +   '<div class="srow-amt">'+fmt(s.amt)
-      +     (s.cad.perMonth!==1 ? '<em>'+fmt(s.amt*s.cad.perMonth)+' / mo</em>' : '')+'</div></div>';
+      +     (s.cad.perMonth!==1 ? '<em>'+fmt(s.amt*s.cad.perMonth)+' / mo</em>' : '')+'</div>'
+      +   '</div>';
   };
   h += '<div class="sec"><div class="sec-head"><div class="sec-title">Subscriptions</div>'
-    +  '<div class="sec-right"><div class="sec-count">'+live.length+'</div>'
-    +  (dead.length ? '<button class="sortbtn" onclick="toggleSubInactive()">'
-        +(subShowInactive ? 'Hide inactive' : 'Show '+dead.length+' inactive')+'</button>' : '')
-    +  toggle+'</div></div>';
+    +  '<div class="sec-right"><div class="sec-count">'+live.length+'</div>'+toggle+'</div></div>';
   if(live.length) {
     live.forEach(function(s){ h += subRow(s); });
   } else {
     h += '<div class="empty">Nothing detected yet &mdash; three charges are needed before a merchant qualifies.</div>';
-  }
-  if(subShowInactive && dead.length) {
-    h += '<div class="sec-sub">No charge for more than two billing periods. Not counted toward the total.</div>';
-    dead.forEach(function(s){ h += subRow(s); });
   }
   h += '</div>';
 
@@ -1971,9 +2622,24 @@ function renderSubscriptions() {
   }
   h += '</div>';
 
+  // Inactive sits next to Ignored because both are "not counted", but they are
+  // different things: inactive is something that stopped charging, ignored is a
+  // merchant you told the detector to leave alone. Kept visually distinct.
+  if(dead.length) {
+    h += '<div class="sec"><div class="sec-head"><div class="sec-title">Inactive</div>'
+      +  '<div class="sec-right"><div class="sec-count">'+dead.length+'</div>'
+      +  '<button class="sortbtn" onclick="toggleSubInactive()">'
+      +  (subShowInactive ? 'Hide' : 'Show')+'</button></div></div>';
+    if(subShowInactive) {
+      h += '<div class="sec-sub">Cancelled, or no charge for more than two billing periods. Not counted toward the total.</div>';
+      dead.forEach(function(s){ h += subRow(s); });
+    }
+    h += '</div>';
+  }
+
   var vis = res.ignored.filter(function(s){ return !s.hidden; });
   var hid = res.ignored.filter(function(s){ return s.hidden; });
-  h += '<div class="sec"><div class="sec-head"><div class="sec-title">Ignored</div>'
+  h += '<div class="sec ignored-sec"><div class="sec-head"><div class="sec-title">Ignored</div>'
     +  '<div class="sec-right"><div class="sec-count">'+vis.length+'</div>'
     +  (hid.length ? '<button class="sortbtn" onclick="toggleSubHidden()">'
         +(subShowHidden ? 'Hide deleted' : 'Show '+hid.length+' deleted')+'</button>' : '')
@@ -2402,8 +3068,10 @@ function fillBackupStats() {
   var msg = document.getElementById('backup-msg');
   if(msg) msg.textContent = '';
 }
-function doLogout() {
+async function doLogout() {
+  try { if(sb) await sb.auth.signOut(); } catch(e){}
   try { sessionStorage.removeItem('jlf_auth'); } catch(e){}
+  sbReady = false; sbLastSeen = {};
   closeProf();
   var lock = document.getElementById('lock');
   if(lock) lock.style.display = 'flex';
@@ -2418,7 +3086,8 @@ function doLogout() {
 // should not be written to a file that gets emailed around.
 var BACKUP_KEYS = ['jlf_tx','jlf_saved','jlf_savlog','jlf_savsrc','jlf_acctcfg',
                    'jlf_bal','jlf_subrules','jlf_subhidden','jlf_subalias',
-                   'jlf_schema','jlf_seedpurge','jlf_savmig','jlf_cardseed'];
+                   'jlf_schema','jlf_seedpurge','jlf_savmig','jlf_cardseed',
+                   'jlf_incsrc','jlf_alloc','jlf_subcancel'];
 
 function collectBackup() {
   var data = {};
@@ -2538,6 +3207,10 @@ function runRestore(mode) {
   subRules  = loadSubRules();
   subHidden = loadSubHidden();
   subAlias  = loadSubAlias();
+  subCancel = loadSubCancel();
+  incSrcState = loadIncSrc();
+  ALLOC = loadAlloc();
+  refreshTargets();
 
   closeRestore();
   renderAll();
@@ -2559,7 +3232,7 @@ function undoRestore() {
   console.log('Reverted to the snapshot taken before the last restore. Reload the page.');
 }
 
-function renderAll() { renderCard(); renderOverview(); renderTransactions(); renderBudget(); renderSubscriptions(); renderSavings(); }
+function renderAll() { refreshTargets(); renderCard(); renderOverview(); renderTransactions(); renderBudget(); renderSubscriptions(); renderSavings(); }
 
 document.addEventListener('keydown', function(e){
   if(e.key === 'Escape' && document.getElementById('dup-mask').classList.contains('on')) closeDupModal();
@@ -2576,6 +3249,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 renderAll();
+sbBoot();
 </script>
 </body>
 </html>
