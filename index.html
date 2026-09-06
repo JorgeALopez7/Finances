@@ -1569,8 +1569,11 @@ function looksCapitalOne(raw) {
   var lines = String(raw).split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
   var dates = 0, tails = 0;
   lines.forEach(function(l){
-    if(c1Date(l)) dates++;
-    else if(!/^total\b/i.test(l) && c1Tail(l) && /[A-Za-z]/.test(l)) tails++;
+    if(c1Date(l)) { dates++; return; }
+    if(/^total\b/i.test(l)) return;
+    // The amount can share a line with the category and cardholder, or sit on a
+    // line of its own; both are Capital One, neither is Wells Fargo.
+    if(c1Tail(l)) tails++;
   });
   return dates >= 2 && tails >= 2;
 }
@@ -1581,15 +1584,28 @@ function parseCapitalOne(raw, acct, today) {
   var out = [], skipped = 0, i = 0;
   while(i < lines.length) {
     var d = c1Date(lines[i], today);
-    if(!d) { if(!/^total\b/i.test(lines[i])) skipped++; i++; continue; }
-    var j = i+1, desc = [], tail = null;
+    if(!d) {
+      // "Total:" and the bare amount under it are trailer noise, not failures.
+      var noise = /^total\b/i.test(lines[i]) || /^\$?\s*[\d,]+\.\d{2}$/.test(lines[i]);
+      if(!noise) skipped++;
+      i++; continue;
+    }
+    var j = i+1, desc = [], tail = null, lineCat = null;
     while(j < lines.length) {
       if(c1Date(lines[j], today)) break;         // next row started; this one is malformed
       var t = c1Tail(lines[j]);
       if(t) { tail = t; j++; break; }
-      desc.push(lines[j]); j++;
+      var ln = lines[j];
+      // Capital One puts the category, the cashback rate and the cardholder on
+      // their own lines when copied from the activity page. None are merchant.
+      if(/cash back/i.test(ln))            { j++; continue; }
+      if(/\.\.\.\s*\d{4}\s*$/.test(ln))    { j++; continue; }
+      var isCat = Object.keys(C1_CATS).some(function(c){ return c.toLowerCase() === ln.toLowerCase(); });
+      if(isCat) { lineCat = ln; j++; continue; }
+      desc.push(ln); j++;
     }
     if(!tail || !desc.length) { skipped++; i++; continue; }
+    if(!tail.rawCat && lineCat) { tail.rawCat = lineCat; tail.cat = C1_CATS[lineCat]; }
     var description = desc.join(' ').replace(/\s+/g,' ').trim();
     var isPayment = tail.rawCat === 'Payment/Credit' || tail.negative
                  || /\b(payment|thank you|autopay)\b/i.test(description);
