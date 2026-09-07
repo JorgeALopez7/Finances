@@ -4,10 +4,18 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>J.L. Finance</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue&display=swap" rel="stylesheet">
+<!-- Installed-app metadata. apple-mobile-web-app-capable is what removes Safari's
+     address bar and toolbar once the page is added to the home screen. -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="JL Finance">
+<meta name="theme-color" content="#101820">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="apple-touch-icon.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -182,9 +190,11 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
 .menu-i.danger:hover{background:#fdf3f3}
 .menu-i.danger i{color:var(--neg)}
 .menu-hr{height:1px;background:var(--line2);margin:6px 0}
-.stat{display:inline-block;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 7px;border:1px solid var(--line);color:var(--text3);margin-left:auto}
-.stat.off{border-color:var(--gold);color:var(--gold)}
-.stat.on{border-color:var(--pos);color:var(--pos)}
+/* Renamed from .stat: it was colliding with the Overview .stat cells above and
+   overwriting their padding, border and font-size. */
+.statchip{display:inline-block;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 7px;border:1px solid var(--line);color:var(--text3);margin-left:auto}
+.statchip.off{border-color:var(--gold);color:var(--gold)}
+.statchip.on{border-color:var(--pos);color:var(--pos)}
 .note{font-size:11px;color:var(--text3);line-height:1.55;margin-top:14px}
 .abtn.danger{border-color:var(--neg);background:var(--neg);color:#fff}
 .abtn.danger:hover{background:#8f2626;border-color:#8f2626}
@@ -390,8 +400,187 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
   .sub-item{border-right:none}
   .break-name{width:110px;font-size:11px}
   .break-amt{width:70px;font-size:11px}
-  .tbl th:nth-child(3),.tbl td:nth-child(3){display:none}
 }
+
+/* ========================================================================
+   MOBILE / INSTALLED-APP LAYOUT
+   Everything below only applies at <=700px. Desktop is untouched.
+   ======================================================================== */
+
+/* Tab-bar icons and short labels: hidden on desktop, shown on phone. */
+.ni-ic,.ni-short{display:none}
+
+@media (max-width:700px){
+
+  /* ---- page frame ---- */
+  html{background:#fff}
+  body{max-width:none;border-left:none;border-right:none;
+       padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))}
+  .hdr{padding:13px 15px}
+  .logo{font-size:15px}
+  .uname{display:none}
+  .body{padding:15px}
+  .sec{margin-bottom:26px}
+
+  /* ---- bottom tab bar: all seven, no horizontal scroll ---- */
+  .nav{position:fixed;left:0;right:0;bottom:0;z-index:500;padding:0;overflow-x:hidden;
+       border-top:1px solid rgba(255,255,255,0.10);
+       padding-bottom:env(safe-area-inset-bottom,0px)}
+  .ni{flex:1 1 0;min-width:0;padding:8px 1px 9px;display:flex;flex-direction:column;
+      align-items:center;gap:4px;font-size:8px;letter-spacing:0.02em;
+      border-bottom:none;border-top:2px solid transparent}
+  .ni.active{border-bottom-color:transparent;border-top-color:var(--gold);color:var(--gold)}
+  .ni-full{display:none}
+  .ni-short{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .ni-ic{display:block;line-height:0}
+  .ni-ic svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;
+             stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ---- month navigator sticks to the top of the scroll ---- */
+  .mo-nav{position:sticky;top:0;z-index:200;background:#fff}
+  .mo-arrow{width:44px;min-height:44px}
+
+  /* ---- tables become two-line rows ----
+     Five grid columns, two rows. A table that has no checkbox or no action
+     button simply leaves that column empty and it collapses to zero width,
+     so one rule covers Transactions, Savings activity, Card and Import. */
+  .tbl,.tbl tbody,.tbl tr,.tbl td{display:block}
+  .tbl thead{display:none}
+  .tbl tr{display:grid;column-gap:9px;align-items:center;
+          grid-template-columns:auto auto 1fr auto auto;
+          grid-template-areas:"chk desc desc amt act"
+                              "chk date cat  amt act";
+          padding:11px 12px;border-bottom:1px solid var(--line2)}
+  .tbl tr:last-child{border-bottom:none}
+  .tbl tr:hover td{background:none}
+  .tbl td{padding:0;border-bottom:none;min-width:0;font-size:13px}
+  .td-chk{grid-area:chk;width:auto!important}
+  .td-chk input{width:20px;height:20px}
+  .tx-date{grid-area:date;font-size:10.5px}
+  .tx-desc{grid-area:desc;max-width:none;white-space:normal;overflow:visible;
+           text-overflow:clip;line-height:1.35;margin-bottom:3px}
+  .tx-cat,.src-tag{grid-area:cat;font-size:10.5px;min-width:0;
+                   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .amt-inc,.amt-exp,.amt-xfer,.amt-cell{grid-area:amt;text-align:right;
+                                        font-size:13.5px;white-space:nowrap}
+  .td-act{grid-area:act;text-align:right;width:auto!important}
+  .td-act button{min-width:40px;min-height:40px;font-size:19px!important}
+  .acct-chip{margin-left:6px}
+
+  /* ---- Overview ---- */
+  .hero-card{flex-direction:column;align-items:flex-start;gap:12px;padding:16px 15px}
+  .hero-bal{font-size:32px}
+  .hero-right{text-align:left}
+  .stat-grid{grid-template-columns:repeat(3,1fr);margin-bottom:20px}
+  .stat{padding:11px 9px;border-right:1px solid var(--line);border-bottom:none}
+  .stat:last-child{border-right:none;border-bottom:none}
+  .stat-label{font-size:8.5px;letter-spacing:0.08em;margin-bottom:5px}
+  .stat-val{font-size:15px;letter-spacing:-0.02em}
+  .break-wrap{padding:15px}
+  .break-row{display:grid;grid-template-columns:1fr auto;align-items:center;
+             grid-template-areas:"n a" "t t";margin-bottom:14px}
+  .break-name{grid-area:n;width:auto;font-size:12px}
+  .break-amt{grid-area:a;width:auto;font-size:12px}
+  .break-track{grid-area:t;flex:none;margin:6px 0 0;height:10px}
+  .break-fill{height:10px}
+  .met{padding:12px 14px}
+  .sav-card{padding:16px 15px}
+
+  /* ---- Budget ---- */
+  .bigrow{padding:14px 15px}
+  .br-n{font-size:13.5px}
+  .br-a{font-size:17px}
+  .br-f{font-size:10px}
+  .al-f input{width:66px}
+  .isrc{padding:13px 2px;align-items:flex-start}
+  .isrc input{width:20px;height:20px;margin-top:2px}
+  .isrc-n{white-space:normal}
+  .ask-b{gap:8px}
+
+  /* ---- Subscriptions ---- */
+  .sub-hero{padding:16px 15px}
+  .sub-hero-val{font-size:28px}
+  .srow{padding:13px 2px;gap:10px}
+  .srow-name{white-space:normal}
+  .srow-amt{font-size:17px}
+  .igrow{flex-wrap:wrap;gap:8px}
+  .igrow .sp{margin-left:auto}
+  .sec-right{gap:8px}
+
+  /* ---- Import ---- */
+  .import-box{padding:15px}
+  .import-ta{min-height:120px}
+  .acct-pick{gap:8px}
+  .det-bar{padding:11px 12px}
+
+  /* ---- Savings ---- */
+  .totbar{padding:16px 15px}
+  .tb-v{font-size:28px}
+  .tb-top{flex-wrap:wrap;gap:12px}
+  .spanel-h{padding:12px 14px}
+  .src{padding:14px 56px 14px 14px;gap:12px}
+  .src-v{font-size:18px}
+  .upd,.mct,.ap{padding:14px}
+  .cashctl input[type=number]{flex:1 1 auto;min-width:0}
+  .cashctl input[type=text]{flex:1 1 100%}
+  .cashctl .acct-sel{flex:1 1 100%}
+  .cashctl .btn{flex:1 1 100%}
+
+  /* ---- Card ---- */
+  .cdbar{padding:16px 15px;gap:14px}
+  .cd-art{display:none}
+  .cd-id{min-width:0;flex:1 1 55%}
+  .cd-owed{font-size:28px}
+  .gauge{width:112px}
+  .gauge svg{width:112px;height:66px}
+  .gauge-v{font-size:17px;margin-top:-26px}
+  .gauge-l{margin-top:10px}
+  .kd-c{min-width:120px;padding:13px 14px}
+  .ap-cov{flex-wrap:wrap}
+  .ap-cov span{margin-left:0}
+
+  /* ---- totals bar ---- */
+  .tb-item{padding:11px 6px;text-align:center}
+  .tb-label{font-size:8.5px;letter-spacing:0.06em}
+  .tb-val{font-size:14px}
+
+  /* ---- modals become bottom sheets ---- */
+  .mask{align-items:flex-end;padding:0}
+  .modal{max-width:none!important;width:100%;max-height:88vh}
+  .modal-h{padding:16px 15px 12px}
+  .modal-f{padding:12px 15px calc(12px + env(safe-area-inset-bottom,0px));
+           flex-direction:column;align-items:stretch;gap:8px}
+  .modal-f .hint{order:2;text-align:center}
+  .modal-f>div{display:flex;gap:8px}
+  .modal-f>div>*{flex:1}
+  .dup-row{padding:13px 15px}
+  .dup-row input{width:20px;height:20px}
+  #sub-modal .modal-b{padding:0 15px 16px}
+
+  /* ---- touch targets ---- */
+  .btn,.btn-ghost{min-height:44px;padding:12px 20px}
+  .abtn,.sortbtn{min-height:40px;padding:10px 12px}
+  .tgl,.sav-toggle-btn{width:40px;height:40px;min-height:40px}
+  .row-edit{padding:12px 4px}
+  .menu-i{padding:13px 16px}
+  .addsrc{padding:6px 0!important;min-height:34px}
+  .more{padding:14px 2px}
+
+  /* ---- iOS zooms the page when a field under 16px gets focus ---- */
+  input,select,textarea,
+  .lock-input,.import-ta,.acct-sel,.mo-sel,.cx-sel,
+  .al-f input,.cashctl input{font-size:16px}
+  input[type=checkbox]{width:20px;height:20px}
+
+  /* ---- sign-in ---- */
+  #lock{padding:20px}
+  .lock-input{width:min(280px,80vw)}
+
+  /* ---- misc ---- */
+  .menu{right:0;min-width:min(260px,calc(100vw - 30px))}
+  .empty{padding:28px 0}
+}
+
 </style>
 <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -486,20 +675,20 @@ body{max-width:1000px;margin:0 auto;background:#fff;border-left:1px solid #d4d4d
       <div class="menu-id"><b>Jorge Lopez</b><span>Signed in on this device</span></div>
       <div class="menu-sec">Data</div>
       <button class="menu-i" onclick="openProf('backup')"><i>&#8681;</i> Backup &amp; restore</button>
-      <button class="menu-i" onclick="openProf('connect')"><i>&#8644;</i> Bank connection <span class="stat off" id="prof-plaid-stat">Off</span></button>
+      <button class="menu-i" onclick="openProf('connect')"><i>&#8644;</i> Bank connection <span class="statchip off" id="prof-plaid-stat">Off</span></button>
       <div class="menu-hr"></div>
       <button class="menu-i danger" onclick="openProf('logout')"><i>&#8617;</i> Log out</button>
     </div>
   </div>
 </div>
 <div class="nav">
-  <button class="ni active" onclick="showPage('overview',this)">Overview</button>
-  <button class="ni" onclick="showPage('transactions',this)">Transactions</button>
-  <button class="ni" onclick="showPage('budget',this)">Budget</button>
-  <button class="ni" onclick="showPage('subscriptions',this)">Subscriptions</button>
-  <button class="ni" onclick="showPage('import',this)">Import</button>
-  <button class="ni" onclick="showPage('savings',this)">Savings</button>
-  <button class="ni" onclick="showPage('card',this)">Card</button>
+  <button class="ni active" onclick="showPage('overview',this)"><span class="ni-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V9M9.3 20V4M14.7 20v-8M20 20v-5"/></svg></span><span class="ni-full">Overview</span><span class="ni-short">Overview</span></button>
+  <button class="ni" onclick="showPage('transactions',this)"><span class="ni-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span><span class="ni-full">Transactions</span><span class="ni-short">Trans</span></button>
+  <button class="ni" onclick="showPage('budget',this)"><span class="ni-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v8l5.7 5.7"/></svg></span><span class="ni-full">Budget</span><span class="ni-short">Budget</span></button>
+  <button class="ni" onclick="showPage('subscriptions',this)"><span class="ni-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 0 1 13.4-3.4L20 9"/><path d="M20 5v4h-4"/><path d="M20 14a8 8 0 0 1-13.4 3.4L4 15"/><path d="M4 19v-4h4"/></svg></span><span class="ni-full">Subscriptions</span><span class="ni-short">Subs</span></button>
+  <button class="ni" onclick="showPage('import',this)"><span class="ni-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10M8 10.5l4 4 4-4"/><path d="M4 17v3h16v-3"/></svg></span><span class="ni-full">Import</span><span class="ni-short">Import</span></button>
+  <button class="ni" onclick="showPage('savings',this)"><span class="ni-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14"/><circle cx="12" cy="12" r="3.2"/></svg></span><span class="ni-full">Savings</span><span class="ni-short">Savings</span></button>
+  <button class="ni" onclick="showPage('card',this)"><span class="ni-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="M3 10h18M6.5 14.5h3"/></svg></span><span class="ni-full">Card</span><span class="ni-short">Card</span></button>
 </div>
 <div class="body">
   <div id="page-overview" class="page active"></div>
@@ -1167,7 +1356,7 @@ function updatePlaidButtons() {
   if(chip) {
     var on = !!plaidAccessToken;
     chip.textContent = on ? 'On' : 'Off';
-    chip.className = 'stat ' + (on ? 'on' : 'off');
+    chip.className = 'statchip ' + (on ? 'on' : 'off');
   }
   var connectBtn = document.getElementById('plaid-connect-btn');
   var syncBtn = document.getElementById('plaid-sync-btn');
@@ -1703,7 +1892,7 @@ function renderPreview(dups, skipped) {
     if(item.isXfer) dupBadge+='<span style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;background:#eef2f7;color:var(--navy2);padding:2px 6px;border:1px solid var(--line);margin-left:6px">transfer '+(p.xferFlow==='in'?'in':'out')+'</span>';
     var rowStyle=item.isDup?'opacity:0.55':'';
     if(item.isXfer){ amtClass='amt-xfer'; amtPrefix=(p.xferFlow==='in'?'\u2192 ':'\u2190 '); }
-    return '<tr style="'+rowStyle+'"><td style="width:32px;text-align:center"><input type="checkbox" data-idx="'+i+'" '+(item.selected?'checked':'')+' onchange="togglePreviewRow('+i+',this.checked)"></td><td class="tx-date">'+p.date.substring(5).replace('-','/')+'</td><td class="tx-desc" title="'+p.desc+'">'+p.desc+dupBadge+'</td><td class="tx-cat">'+(p.cat||categorize(p.desc,p.isIncome))+'</td><td class="'+amtClass+'">'+amtPrefix+fmt(p.amt)+'</td></tr>';
+    return '<tr style="'+rowStyle+'"><td class="td-chk" style="width:32px;text-align:center"><input type="checkbox" data-idx="'+i+'" '+(item.selected?'checked':'')+' onchange="togglePreviewRow('+i+',this.checked)"></td><td class="tx-date">'+p.date.substring(5).replace('-','/')+'</td><td class="tx-desc" title="'+p.desc+'">'+p.desc+dupBadge+'</td><td class="tx-cat">'+(p.cat||categorize(p.desc,p.isIncome))+'</td><td class="'+amtClass+'">'+amtPrefix+fmt(p.amt)+'</td></tr>';
   }).join('');
   var d = window.__detect;
   var banner = '';
@@ -1798,6 +1987,9 @@ function commitImport(){
 
 
 function showPage(p, btn) {
+  // On a phone the tab bar is fixed at the bottom, so switching tabs while
+  // scrolled down would otherwise drop you into the middle of the new page.
+  try { window.scrollTo(0, 0); } catch(e) {}
   document.querySelectorAll('.page').forEach(function(e){ e.classList.remove('active'); });
   document.querySelectorAll('.ni').forEach(function(e){ e.classList.remove('active'); });
   document.getElementById('page-'+p).classList.add('active');
@@ -1970,7 +2162,7 @@ function renderTransactions() {
       + '<td class="tx-desc" title="'+t.desc+'">'+t.desc+chip+'</td>'
       + '<td class="tx-cat">'+cat+'</td>'
       + '<td class="'+cls+'">'+sign+fmt(t.amt)+'</td>'
-      + '<td style="text-align:center;width:36px"><button data-idx="'+realIdx+'" class="tx-remove-btn" style="background:none;border:none;color:#aaa;font-size:16px;cursor:pointer;line-height:1;padding:2px 6px">&times;</button></td></tr>';
+      + '<td class="td-act" style="text-align:center;width:36px"><button data-idx="'+realIdx+'" class="tx-remove-btn" style="background:none;border:none;color:#aaa;font-size:16px;cursor:pointer;line-height:1;padding:2px 6px">&times;</button></td></tr>';
   }).join('');
   var html = mnav;
   html += '<div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:10px">';
@@ -2792,8 +2984,8 @@ function renderSavings() {
       h += '<tr><td class="tx-date">'+a.date.substring(5).replace('-','/')+'</td>';
       h += '<td class="tx-desc">'+a.desc+'</td>';
       h += '<td class="src-tag">'+a.src.replace('Wells Fargo ','')+'</td>';
-      h += '<td style="text-align:right;color:'+(pos?'var(--pos)':'var(--neg)')+'">'+(pos?'+':'\u2212')+fmt(Math.abs(a.amt))+'</td>';
-      h += '<td style="text-align:center"><button onclick="removeSavAct(\''+a.kind+'\','+a.idx+')" style="background:none;border:none;color:var(--text4);font-size:16px;cursor:pointer;line-height:1;padding:2px 6px" title="Remove">&times;</button></td></tr>';
+      h += '<td class="amt-cell" style="text-align:right;color:'+(pos?'var(--pos)':'var(--neg)')+'">'+(pos?'+':'\u2212')+fmt(Math.abs(a.amt))+'</td>';
+      h += '<td class="td-act" style="text-align:center"><button onclick="removeSavAct(\''+a.kind+'\','+a.idx+')" style="background:none;border:none;color:var(--text4);font-size:16px;cursor:pointer;line-height:1;padding:2px 6px" title="Remove">&times;</button></td></tr>';
     });
     h += '</tbody></table></div>';
   }
